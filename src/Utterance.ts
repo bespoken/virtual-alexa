@@ -2,50 +2,60 @@
  * Turns a phrase into an intent
  */
 import {InteractionModel} from "./InteractionModel";
+import {SamplePhrase} from "./SampleUtterances";
 
 export class Utterance {
-    private matchedPhrase: string;
-    private matchedIntent: string;
+    public matchedSample: SamplePhrase;
+    private slots: string[];
 
     public constructor(public interactionModel: InteractionModel, public phrase: string) {
         this.phrase = phrase.toLowerCase();
         this.matchIntent();
     }
 
-    public intent(): string | undefined {
-        return this.matchedIntent;
+    public intent(): string {
+        return this.matched() ? this.matchedSample.intent : undefined;
     }
 
     public matched(): boolean {
-        return this.matchedIntent !== undefined;
+        return this.matchedSample !== undefined;
+    }
+
+    public slot(index: number): string | undefined {
+        if (!this.slots || index >= this.slots.length) {
+            return undefined;
+        }
+
+        return this.slots[index].trim();
+    }
+
+    public slotByName(name: string): string | undefined {
+        name = name.toLowerCase();
+
+        let slotValue;
+        for (let i = 0; i < this.matchedSample.slotCount(); i++) {
+            const slotName = this.matchedSample.slotName(i);
+            if (slotName === name) {
+                slotValue = this.slots[i].trim();
+                break;
+            }
+        }
+        return slotValue;
     }
 
     private matchIntent(): void {
         for (const intent of this.interactionModel.sampleUtterances.intents()) {
-            for (let sample of this.interactionModel.sampleUtterances.samplesForIntent(intent)) {
-                sample = sample.toLowerCase();
-                const regex = this.replaceSlots(sample);
-                const match = this.phrase.match(regex);
-                if (match !== null) {
-                    this.matchedPhrase = sample;
-                    this.matchedIntent = intent;
-                    break;
+            for (const sample of this.interactionModel.sampleUtterances.samplesForIntent(intent)) {
+                const slots = sample.matchesUtterance(this.phrase);
+                if (slots) {
+                    this.matchedSample = sample;
+                    this.slots = slots;
                 }
             }
 
-            if (this.matchedPhrase) {
+            if (this.matchedSample) {
                 break;
             }
         }
-    }
-
-    private replaceSlots(sample: string): string {
-        const startIndex = sample.indexOf("{");
-        if (startIndex !== -1) {
-            const endIndex = sample.indexOf("}", startIndex);
-            sample = sample.substring(0, startIndex) + ".*" + sample.substring(endIndex + 1);
-            return this.replaceSlots(sample);
-        }
-        return sample;
     }
 }

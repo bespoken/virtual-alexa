@@ -18,54 +18,31 @@ export class SampleUtterances {
     public static fromJSON(sampleUtterancesJSON: any): SampleUtterances {
         const sampleUtterances = new SampleUtterances();
         for (const intent of Object.keys(sampleUtterancesJSON)) {
-            sampleUtterances.samples[intent] = sampleUtterancesJSON[intent];
+            sampleUtterances.samples[intent] = [];
+            for (const sample of sampleUtterancesJSON[intent]) {
+                sampleUtterances.samples[intent].push(new SamplePhrase(intent, sample));
+            }
         }
         return sampleUtterances;
     }
 
-    private samples: {[id: string]: string[]} = {};
+    private samples: {[id: string]: SamplePhrase[]} = {};
 
     public intents(): string[] {
         return Object.keys(this.samples);
     }
 
-    public samplesForIntent(intent: string): string [] {
+    public samplesForIntent(intent: string): SamplePhrase [] {
         return this.samples[intent];
     }
 
     /**
      * To handle the case when what is said does not match any sample utterance
      */
-    public defaultUtterance(): string {
+    public defaultUtterance(): SamplePhrase {
         // Just grab the first sample for now
         const firstIntent = Object.keys(this.samples)[0];
         return this.samples[firstIntent][0];
-    }
-
-    /**
-     * Returns an uttered intentName tuple for the phrase
-     * The uttered intentName has the intentName name and slot information
-     * @param phraseString
-     * @returns {UtteredIntent}
-     */
-    public intentForUtterance(phraseString: string): UtteredIntent {
-        const phrase = new Phrase(phraseString);
-
-        let matchedIntent: UtteredIntent = null;
-        for (const intent of Object.keys(this.samples)) {
-            const samples = this.samples[intent];
-            for (const sample of samples) {
-                if (phrase.matchesUtterance(sample)) {
-                    matchedIntent = new UtteredIntent(intent, phraseString, new Phrase(sample));
-                    break;
-                }
-            }
-
-            if (matchedIntent !== null) {
-                break;
-            }
-        }
-        return matchedIntent;
     }
 
     public hasIntent(intent: string): boolean {
@@ -87,14 +64,14 @@ export class SampleUtterances {
 
             const intent = line.substr(0, index);
             const sample = line.substr(index).trim();
-            let intentSamples: string[] = [];
+            let intentSamples: SamplePhrase[] = [];
             if (intent in this.samples) {
                 intentSamples = this.samples[intent];
             } else {
                 this.samples[intent] = intentSamples;
             }
 
-            intentSamples.push(sample);
+            intentSamples.push(new SamplePhrase(intent, sample));
         }
     }
 }
@@ -102,79 +79,58 @@ export class SampleUtterances {
 /**
  * Helper class for handling phrases - breaks out the slots within a phrase
  */
-export class Phrase {
-    public slots: string[] = [];
-    public normalizedPhrase: string = null;
+export class SamplePhrase {
+    private slotNames: string[] = [];
+    private regex: string;
 
-    public constructor(public phrase: string) {
-        this.normalizeSlots(this.phrase);
+    public constructor(public intent: string, public phrase: string) {
+        this.phrase = phrase.toLowerCase();
+        this.regex = this.phraseToRegex(this.phrase);
+    }
+
+    public slotName(index: number): string | undefined {
+        if (index >= this.slotNames.length) {
+            return undefined;
+        }
+
+        return this.slotNames[index];
+    }
+
+    public slotCount(): number {
+        return this.slotNames.length;
     }
 
     /**
-     * Takes a phrase like "This is a {Slot}" and turns it into "This is a {}"
+     * Tests to see if the utterances matches the sample phrase
+     * If it does, returns an array of matching slot values
+     * If it does not, returns undefined
+     * @param {string} utterance
+     * @returns {[]}
+     */
+    public matchesUtterance(utterance: string): string[] | undefined {
+        const match = utterance.match(this.regex);
+        console.log("RegEx: " + this.regex);
+        let result: string[] | undefined;
+        if (match) {
+            result = match.slice(1);
+        }
+        return result;
+    }
+
+    /**
+     * Takes a phrase like "This is a {Slot}" and turns it into a regex like "This is a(.*)"
      * This is so we can compare the sample utterances (which have names that tie off to the slot names defined in the
      *  intent schema) with the actual utterance, which have values in the slot positions (as opposed to the names)
-     * @param utterance
+     * @param phrase
      */
-    public normalizeSlots(utterance: string): void {
-        // Slots are indicated by {braces}
-        let slotlessUtterance = "";
-        let index = 0;
-        let done = false;
-        while (!done) {
-            const startSlotIndex = utterance.indexOf("{", index);
-            if (startSlotIndex !== -1) {
-                const endSlotIndex = utterance.indexOf("}", startSlotIndex);
-
-                // Get the contents of the slot and put it in an array
-                const slotValue = utterance.substr(startSlotIndex + 1, endSlotIndex - (startSlotIndex + 1));
-                this.slots.push(slotValue);
-
-                slotlessUtterance += utterance.substr(index, startSlotIndex - index + 1) + "}";
-
-                index = endSlotIndex + 1;
-            } else {
-                slotlessUtterance += utterance.substr(index);
-                done = true;
-            }
+    private phraseToRegex(phrase: string): string {
+        const startIndex = phrase.indexOf("{");
+        if (startIndex !== -1) {
+            const endIndex = phrase.indexOf("}", startIndex);
+            this.slotNames.push(phrase.substring(startIndex + 1, endIndex));
+            phrase = phrase.substring(0, startIndex).trim() + "(.*)" + phrase.substring(endIndex + 1).trim();
+            phrase = this.phraseToRegex(phrase);
         }
-        this.normalizedPhrase = slotlessUtterance;
-    }
-
-    public matchesUtterance(otherPhraseString: string): boolean {
-        return this.matches(new Phrase(otherPhraseString));
-    }
-
-    public matches(otherPhrase: Phrase): boolean {
-        return this.normalizedPhrase.toLowerCase() === otherPhrase.normalizedPhrase.toLowerCase();
-    }
-}
-
-/**
- * Object to hold tuple of intentName name, utterance, and the matched phrase
- *
- * Helpful for handling slots
- */
-export class UtteredIntent {
-    public constructor(public intentName: string, public utterance: string, public matchedPhrase: Phrase) {}
-
-    public slotCount(): number {
-        return this.matchedPhrase.slots.length;
-    }
-
-    public slotName(index: number) {
-        return this.matchedPhrase.slots[index];
-    }
-
-    public slotValue(index: number) {
-        return new Phrase(this.utterance).slots[index];
-    }
-
-    public toJSON(): any {
-        const json: any = {};
-        for (let i = 0; i < this.slotCount(); i++) {
-            json[this.slotName(i)] = this.slotValue(i);
-        }
-        return json;
+        return phrase;
     }
 }
