@@ -43,6 +43,15 @@ export class Utterance {
         return slotValue;
     }
 
+    public toJSON(): any {
+        const json: any = {};
+        for (let i = 0; i < this.slots.length; i++) {
+            const slotName = this.matchedSample.slotName(i);
+            json[slotName] = this.slot(i);
+        }
+        return json;
+    }
+
     private matchIntent(): void {
         for (const intent of this.interactionModel.sampleUtterances.intents()) {
             for (const sample of this.interactionModel.sampleUtterances.samplesForIntent(intent)) {

@@ -1,7 +1,7 @@
-import {AudioPlayer} from "./audio-player";
-import {InteractionModel} from "./interaction-model";
-import {AlexaSession} from "./alexa-session";
-const uuid = require("uuid");
+import * as uuid from "uuid";
+import {AudioPlayer} from "./AudioPlayer";
+import {InteractionModel} from "./InteractionModel";
+import {SkillSession} from "./SkillSession";
 
 /**
  * Manages state of the Alexa device interaction across sessions.
@@ -10,13 +10,12 @@ const uuid = require("uuid");
  *
  * To emulate a user with a linked account, set the access token property.
  */
-export class AlexaContext {
+export class SkillContext {
     private _accessToken: string = null;
     private _userID: string;
-    private _session: AlexaSession;
+    private _session: SkillSession;
 
-    public constructor(private _skillURL: string,
-                       private _interactionModel: InteractionModel,
+    public constructor(private _interactionModel: InteractionModel,
                        private _audioPlayer: AudioPlayer,
                        private _applicationID?: string) {}
 
@@ -26,10 +25,6 @@ export class AlexaContext {
             this._applicationID = "amzn1.echo-sdk-ams.app." + uuid.v4();
         }
         return this._applicationID;
-    }
-
-    public skillURL(): string {
-        return this._skillURL;
     }
 
     public interactionModel(): InteractionModel {
@@ -64,10 +59,10 @@ export class AlexaContext {
     }
 
     public newSession(): void {
-        this._session = new AlexaSession();
+        this._session = new SkillSession();
     }
 
-    public session(): AlexaSession {
+    public session(): SkillSession {
         return this._session;
     }
 
@@ -76,6 +71,6 @@ export class AlexaContext {
     }
 
     public activeSession(): boolean {
-        return this._session !== null;
+        return this._session !== undefined;
     }
 }

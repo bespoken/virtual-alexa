@@ -1,7 +1,7 @@
-import {Alexa} from "./alexa";
-import {ServiceRequest, RequestType, SessionEndedReason} from "./service-request";
 import {EventEmitter} from "events";
-import {AudioItem} from "./audio-item";
+import {AudioItem} from "./AudioItem";
+import {SkillInteractor} from "./SkillInteractor";
+import {RequestType, SessionEndedReason, SkillRequest} from "./SkillRequest";
 
 export enum AudioPlayerActivity {
     BUFFER_UNDERRUN,
@@ -9,37 +9,37 @@ export enum AudioPlayerActivity {
     IDLE,
     PLAYING,
     PAUSED,
-    STOPPED
+    STOPPED,
 }
 
 /**
  * Emulates the behavior of the audio player
  */
 export class AudioPlayer {
-    public static DirectivePlay = "AudioPlayer.Play";
-    public static DirectiveStop = "AudioPlayer.Stop";
-    public static DirectiveClearQueue = "AudioPlayer.ClearQueue";
+    public static DIRECTIVE_PLAY = "AudioPlayer.Play";
+    public static DIRECTIVE_STOP = "AudioPlayer.Stop";
+    public static DIRECTIVE_CLEAR_QUEUE = "AudioPlayer.ClearQueue";
 
-    public static PlayBehaviorReplaceAll = "REPLACE_ALL";
-    public static PlayBehaviorEnqueue = "ENQUEUE";
-    public static PlayBehaviorReplaceEnqueued = "REPLACE_ENQUEUED";
+    public static PLAY_BEHAVIOR_REPLACE_ALL = "REPLACE_ALL";
+    public static PLAY_BEHAVIOR_ENQUEUE = "ENQUEUE";
+    public static PLAY_BEHAVIOR_REPLACE_ENQUEUED = "REPLACE_ENQUEUED";
 
     private _emitter: EventEmitter = null;
     private _playing: AudioItem = null;
-    private _queue: Array<AudioItem> = [];
+    private _queue: AudioItem[] = [];
     private _activity: AudioPlayerActivity = null;
     private _suspended: boolean = false;
 
-    public constructor (public alexa: Alexa) {
+    public constructor(public skillInstance: SkillInteractor) {
         this._activity = AudioPlayerActivity.IDLE;
         this._emitter = new EventEmitter();
     }
 
     public enqueue(audioItem: AudioItem, playBehavior: string) {
-        if (playBehavior === AudioPlayer.PlayBehaviorEnqueue) {
+        if (playBehavior === AudioPlayer.PLAY_BEHAVIOR_ENQUEUE) {
             this._queue.push(audioItem);
 
-        } else if (playBehavior === AudioPlayer.PlayBehaviorReplaceAll) {
+        } else if (playBehavior === AudioPlayer.PLAY_BEHAVIOR_REPLACE_ALL) {
             if (this.isPlaying()) {
                 this.playbackStopped();
             }
@@ -47,7 +47,7 @@ export class AudioPlayer {
             this._queue = [];
             this._queue.push(audioItem);
 
-        } else if (playBehavior === AudioPlayer.PlayBehaviorReplaceEnqueued) {
+        } else if (playBehavior === AudioPlayer.PLAY_BEHAVIOR_REPLACE_ENQUEUED) {
             this._queue = [];
             this._queue.push(audioItem);
         }
@@ -69,9 +69,9 @@ export class AudioPlayer {
         this._playing = this.dequeue();
         // If the URL for AudioItem is http, we throw an error
         if (this._playing.stream.url.startsWith("http:")) {
-            this.alexa.sessionEnded(SessionEndedReason.ERROR, {
+            this.skillInstance.sessionEnded(SessionEndedReason.ERROR, {
+                message: "The URL specified in the Play directive must be HTTPS",
                 type: "INVALID_RESPONSE",
-                message: "The URL specified in the Play directive must be HTTPS"
             });
         } else {
             this.playbackStarted();
@@ -112,56 +112,59 @@ export class AudioPlayer {
         this.playbackStarted();
     }
 
-    public playbackNearlyFinished(callback?: (error: Error, response: any, request: any) => void): void {
-        this.audioPlayerRequest(RequestType.AudioPlayerPlaybackNearlyFinished, callback);
+    public playbackNearlyFinished(): Promise<any> {
+        return this.audioPlayerRequest(RequestType.AUDIO_PLAYER_PLAYBACK_NEARLY_FINISHED);
     }
 
-    public playbackFinished(callback?: (error: Error, response: any, request: any) => void): void {
+    public playbackFinished(): Promise<any> {
         this._activity = AudioPlayerActivity.FINISHED;
 
-        this.audioPlayerRequest(RequestType.AudioPlayerPlaybackFinished, callback);
+        const promise = this.audioPlayerRequest(RequestType.AUDIO_PLAYER_PLAYBACK_FINISHED);
 
         // Go the next track, if there is one
         this.playNext();
+        return promise;
     }
 
-    public playbackStarted(callback?: (error: Error, response: any, request: any) => void): void {
+    public playbackStarted(): Promise<any> {
         this._activity = AudioPlayerActivity.PLAYING;
-        this.audioPlayerRequest(RequestType.AudioPlayerPlaybackStarted, callback);
+        return this.audioPlayerRequest(RequestType.AUDIO_PLAYER_PLAYBACK_STARTED);
     }
 
-    public playbackStopped(callback?: (error: Error, response: any, request: any) => void): void {
+    public playbackStopped(): Promise<any> {
         this._activity = AudioPlayerActivity.STOPPED;
-        this.audioPlayerRequest(RequestType.AudioPlayerPlaybackStopped, callback);
+        return this.audioPlayerRequest(RequestType.AUDIO_PLAYER_PLAYBACK_STARTED);
     }
 
-    private audioPlayerRequest(requestType: string, callback?: (error: Error, response: any, request: any) => void) {
-        const self = this;
-        const nowPlaying = this.playing();
-        const serviceRequest = new ServiceRequest(this.alexa.context());
-        serviceRequest.audioPlayerRequest(requestType, nowPlaying.stream.token, nowPlaying.stream.offsetInMilliseconds);
-        this.alexa.callSkill(serviceRequest, function (error, response, request) {
-            if (callback !== undefined && callback !== null) {
-                callback(error, response, request);
-            }
-            self._emitter.emit(requestType, nowPlaying.clone());
-        });
+    public playing(): AudioItem {
+        return this._playing;
     }
 
-    public directivesReceived(directives: Array<any>): void {
-        for (let directive of directives) {
+    public directivesReceived(directives: any[]): void {
+        for (const directive of directives) {
             this.handleDirective(directive);
         }
     }
 
+    public isPlaying(): boolean {
+        return (this._activity === AudioPlayerActivity.PLAYING);
+    }
+
+    private audioPlayerRequest(requestType: string): Promise<any> {
+        const nowPlaying = this.playing();
+        const serviceRequest = new SkillRequest(this.skillInstance.context());
+        serviceRequest.audioPlayerRequest(requestType, nowPlaying.stream.token, nowPlaying.stream.offsetInMilliseconds);
+        return this.skillInstance.callSkill(serviceRequest);
+    }
+
     private handleDirective(directive: any) {
         // Handle AudioPlayer.Play
-        if (directive.type === AudioPlayer.DirectivePlay) {
-            let audioItem = new AudioItem(directive.audioItem);
-            let playBehavior: string = directive.playBehavior;
+        if (directive.type === AudioPlayer.DIRECTIVE_PLAY) {
+            const audioItem = new AudioItem(directive.audioItem);
+            const playBehavior: string = directive.playBehavior;
             this.enqueue(audioItem, playBehavior);
 
-        } else if (directive.type === AudioPlayer.DirectiveStop) {
+        } else if (directive.type === AudioPlayer.DIRECTIVE_STOP) {
             if (this.suspended()) {
                 this._suspended = false;
             } else if (this.playing()) {
@@ -170,17 +173,9 @@ export class AudioPlayer {
         }
     }
 
-    public isPlaying(): boolean {
-        return (this._activity === AudioPlayerActivity.PLAYING);
-    }
-
     private dequeue(): AudioItem {
         const audioItem = this._queue[0];
         this._queue = this._queue.slice(1);
         return audioItem;
     }
-
-    public playing(): AudioItem {
-        return this._playing;
-    }
-};
+}

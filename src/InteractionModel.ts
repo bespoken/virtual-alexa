@@ -1,5 +1,5 @@
 import {IntentSchema} from "./IntentSchema";
-import {SampleUtterances, UtteredIntent} from "./SampleUtterances";
+import {SampleUtterances} from "./SampleUtterances";
 
 /**
  * Parses and interprets an interaction model
@@ -16,10 +16,6 @@ export class InteractionModel {
     }
 
     public constructor(public intentSchema: IntentSchema, public sampleUtterances: SampleUtterances) {}
-
-    public intentForUtterance(utterance: string): UtteredIntent {
-        return this.sampleUtterances.intentForUtterance(utterance);
-    }
 
     public hasIntent(intent: string): boolean {
         return this.intentSchema.hasIntent(intent);

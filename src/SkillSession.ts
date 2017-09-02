@@ -1,14 +1,14 @@
-const uuid = require("uuid");
+import * as uuid from "uuid";
 
 /**
  * Information about the current open session on the Alexa emulator
  */
-export class AlexaSession {
+export class SkillSession {
     private _attributes: {[id: string]: any};
     private _new: boolean;
     private _id: string;
 
-    public constructor () {
+    public constructor() {
         this._id = "SessionID." + uuid.v4();
         this._new = true;
         this._attributes = {};
