@@ -72,7 +72,11 @@ export class SkillInteractor {
      * @param callback
      */
     public intended(intentName: string, slots?: any): Promise<any> {
-        return this.callSkillWithIntent(intentName, slots);
+        try {
+            return this.callSkillWithIntent(intentName, slots);
+        } catch (e) {
+            return Promise.reject(e);
+        }
     }
 
     public callSkill(serviceRequest: SkillRequest): Promise<any> {

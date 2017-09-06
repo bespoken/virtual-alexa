@@ -69,6 +69,53 @@ describe("VirtualAlexaTest", function() {
         });
     });
 
+    describe("#intend", () => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test.resources.index.handler")
+            .sampleUtterances(sampleUtterances)
+            .intentSchema(intentSchema)
+            .create();
+
+        afterEach((done) => {
+            const promise = virtualAlexa.endSession();
+            promise.then(() => {
+                done();
+            });
+        });
+
+        it("Intends simply", (done) => {
+            virtualAlexa.intend("Play").then((response) => {
+                assert.isDefined(response);
+                assert.isTrue(response.success);
+                done();
+            });
+        });
+
+        it("Intends with slot", (done) => {
+            virtualAlexa.intend("SlottedIntent", { SlotName: "Value" }).then((response) => {
+                assert.isDefined(response);
+                assert.isTrue(response.success);
+                assert.equal(response.slot.name, "SlotName");
+                assert.equal(response.slot.value, "Value");
+                done();
+            });
+        });
+
+        it("Intends with slot value but no slots on intent", (done) => {
+            virtualAlexa.intend("Play", { SlotName: "Value" }).catch((error) => {
+                assert.equal(error.message, "Trying to add slot to intent that does not have any slots defined");
+                done();
+            });
+        });
+
+        it("Intends with slot value but slot does not exist", (done) => {
+            virtualAlexa.intend("SlottedIntent", { SlotWrongName: "Value" }).catch((error) => {
+                assert.equal(error.message, "Trying to add undefined slot to intent: SlotWrongName");
+                done();
+            });
+        });
+    });
+
     describe("#endSession", () => {
         it("Starts and Ends Session", (done) => {
             const virtualAlexa = VirtualAlexa.Builder()

@@ -16,4 +16,3 @@ Project
 - [ ] Add typedoc
 - [ ] Add contributing guidelines
 - [ ] Add license
-- [ ] Add spellcheck via tslint

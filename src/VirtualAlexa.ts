@@ -11,9 +11,12 @@ export class VirtualAlexa {
 
     public constructor(private interactor: SkillInteractor) {}
 
-
     public endSession(): Promise<any> {
         return this.interactor.sessionEnded(SessionEndedReason.USER_INITIATED);
+    }
+
+    public intend(intentName: string, slots?: {[id: string]: string}): Promise<any> {
+        return this.interactor.intended(intentName, slots);
     }
 
     public launch(): Promise<any> {

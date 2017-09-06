@@ -102,8 +102,17 @@ export class SkillRequest {
      */
     public withSlot(slotName: string, slotValue: string): SkillRequest {
         if (this.requestJSON.request.type !== "IntentRequest") {
-            throw Error("Adding slot to non-intentName request - not allowed!");
+            throw Error("Trying to add slot to non-intent request");
         }
+
+        if (!this.requestJSON.request.intent.slots) {
+            throw Error("Trying to add slot to intent that does not have any slots defined");
+        }
+
+        if (!(slotName  in this.requestJSON.request.intent.slots)) {
+            throw Error("Trying to add undefined slot to intent: " + slotName);
+        }
+
         this.requestJSON.request.intent.slots[slotName] = { name: slotName, value: slotValue };
         return this;
     }
