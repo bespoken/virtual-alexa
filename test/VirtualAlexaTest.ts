@@ -33,44 +33,56 @@ describe("VirtualAlexaTest", function() {
         SlottedIntent: ["slot {SlotName}"],
     };
 
-    describe("#speak", () => {
-        it("Speaks simple phrase", (done) => {
-            const virtualAlexa = VirtualAlexa.Builder()
-                .handler("test.resources.index.handler")
-                .sampleUtterances(sampleUtterances)
-                .intentSchema(intentSchema)
-                .create();
+    describe("#utter", () => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test.resources.index.handler")
+            .sampleUtterances(sampleUtterances)
+            .intentSchema(intentSchema)
+            .create();
 
-            virtualAlexa.speak("play now").then((response) => {
+        afterEach((done) => {
+            const promise = virtualAlexa.endSession();
+            promise.then(() => {
                 done();
             });
         });
 
-        it("Speaks simple phrase with different case", (done) => {
-            const virtualAlexa = VirtualAlexa.Builder()
-                .handler("test.resources.index.handler")
-                .sampleUtterances(sampleUtterances)
-                .intentSchema(intentSchema)
-                .create();
-
-            virtualAlexa.speak("play NOW").then((response) => {
+        it("Utters simple phrase", (done) => {
+            virtualAlexa.utter("play now").then((response) => {
                 done();
             });
         });
 
-        it("Speaks slotted phrase", (done) => {
-            const virtualAlexa = VirtualAlexa.Builder()
-                .handler("test.resources.index.handler")
-                .sampleUtterances(sampleUtterances)
-                .intentSchema(intentSchema)
-                .create();
+        it("Utters simple phrase with different case", (done) => {
+            virtualAlexa.utter("play NOW").then((response) => {
+                done();
+            });
+        });
 
-            virtualAlexa.speak("slot my slot").then((response) => {
+        it("Utters slotted phrase", (done) => {
+            virtualAlexa.utter("slot my slot").then((response) => {
                 assert.isDefined(response.slot);
                 assert.equal(response.slot.name, "SlotName");
                 assert.equal(response.slot.value, "my slot");
                 done();
             });
         });
+    });
+
+    describe("#endSession", () => {
+        it("Starts and Ends Session", (done) => {
+            const virtualAlexa = VirtualAlexa.Builder()
+                .handler("test.resources.index.handler")
+                .sampleUtterances(sampleUtterances)
+                .intentSchema(intentSchema)
+                .create();
+
+            virtualAlexa.launch().then(() => {
+                virtualAlexa.endSession().then(() => {
+                    done();
+                });
+            });
+        });
+
     });
 });

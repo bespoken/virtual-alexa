@@ -2,6 +2,7 @@ import {IntentSchema} from "./IntentSchema";
 import {InteractionModel} from "./InteractionModel";
 import {SampleUtterances} from "./SampleUtterances";
 import {SkillInteractor} from "./SkillInteractor";
+import {SessionEndedReason} from "./SkillRequest";
 
 export class VirtualAlexa {
     public static Builder(): VirtualAlexaBuilder {
@@ -10,9 +11,19 @@ export class VirtualAlexa {
 
     public constructor(private interactor: SkillInteractor) {}
 
-    public speak(utterance: string): Promise<any> {
+
+    public endSession(): Promise<any> {
+        return this.interactor.sessionEnded(SessionEndedReason.USER_INITIATED);
+    }
+
+    public launch(): Promise<any> {
+        return this.interactor.launched();
+    }
+
+    public utter(utterance: string): Promise<any> {
         return this.interactor.spoken(utterance);
     }
+
 }
 
 class VirtualAlexaBuilder {

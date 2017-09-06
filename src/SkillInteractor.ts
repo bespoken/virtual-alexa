@@ -52,7 +52,7 @@ export class SkillInteractor {
         return this.callSkill(serviceRequest);
     }
 
-    public sessionEnded(sessionEndedReason: SessionEndedReason, errorData: any): Promise<any> {
+    public sessionEnded(sessionEndedReason: SessionEndedReason, errorData?: any): Promise<any> {
         if (sessionEndedReason === SessionEndedReason.ERROR) {
             console.error("SessionEndedRequest:\n" + JSON.stringify(errorData, null, 2));
         }
@@ -60,11 +60,9 @@ export class SkillInteractor {
         const serviceRequest = new SkillRequest(this.skillContext);
         // Convert to enum value and send request
         serviceRequest.sessionEndedRequest(sessionEndedReason, errorData);
-        const promise = this.callSkill(serviceRequest);
-
-        // We do not wait for a reply - the session ends right away
-        this.context().endSession();
-        return promise;
+        return this.callSkill(serviceRequest).then(() => {
+            this.context().endSession();
+        });
     }
 
     /**

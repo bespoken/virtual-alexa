@@ -67,7 +67,7 @@ export class SkillContext {
     }
 
     public endSession(): void {
-        this._session = null;
+        this._session = undefined;
     }
 
     public activeSession(): boolean {
