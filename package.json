@@ -9,6 +9,12 @@
   "files": [
     "lib/**/*.js"
   ],
+  "nyc": {
+    "exclude": [
+      "lib/test/*.js",
+      "test/**/*.js"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/bespoken/virtual-alexa.git"
@@ -17,7 +23,7 @@
     "tsc": "tsc",
     "pretest": "npm run tsc",
     "test": "nyc mocha lib/**/*Test.js",
-    "posttest": "nyc report --reporter=json && codecov -f coverage/*.json",
+    "posttest": "nyc report --reporter=json --reporter=html && codecov -f coverage/*.json",
     "typings": "typings install"
   },
   "dependencies": {

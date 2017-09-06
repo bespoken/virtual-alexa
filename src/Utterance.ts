@@ -30,8 +30,6 @@ export class Utterance {
     }
 
     public slotByName(name: string): string | undefined {
-        name = name.toLowerCase();
-
         let slotValue;
         for (let i = 0; i < this.matchedSample.slotCount(); i++) {
             const slotName = this.matchedSample.slotName(i);

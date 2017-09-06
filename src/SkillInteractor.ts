@@ -99,6 +99,8 @@ export class SkillInteractor {
                     this.context().session().updateAttributes(result.sessionAttributes);
                 }
             }
+
+            return Promise.resolve(result);
         });
     }
 

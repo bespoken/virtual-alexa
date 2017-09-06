@@ -3,3 +3,7 @@
 node_modules
 
 lib
+
+# Testing stuff
+coverage
+.nyc_output

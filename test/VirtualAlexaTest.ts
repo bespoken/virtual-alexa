@@ -45,5 +45,32 @@ describe("VirtualAlexaTest", function() {
                 done();
             });
         });
+
+        it("Speaks simple phrase with different case", (done) => {
+            const virtualAlexa = VirtualAlexa.Builder()
+                .handler("test.resources.index.handler")
+                .sampleUtterances(sampleUtterances)
+                .intentSchema(intentSchema)
+                .create();
+
+            virtualAlexa.speak("play NOW").then((response) => {
+                done();
+            });
+        });
+
+        it("Speaks slotted phrase", (done) => {
+            const virtualAlexa = VirtualAlexa.Builder()
+                .handler("test.resources.index.handler")
+                .sampleUtterances(sampleUtterances)
+                .intentSchema(intentSchema)
+                .create();
+
+            virtualAlexa.speak("slot my slot").then((response) => {
+                assert.isDefined(response.slot);
+                assert.equal(response.slot.name, "SlotName");
+                assert.equal(response.slot.value, "my slot");
+                done();
+            });
+        });
     });
 });
