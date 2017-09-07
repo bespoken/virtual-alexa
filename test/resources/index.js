@@ -9,5 +9,14 @@ exports.handler = function (event, context, callback) {
     if (event.request.intent) {
         response.intent = event.request.intent.name;
     }
+
+    // We increment a counter in our session every time for testing purposes
+    var sessionCounter = 0;
+    if (event.session && event.session.attributes && event.session.attributes.counter !== undefined) {
+        sessionCounter = event.session.attributes.counter;
+        sessionCounter++;
+    }
+    response.sessionAttributes = { counter: sessionCounter }
+
     context.done(null, response);
 }

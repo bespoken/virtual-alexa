@@ -171,6 +171,18 @@ describe("VirtualAlexa Tests Using JSON", function() {
                 done();
             });
         });
+
+        it("Utters phrases and maintains session", (done) => {
+            // Calls our dummy skill twice
+            // Inside the skill, it increments a counter by 1 each time
+            virtualAlexa.utter("play now").then((response) => {
+                assert.equal(response.sessionAttributes.counter, 0);
+                return virtualAlexa.utter("play now");
+            }).then((response) => {
+                assert.equal(response.sessionAttributes.counter, 1);
+                done();
+            });
+        });
     });
 
     describe("#intend", () => {
