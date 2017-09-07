@@ -43,7 +43,7 @@ alexa.utter("play").then((payload) => {
 That's all there is to getting started. Read the docs in more depth here.
 
 ## How Do I Talk To You?
-Easy, you can open an issue here, or find us on [our Gitter](https://gitter.im/bespoken/bst).
+Easy, you can open [an issue here](https://github.com/bespoken/virtual-device/issues), or find us on [our Gitter](https://gitter.im/bespoken/bst).
 
 We are also on the [Alexa Slack channel](http://amazonalexa.slack.com) - @jpkbst, @jperata, @chrisramon and @ankraiza.
 
