@@ -51,8 +51,9 @@ export class Utterance {
     }
 
     private matchIntent(): void {
-        for (const intent of this.interactionModel.sampleUtterances.intents()) {
-            for (const sample of this.interactionModel.sampleUtterances.samplesForIntent(intent)) {
+        for (const intent of this.interactionModel.intentSchema.intents()) {
+            const intentName = intent.name;
+            for (const sample of this.interactionModel.sampleUtterances.samplesForIntent(intentName)) {
                 const slots = sample.matchesUtterance(this.phrase);
                 if (slots) {
                     this.matchedSample = sample;

@@ -33,10 +33,6 @@ export class SampleUtterances {
         }
     }
 
-    public intents(): string[] {
-        return Object.keys(this.samples);
-    }
-
     public addSample(intent: string, sample: string) {
         if (!(intent in this.samples)) {
             this.samples[intent] = [];
@@ -55,10 +51,6 @@ export class SampleUtterances {
         // Just grab the first sample for now
         const firstIntent = Object.keys(this.samples)[0];
         return this.samples[firstIntent][0];
-    }
-
-    public hasIntent(intent: string): boolean {
-        return intent in this.samples;
     }
 
     private parseFlatFile(fileData: string): void {

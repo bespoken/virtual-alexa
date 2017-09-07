@@ -73,7 +73,7 @@ describe("VirtualAlexa Tests Using Unified Interaction Model", function() {
     it("Parses the file and does a simple utterance", (done) => {
         const virtualAlexa = VirtualAlexa.Builder()
             .handler("test.resources.index.handler")
-            .interactionModel(interactionModel)
+            .interactionModelFile("./test/resources/InteractionModel.json")
             .create();
         virtualAlexa.intend("AMAZON.CancelIntent").then((response) => {
             assert.isDefined(response);
@@ -152,6 +152,14 @@ describe("VirtualAlexa Tests Using JSON", function() {
 
         it("Utters builtin intent", (done) => {
             virtualAlexa.utter("cancel").then((response) => {
+                assert.equal(response.intent, "AMAZON.CancelIntent");
+                done();
+            });
+        });
+
+        it("Utters builtin intent not in schema", (done) => {
+            virtualAlexa.utter("page up").then((response) => {
+                // Nothing matches, so we get the first intent defined - simply business logic
                 assert.equal(response.intent, "AMAZON.CancelIntent");
                 done();
             });
