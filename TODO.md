@@ -24,4 +24,6 @@ Project
 - [ ] Add typedoc
 - [ ] Add contributing guidelines
 - [ ] Add license
+- [ ] Lock down project
 - [ ] Add npm package
+- [ ]
