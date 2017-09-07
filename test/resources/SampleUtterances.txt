@@ -1,0 +1,6 @@
+MultipleSlots multiple {SlotA} and {SlotB}
+MultipleSlots reversed {SlotB} then {SlotA}
+Play play
+Play play next
+Play play now
+SlottedIntent slot {SlotName}

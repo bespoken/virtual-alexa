@@ -1,0 +1,29 @@
+{
+  "intents": [
+    {
+      "intent": "Play"
+    },
+    {
+      "intent": "SlottedIntent",
+      "slots": [
+        {
+          "name": "SlotName",
+          "type": "SLOT_TYPE"
+        }
+      ]
+    },
+    {
+      "intent": "MultipleSlots",
+      "slots": [
+        {
+          "name": "SlotA",
+          "type": "SLOT_TYPE"
+        },
+        {
+          "name": "SlotB",
+          "type": "SLOT_TYPE"
+        }
+      ]
+    }
+  ]
+}

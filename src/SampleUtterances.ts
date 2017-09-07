@@ -1,18 +1,11 @@
 import * as fs from "fs";
 
 export class SampleUtterances {
-    public static fromFile(file: string): Promise<SampleUtterances> {
-        return new Promise((resolve, reject) => {
-            fs.readFile(file, null, (error: NodeJS.ErrnoException, data: Buffer) => {
-                if (data !== null) {
-                    const sampleUtterances = new SampleUtterances();
-                    sampleUtterances.parseFlatFile(data.toString());
-                    resolve(sampleUtterances);
-                } else {
-                    reject("File not found: " + file);
-                }
-            });
-        });
+    public static fromFile(file: string): SampleUtterances {
+        const data = fs.readFileSync(file);
+        const utterances = new SampleUtterances();
+        utterances.parseFlatFile(data.toString());
+        return utterances;
     }
 
     public static fromJSON(sampleUtterancesJSON: any): SampleUtterances {

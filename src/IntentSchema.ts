@@ -1,17 +1,10 @@
 import * as fs from "fs";
 
 export class IntentSchema {
-    public static fromFile(file: string): Promise<IntentSchema> {
-        return new Promise((resolve, reject) => {
-            fs.readFile(file, (error: any, data: Buffer) => {
-                if (data !== null) {
-                    const json: any = JSON.parse(data.toString());
-                    resolve(new IntentSchema(json));
-                } else {
-                    reject("File not found: " + file);
-                }
-            });
-        });
+    public static fromFile(file: string): IntentSchema {
+        const data = fs.readFileSync(file);
+        const json = JSON.parse(data.toString());
+        return IntentSchema.fromJSON(json);
     }
 
     public static fromJSON(schemaJSON: any): IntentSchema {

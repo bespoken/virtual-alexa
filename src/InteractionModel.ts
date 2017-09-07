@@ -1,3 +1,4 @@
+import * as fs from "fs";
 import {IntentSchema} from "./IntentSchema";
 import {SampleUtterances} from "./SampleUtterances";
 
@@ -7,12 +8,36 @@ import {SampleUtterances} from "./SampleUtterances";
  * Then can take a phrase and create an intentName request based on it
  */
 export class InteractionModel {
-    public static fromFiles(intentSchemaFile: string, sampleUtterancesFile: string): Promise<InteractionModel> {
-        const intentPromise = IntentSchema.fromFile(intentSchemaFile);
-        const samplePromise = SampleUtterances.fromFile(sampleUtterancesFile);
-        return Promise.all([intentPromise, samplePromise]).then(([intentSchema, sampleUtterances]) => {
-            return new InteractionModel(intentSchema, sampleUtterances);
-        });
+
+    // Parse the all-in-one interaction model as a file
+    public static fromFile(interactionModelFile: any): InteractionModel {
+        const data = fs.readFileSync(interactionModelFile);
+        const json = JSON.parse(data.toString());
+        return InteractionModel.fromJSON(json);
+    }
+
+    // Parse the all-in-one interaction model as JSON
+    // Using this for reference:
+    //  https://github.com/alexa/skill-sample-nodejs-team-lookup/blob/master/speech-assets/interaction-model.json
+    public static fromJSON(interactionModel: any): InteractionModel {
+        const schemaJSON: any = {
+            intents: [],
+        };
+        const sampleJSON: any = {};
+
+        const intents = interactionModel.intents;
+        for (const intent of intents) {
+            // The name of the intent is on the property "name" instead of "intent" for the unified model
+            intent.intent = intent.name;
+            schemaJSON.intents.push(intent);
+            if (intent.samples) {
+                sampleJSON[intent.intent] = intent.samples;
+            }
+        }
+
+        const schema = new IntentSchema(schemaJSON);
+        const samples = SampleUtterances.fromJSON(sampleJSON);
+        return new InteractionModel(schema, samples);
     }
 
     public constructor(public intentSchema: IntentSchema, public sampleUtterances: SampleUtterances) {}
