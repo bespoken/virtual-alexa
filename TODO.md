@@ -1,11 +1,11 @@
 Code
 - [X] File-based loading
 - [X] Support for calling intents directly
-- [ ] Support for new interaction model
+- [X] Support for new interaction model
+- [ ] support for built-in intents
+- [ ] What to do with audioplayer?
 - [ ] Lots more unit tests
 - [ ] HTTP based interactor
-- [ ] What to do with audioplayer?
-- [ ] support for built-in intents
 
 CodeV2
 - [ ] Dialog support

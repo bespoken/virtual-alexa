@@ -4,5 +4,10 @@ exports.handler = function (event, context, callback) {
         var slotName = Object.keys(event.request.intent.slots)[0];
         slot = event.request.intent.slots[slotName];
     }
-    context.done(null, { success: true, slot: slot });
+
+    var response = { success: true, slot: slot };
+    if (event.request.intent) {
+        response.intent = event.request.intent.name;
+    }
+    context.done(null, response);
 }

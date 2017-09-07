@@ -87,6 +87,9 @@ describe("VirtualAlexa Tests Using JSON", function() {
     const intentSchema = {
         intents: [
             {
+                intent: "AMAZON.CancelIntent",
+            },
+            {
                 intent: "Play",
             },
             {
@@ -106,9 +109,10 @@ describe("VirtualAlexa Tests Using JSON", function() {
     };
 
     const sampleUtterances = {
-        MultipleSlots: ["multiple {SlotA} and {SlotB}", "reversed {SlotB} then {SlotA}"],
-        Play: ["play", "play next", "play now"],
-        SlottedIntent: ["slot {SlotName}"],
+        "AMAZON.CancelIntent": ["cancel it now"],
+        "MultipleSlots": ["multiple {SlotA} and {SlotB}", "reversed {SlotB} then {SlotA}"],
+        "Play": ["play", "play next", "play now"],
+        "SlottedIntent": ["slot {SlotName}"],
     };
 
     describe("#utter", () => {
@@ -142,6 +146,20 @@ describe("VirtualAlexa Tests Using JSON", function() {
                 assert.isDefined(response.slot);
                 assert.equal(response.slot.name, "SlotName");
                 assert.equal(response.slot.value, "my slot");
+                done();
+            });
+        });
+
+        it("Utters builtin intent", (done) => {
+            virtualAlexa.utter("cancel").then((response) => {
+                assert.equal(response.intent, "AMAZON.CancelIntent");
+                done();
+            });
+        });
+
+        it("Utters builtin intent with custom phrase", (done) => {
+            virtualAlexa.utter("cancel it now").then((response) => {
+                assert.equal(response.intent, "AMAZON.CancelIntent");
                 done();
             });
         });

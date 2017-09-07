@@ -1,4 +1,6 @@
 import * as fs from "fs";
+import * as Path from "path";
+import {BuiltinUtterances} from "./BuiltinUtterances";
 
 export class SampleUtterances {
     public static fromFile(file: string): SampleUtterances {
@@ -11,9 +13,8 @@ export class SampleUtterances {
     public static fromJSON(sampleUtterancesJSON: any): SampleUtterances {
         const sampleUtterances = new SampleUtterances();
         for (const intent of Object.keys(sampleUtterancesJSON)) {
-            sampleUtterances.samples[intent] = [];
             for (const sample of sampleUtterancesJSON[intent]) {
-                sampleUtterances.samples[intent].push(new SamplePhrase(intent, sample));
+                sampleUtterances.addSample(intent, sample);
             }
         }
         return sampleUtterances;
@@ -21,8 +22,26 @@ export class SampleUtterances {
 
     private samples: {[id: string]: SamplePhrase[]} = {};
 
+    public constructor() {
+        const builtinValues = BuiltinUtterances.values();
+        // We add each phrase one-by-one
+        // It is possible the built-ins have additional samples defined
+        for (const key of Object.keys(builtinValues)) {
+            for (const phrase of builtinValues[key]) {
+                this.addSample(key, phrase);
+            }
+        }
+    }
+
     public intents(): string[] {
         return Object.keys(this.samples);
+    }
+
+    public addSample(intent: string, sample: string) {
+        if (!(intent in this.samples)) {
+            this.samples[intent] = [];
+        }
+        this.samples[intent].push(new SamplePhrase(intent, sample));
     }
 
     public samplesForIntent(intent: string): SamplePhrase [] {
@@ -57,14 +76,7 @@ export class SampleUtterances {
 
             const intent = line.substr(0, index);
             const sample = line.substr(index).trim();
-            let intentSamples: SamplePhrase[] = [];
-            if (intent in this.samples) {
-                intentSamples = this.samples[intent];
-            } else {
-                this.samples[intent] = intentSamples;
-            }
-
-            intentSamples.push(new SamplePhrase(intent, sample));
+            this.addSample(intent, sample);
         }
     }
 }
