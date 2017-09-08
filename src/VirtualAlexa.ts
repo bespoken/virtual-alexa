@@ -1,5 +1,7 @@
 import {IntentSchema} from "./IntentSchema";
 import {InteractionModel} from "./InteractionModel";
+import {LocalSkillInteractor} from "./LocalSkillInteractor";
+import {RemoteSkillInteractor} from "./RemoteSkillInteractor";
 import {SampleUtterances} from "./SampleUtterances";
 import {SkillInteractor} from "./SkillInteractor";
 import {SessionEndedReason} from "./SkillRequest";
@@ -29,9 +31,23 @@ export class VirtualAlexa {
     }
 }
 
+/**
+ * Configuration object for VirtualAlexa.<br>
+ * <br>
+ * Callers must provide:<br>
+ * 1) An interaction model or combination of intent schema and sample utterances<br>
+ * These can be provided either as files or JSON<br>
+ * 2) A handler name or skill URL<br>
+ * The VirtualAlexa will either run a Lambda locally, or interact with a skill via HTTP<br>
+ * <br>
+ * Once the object is configured properly, create it by calling {@link VirtualAlexaBuilder.create}
+ *
+ */
 export class VirtualAlexaBuilder {
     /** @internal */
     private _applicationID: string;
+    /** @internal */
+    private _handler: string;
     /** @internal */
     private _intentSchema: any;
     /** @internal */
@@ -45,46 +61,110 @@ export class VirtualAlexaBuilder {
     /** @internal */
     private _sampleUtterancesFile: string;
     /** @internal */
-    private _handler: string = "index.handler";
+    private _skillURL: string;
 
-    /** @internal */
+    /**
+     * The application ID of the skill [Optional]
+     * @param {string} id
+     * @returns {VirtualAlexaBuilder}
+     */
     public applicationID(id: string): VirtualAlexaBuilder {
         this._applicationID = id;
         return this;
     }
 
+    /**
+     * The name of the handler for a Lambda function to be called<br>
+     * The name should be in the format "index.handler" where:<br>
+     * `index` is the name of the file - such as index.js<br>
+     * `handler` is the name of the exported function to call on the file<br>
+     * @param {string} handlerName
+     * @returns {VirtualAlexaBuilder}
+     */
     public handler(handlerName: string): VirtualAlexaBuilder {
         this._handler = handlerName;
         return this;
     }
 
+    /**
+     * JSON that corresponds to the intent schema<br>
+     * If the intent schema is provided, a {@link VirtualAlexaBuilder.sampleUtterances} JSON must also be supplied
+     * @param json
+     * @returns {VirtualAlexaBuilder}
+     */
     public intentSchema(json: any): VirtualAlexaBuilder {
         this._intentSchema = json;
         return this;
     }
 
-    public interactionModel(json: any): VirtualAlexaBuilder {
-        this._interactionModel = json;
-        return this;
-    }
-
-    public interactionModelFile(filePath: string): VirtualAlexaBuilder {
-        this._interactionModelFile = filePath;
-        return this;
-    }
-
+    /**
+     * Path to intent schema file<br>
+     * To be provided along with {@link VirtualAlexaBuilder.sampleUtterancesFile}<br>
+     * @param {string} filePath
+     * @returns {VirtualAlexaBuilder}
+     */
     public intentSchemaFile(filePath: any): VirtualAlexaBuilder {
         this._intentSchemaFile = filePath;
         return this;
     }
 
+    /**
+     * JSON that corresponds to the new, unified interaction model
+     * @param json
+     * @returns {VirtualAlexaBuilder}
+     */
+    public interactionModel(json: any): VirtualAlexaBuilder {
+        this._interactionModel = json;
+        return this;
+    }
+
+    /**
+     * File path that contains to the new, unified interaction model
+     * @param json
+     * @returns {VirtualAlexaBuilder}
+     */
+    public interactionModelFile(filePath: string): VirtualAlexaBuilder {
+        this._interactionModelFile = filePath;
+        return this;
+    }
+
+    /**
+     * JSON that corresponds to the sample utterances<br>
+     * Provided along with {@link VirtualAlexaBuilder.intentSchema}<br>
+     * The sample utterances should be in the form:
+     * ```javascript
+     * {
+     *      "Intent": ["Sample1", "Sample2"],
+     *      "IntentTwo": ["AnotherSample"]
+     * }
+     * ```
+     * @param json
+     * @returns {VirtualAlexaBuilder}
+     */
     public sampleUtterances(utterances: any): VirtualAlexaBuilder {
         this._sampleUtterances = utterances;
         return this;
     }
 
+    /**
+     * File path to sample utterances file<br>
+     * To be provided along with {@link VirtualAlexaBuilder.intentSchemaFile}<br>
+     * Format is the same as in the Alexa Developer Console - a simple text file of intents and utterances
+     * @param {string} filePath
+     * @returns {VirtualAlexaBuilder}
+     */
     public sampleUtterancesFile(filePath: string): VirtualAlexaBuilder {
         this._sampleUtterancesFile = filePath;
+        return this;
+    }
+
+    /**
+     * The URL of the skill to be tested
+     * @param {string} url
+     * @returns {VirtualAlexaBuilder}
+     */
+    public skillURL(url: string): VirtualAlexaBuilder {
+        this._skillURL = url;
         return this;
     }
 
@@ -105,9 +185,19 @@ export class VirtualAlexaBuilder {
             const schema = IntentSchema.fromFile(this._intentSchemaFile);
             const utterances = SampleUtterances.fromFile(this._sampleUtterancesFile);
             model = new InteractionModel(schema, utterances);
+        } else {
+            throw new Error("Either an interaction model or intent schema and sample utterances must be provided.");
         }
 
-        const interactor = new SkillInteractor(this._handler, model, this._applicationID);
+        let interactor;
+        if (this._handler) {
+            interactor = new LocalSkillInteractor(this._handler, model, this._applicationID);
+        } else if (this._skillURL) {
+            interactor = new RemoteSkillInteractor(this._skillURL, model, this._applicationID);
+        } else {
+            throw new Error("Either a handler or skillURL must be provided.");
+        }
+
         const alexa = new VirtualAlexa(interactor);
         return alexa;
     }

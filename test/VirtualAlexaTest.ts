@@ -1,8 +1,4 @@
 import {assert} from "chai";
-import {IntentSchema} from "../src/IntentSchema";
-import {InteractionModel} from "../src/InteractionModel";
-import {SampleUtterances} from "../src/SampleUtterances";
-import {Utterance} from "../src/Utterance";
 import {VirtualAlexa} from "../src/VirtualAlexa";
 
 describe("VirtualAlexa Tests Using Files", function() {
@@ -30,6 +26,34 @@ describe("VirtualAlexa Tests Using Files", function() {
         } catch (e) {
             assert.isDefined(e);
         }
+    });
+});
+
+describe("VirtualAlexa Tests Using URL", function() {
+    it("Calls a remote mock service via HTTPS", (done) => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .intentSchemaFile("./test/resources/IntentSchema.json")
+            .sampleUtterancesFile("./test/resources/SampleUtterances.txt")
+            .skillURL("https://httpbin.org/post")
+            .create();
+        virtualAlexa.utter("play now").then((response) => {
+            assert.isDefined(response.data);
+            assert.equal(response.url, "http://httpbin.org/post");
+            done();
+        });
+    });
+
+    it("Calls a remote mock service via HTTP", (done) => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .intentSchemaFile("./test/resources/IntentSchema.json")
+            .sampleUtterancesFile("./test/resources/SampleUtterances.txt")
+            .skillURL("http://httpbin.org/post")
+            .create();
+        virtualAlexa.utter("play now").then((response) => {
+            assert.isDefined(response.data);
+            assert.equal(response.url, "http://httpbin.org/post");
+            done();
+        });
     });
 });
 

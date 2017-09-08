@@ -5,13 +5,13 @@ Code
 - [X] support for built-in intents
 - [X] Lots more unit tests
 - [X] What to do with audioplayer?
+- [ ] HTTP based interactor
 - [ ] Add support for node 4?
 
 CodeV2
 - [ ] Add speak command
 - [ ] Dialog support
 - [ ] Permission support
-- [ ] HTTP based interactor
 
 Design
 - [X] What is the difference between interactor and virtual alexa?
@@ -29,3 +29,4 @@ Project
 - [X] Lock down project
 - [X] Add npm package
 - [X] Make sure only correct stuff goes into npm package
+- [ ] Figure out how to make docs public

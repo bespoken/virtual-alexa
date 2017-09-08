@@ -13,10 +13,17 @@ export enum AlexaEvent {
     SkillResponse,
 }
 
-export class SkillInteractor {
-    private skillContext: SkillContext = null;
+/**
+ * SkillInteractor comes in two flavors:
+ *  {@link LocalSkillInteractor} - works with a local Lambda file
+ *  {@link RemoteSkillInteractor} - works with a skill via HTTP calls to a URL
+ *
+ *  The core behavior is the same, sub-classes just implement the {@link SkillInteractor.invoke} routine
+ */
+export abstract class SkillInteractor {
+    protected skillContext: SkillContext = null;
 
-    public constructor(private handler: string, private model: InteractionModel, applicationID?: string) {
+    public constructor(protected model: InteractionModel, applicationID?: string) {
         const audioPlayer = new AudioPlayer(this);
         this.skillContext = new SkillContext(this.model, audioPlayer, applicationID);
         this.skillContext.newSession();
@@ -91,7 +98,7 @@ export class SkillInteractor {
         const requestJSON = serviceRequest.toJSON();
         console.log("CALLING: " + requestJSON.request.type);
 
-        return ModuleInvoker.invoke(this.handler, requestJSON).then((result) => {
+        return this.invoke(requestJSON).then((result) => {
             // After a call, set the session to used (no longer new)
             if (this.context().activeSession()) {
                 this.context().session().used();
@@ -105,6 +112,8 @@ export class SkillInteractor {
             return Promise.resolve(result);
         });
     }
+
+    protected abstract invoke(requestJSON: any): Promise<any>;
 
     private callSkillWithIntent(intentName: string, slots?: any): Promise<any> {
         // When the user utters an intent, we suspend for it
