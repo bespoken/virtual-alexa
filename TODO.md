@@ -25,7 +25,7 @@ Project
 - [X] Add index.d.ts
 - [X] Add contributing guidelines
 - [X] Add license
-- [ ] Add badges
-- [ ] Lock down project
-- [ ] Add npm package
-- [ ] Make sure only correct stuff goes into npm package
+- [X] Add badges
+- [X] Lock down project
+- [X] Add npm package
+- [X] Make sure only correct stuff goes into npm package

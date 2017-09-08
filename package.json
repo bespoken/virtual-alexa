@@ -1,5 +1,5 @@
 {
-  "name": "virtual-device",
+  "name": "virtual-alexa",
   "license": "Apache-2.0",
   "private": false,
   "version": "0.1.0",
@@ -9,7 +9,9 @@
     "node": "> 6.0.0"
   },
   "files": [
-    "lib/**/*.js"
+    "lib/src/*.js",
+    "lib/src/Index.d.ts",
+    "lib/src/VirtualAlexa.d.ts"
   ],
   "nyc": {
     "exclude": [

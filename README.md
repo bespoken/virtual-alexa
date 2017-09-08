@@ -10,11 +10,11 @@
 </p>
 
 <p align="center">
-    <a href="https://travis-ci.org/bespoken/bst">
-        <img alt="Build Status" class="badge" src="https://travis-ci.org/bespoken/virtual-device.svg?branch=master">
+    <a href="https://travis-ci.org/bespoken/virtual-alexa">
+        <img alt="Build Status" class="badge" src="https://travis-ci.org/bespoken/virtual-alexa.svg?branch=master">
     </a>
-    <a href="https://codecov.io/gh/bespoken/bst">
-      <img src="https://codecov.io/gh/bespoken/virtual-device/branch/master/graph/badge.svg" alt="Codecov" />
+    <a href="https://codecov.io/gh/bespoken/virtual-alexa">
+      <img src="https://codecov.io/gh/bespoken/virtual-alexa/branch/master/graph/badge.svg" alt="Codecov" />
     </a>
     <a href="https://www.npmjs.com/package/virtual-alexa">
         <img alt="NPM Version" class="badge" src="https://img.shields.io/npm/v/virtual-alexa.svg">
@@ -28,7 +28,7 @@
 </p>
 
 
-# Bespoken Virtual Device SDK
+# Bespoken Virtual Alexa SDK
 The Bespoken Virtual Device SDK allows for interacting with skills (and, soon, Actions) programmatically.
 
 The Virtual Alexa class allows for easy interaction programmatically:
