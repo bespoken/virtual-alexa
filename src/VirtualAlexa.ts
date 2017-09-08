@@ -9,6 +9,7 @@ export class VirtualAlexa {
         return new VirtualAlexaBuilder();
     }
 
+    /** @internal */
     public constructor(private interactor: SkillInteractor) {}
 
     public endSession(): Promise<any> {
@@ -29,15 +30,24 @@ export class VirtualAlexa {
 }
 
 export class VirtualAlexaBuilder {
+    /** @internal */
     private _applicationID: string;
+    /** @internal */
     private _intentSchema: any;
+    /** @internal */
     private _intentSchemaFile: string;
+    /** @internal */
     private _interactionModel: string;
+    /** @internal */
     private _interactionModelFile: string;
+    /** @internal */
     private _sampleUtterances: any;
+    /** @internal */
     private _sampleUtterancesFile: string;
+    /** @internal */
     private _handler: string = "index.handler";
 
+    /** @internal */
     public applicationID(id: string): VirtualAlexaBuilder {
         this._applicationID = id;
         return this;

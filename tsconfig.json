@@ -10,8 +10,13 @@
     "outDir": "lib",
     "preserveConstEnums": true,
     "removeComments": true,
+    "stripInternal": true,
     "sourceMap": true,
     "target": "ES6"
   },
+  "include": [
+    "src/**/*",
+    "test/**/*"
+  ],
   "exclude": ["node_modules"]
 }

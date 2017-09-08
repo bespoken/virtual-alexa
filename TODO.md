@@ -21,7 +21,8 @@ Design
 Project
 - [X] Add travis
 - [X] Add README
-- [ ] Add typedoc
+- [X] Add typedoc
+- [X] Add index.d.ts
 - [ ] Add contributing guidelines
 - [ ] Add license
 - [ ] Lock down project
