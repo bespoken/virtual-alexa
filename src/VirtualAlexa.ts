@@ -28,15 +28,15 @@ export class VirtualAlexa {
     }
 }
 
-class VirtualAlexaBuilder {
-    public _applicationID: string;
-    public _intentSchema: any;
-    public _intentSchemaFile: string;
-    public _interactionModel: string;
-    public _interactionModelFile: string;
-    public _sampleUtterances: any;
-    public _sampleUtterancesFile: string;
-    public _handler: string = "index.handler";
+export class VirtualAlexaBuilder {
+    private _applicationID: string;
+    private _intentSchema: any;
+    private _intentSchemaFile: string;
+    private _interactionModel: string;
+    private _interactionModelFile: string;
+    private _sampleUtterances: any;
+    private _sampleUtterancesFile: string;
+    private _handler: string = "index.handler";
 
     public applicationID(id: string): VirtualAlexaBuilder {
         this._applicationID = id;

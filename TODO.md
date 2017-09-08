@@ -20,10 +20,10 @@ Design
 
 Project
 - [X] Add travis
-- [ ] Add README
+- [X] Add README
 - [ ] Add typedoc
 - [ ] Add contributing guidelines
 - [ ] Add license
 - [ ] Lock down project
 - [ ] Add npm package
-- [ ]
+- [ ] Make sure only correct stuff goes into npm package
