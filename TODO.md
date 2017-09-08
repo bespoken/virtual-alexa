@@ -23,7 +23,7 @@ Project
 - [X] Add README
 - [X] Add typedoc
 - [X] Add index.d.ts
-- [ ] Add contributing guidelines
+- [X] Add contributing guidelines
 - [ ] Add license
 - [ ] Lock down project
 - [ ] Add npm package
