@@ -4,7 +4,7 @@ Code
 - [X] Support for new interaction model
 - [X] support for built-in intents
 - [X] Lots more unit tests
-- [ ] What to do with audioplayer?
+- [X] What to do with audioplayer?
 - [ ] Add support for node 4?
 
 CodeV2
@@ -24,7 +24,8 @@ Project
 - [X] Add typedoc
 - [X] Add index.d.ts
 - [X] Add contributing guidelines
-- [ ] Add license
+- [X] Add license
+- [ ] Add badges
 - [ ] Lock down project
 - [ ] Add npm package
 - [ ] Make sure only correct stuff goes into npm package
