@@ -86,7 +86,7 @@ export abstract class SkillInteractor {
         }
     }
 
-    public callSkill(serviceRequest: SkillRequest): Promise<any> {
+    public async callSkill(serviceRequest: SkillRequest): Promise<any> {
         // Call this at the last possible minute, because of state issues
         //  What can happen is this gets queued, and then another request ends the session
         //  So we want to wait until just before we send this to create the session
@@ -98,19 +98,17 @@ export abstract class SkillInteractor {
         const requestJSON = serviceRequest.toJSON();
         console.log("CALLING: " + requestJSON.request.type);
 
-        return this.invoke(requestJSON).then((result) => {
-            // After a call, set the session to used (no longer new)
-            if (this.context().activeSession()) {
-                this.context().session().used();
-                if (result && result.shouldEndSession) {
-                    this.context().endSession();
-                } else {
-                    this.context().session().updateAttributes(result.sessionAttributes);
-                }
+        const result: any = this.invoke(requestJSON);
+        if (this.context().activeSession()) {
+            this.context().session().used();
+            if (result && result.shouldEndSession) {
+                this.context().endSession();
+            } else {
+                this.context().session().updateAttributes(result.sessionAttributes);
             }
+        }
 
-            return Promise.resolve(result);
-        });
+        return result;
     }
 
     protected abstract invoke(requestJSON: any): Promise<any>;

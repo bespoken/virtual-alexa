@@ -10,23 +10,22 @@ export class RemoteSkillInteractor extends SkillInteractor {
     }
 
     protected invoke(requestJSON: any): Promise<any> {
-        const httpModule = this.urlString.startsWith("https") ? https : http;
+        const httpModule: any = this.urlString.startsWith("https") ? https : http;
         const url = URL.parse(this.urlString);
         const requestString = JSON.stringify(requestJSON);
 
         const requestOptions = {
             headers: {
-                "Content-Length": Buffer.byteLength(requestString),
                 "Content-Type": "application/json",
             },
             hostname: url.hostname,
             method: "POST",
             path: url.path,
-            port: parseInt(url.port, 10),
+            port: url.port ? parseInt(url.port, 10) : undefined,
         };
 
         return new Promise((resolve, reject) => {
-            const req = http.request(requestOptions, (response) => {
+            const req = httpModule.request(requestOptions, (response: any) => {
                 console.log(`STATUS: ${response.statusCode}`);
                 console.log(`HEADERS: ${JSON.stringify(response.headers)}`);
 
@@ -37,7 +36,7 @@ export class RemoteSkillInteractor extends SkillInteractor {
 
                 let responseString = "";
                 response.setEncoding("utf8");
-                response.on("data", (chunk) => {
+                response.on("data", (chunk: string) => {
                     responseString = responseString + chunk;
                 });
 
@@ -51,7 +50,7 @@ export class RemoteSkillInteractor extends SkillInteractor {
                 });
             });
 
-            req.on("error", (e) => {
+            req.on("error", (e: Error) => {
                 console.error(`problem with request: ${e.message}`);
                 reject(e);
             });

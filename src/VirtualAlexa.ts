@@ -3,6 +3,7 @@ import {InteractionModel} from "./InteractionModel";
 import {LocalSkillInteractor} from "./LocalSkillInteractor";
 import {RemoteSkillInteractor} from "./RemoteSkillInteractor";
 import {SampleUtterances} from "./SampleUtterances";
+import {SkillContext} from "./SkillContext";
 import {SkillInteractor} from "./SkillInteractor";
 import {SessionEndedReason} from "./SkillRequest";
 
@@ -12,7 +13,16 @@ export class VirtualAlexa {
     }
 
     /** @internal */
-    public constructor(private interactor: SkillInteractor) {}
+    private interactor: SkillInteractor;
+
+    /** @internal */
+    public constructor(interactor: SkillInteractor) {
+        this.interactor = interactor;
+    }
+
+    public context(): SkillContext {
+        return this.interactor.context();
+    }
 
     public endSession(): Promise<any> {
         return this.interactor.sessionEnded(SessionEndedReason.USER_INITIATED);

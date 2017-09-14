@@ -62,6 +62,21 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Configuration object for VirtualAlexa.<br>
+							<br>
+							Callers must provide:<br>
+							1) An interaction model or combination of intent schema and sample utterances<br>
+							These can be provided either as files or JSON<br>
+							2) A handler name or skill URL<br>
+							The VirtualAlexa will either run a Lambda locally, or interact with a skill via HTTP<br>
+							<br>
+						Once the object is configured properly, create it by calling <a href="virtualalexabuilder.html#create">VirtualAlexaBuilder.create</a></p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -104,7 +119,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-device/blob/94aff55/src/VirtualAlexa.ts#L59">VirtualAlexa.ts:59</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-device/blob/a7af064/src/VirtualAlexa.ts#L71">VirtualAlexa.ts:71</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -132,7 +147,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-device/blob/94aff55/src/VirtualAlexa.ts#L141">VirtualAlexa.ts:141</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-device/blob/a7af064/src/VirtualAlexa.ts#L171">VirtualAlexa.ts:171</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="virtualalexa.html" class="tsd-signature-type">VirtualAlexa</a></h4>
@@ -149,7 +164,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-device/blob/94aff55/src/VirtualAlexa.ts#L72">VirtualAlexa.ts:72</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-device/blob/a7af064/src/VirtualAlexa.ts#L84">VirtualAlexa.ts:84</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -180,7 +195,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-device/blob/94aff55/src/VirtualAlexa.ts#L83">VirtualAlexa.ts:83</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-device/blob/a7af064/src/VirtualAlexa.ts#L95">VirtualAlexa.ts:95</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -209,9 +224,15 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-device/blob/94aff55/src/VirtualAlexa.ts#L88">VirtualAlexa.ts:88</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-device/blob/a7af064/src/VirtualAlexa.ts#L106">VirtualAlexa.ts:106</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Path to intent schema file<br>
+									To be provided along with <a href="virtualalexabuilder.html#sampleutterancesfile">VirtualAlexaBuilder.sampleUtterancesFile</a><br></p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -232,7 +253,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-device/blob/94aff55/src/VirtualAlexa.ts#L98">VirtualAlexa.ts:98</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-device/blob/a7af064/src/VirtualAlexa.ts#L116">VirtualAlexa.ts:116</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -260,7 +281,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-device/blob/94aff55/src/VirtualAlexa.ts#L108">VirtualAlexa.ts:108</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-device/blob/a7af064/src/VirtualAlexa.ts#L126">VirtualAlexa.ts:126</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -288,16 +309,17 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-device/blob/94aff55/src/VirtualAlexa.ts#L126">VirtualAlexa.ts:126</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-device/blob/a7af064/src/VirtualAlexa.ts#L144">VirtualAlexa.ts:144</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>JSON that corresponds to the sample utterances<br>
+										Provided along with <a href="virtualalexabuilder.html#intentschema">VirtualAlexaBuilder.intentSchema</a><br>
 									The sample utterances should be in the form:</p>
 									<pre><code class="lang-javascript">{
      <span class="hljs-string">"Intent"</span>: [<span class="hljs-string">"Sample1"</span>, <span class="hljs-string">"Sample2"</span>],
-     <span class="hljs-string">"IntentTwo"</span>: [<span class="hljs-string">"AnotherSample"</span>],
+     <span class="hljs-string">"IntentTwo"</span>: [<span class="hljs-string">"AnotherSample"</span>]
 }
 </code></pre>
 								</div>
@@ -322,9 +344,16 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-device/blob/94aff55/src/VirtualAlexa.ts#L131">VirtualAlexa.ts:131</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-device/blob/a7af064/src/VirtualAlexa.ts#L156">VirtualAlexa.ts:156</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>File path to sample utterances file<br>
+										To be provided along with <a href="virtualalexabuilder.html#intentschemafile">VirtualAlexaBuilder.intentSchemaFile</a><br>
+									Format is the same as in the Alexa Developer Console - a simple text file of intents and utterances</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -345,9 +374,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-device/blob/94aff55/src/VirtualAlexa.ts#L136">VirtualAlexa.ts:136</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-device/blob/a7af064/src/VirtualAlexa.ts#L166">VirtualAlexa.ts:166</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>The URL of the skill to be tested</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
