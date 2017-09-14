@@ -38,7 +38,7 @@ describe("VirtualAlexa Tests Using URL", function() {
             .create();
         virtualAlexa.utter("play now").then((response) => {
             assert.isDefined(response.data);
-            assert.equal(response.url, "http://httpbin.org/post");
+            assert.equal(response.url, "https://httpbin.org/post");
             done();
         });
     });

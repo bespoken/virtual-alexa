@@ -98,7 +98,7 @@ export abstract class SkillInteractor {
         const requestJSON = serviceRequest.toJSON();
         console.log("CALLING: " + requestJSON.request.type);
 
-        const result: any = this.invoke(requestJSON);
+        const result: any = await this.invoke(requestJSON);
         if (this.context().activeSession()) {
             this.context().session().used();
             if (result && result.shouldEndSession) {

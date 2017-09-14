@@ -16,6 +16,7 @@ export class RemoteSkillInteractor extends SkillInteractor {
 
         const requestOptions = {
             headers: {
+                "Content-Length": Buffer.byteLength(requestString),
                 "Content-Type": "application/json",
             },
             hostname: url.hostname,
