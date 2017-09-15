@@ -11,13 +11,21 @@ import {SkillSession} from "./SkillSession";
  * To emulate a user with a linked account, set the access token property.
  */
 export class SkillContext {
+    /** @internal */
+    private _audioPlayer: AudioPlayer;
     private _accessToken: string = null;
+    /** @internal */
+    private _interactionModel: InteractionModel;
     private _userID: string;
     private _session: SkillSession;
 
-    public constructor(private _interactionModel: InteractionModel,
-                       private _audioPlayer: AudioPlayer,
-                       private _applicationID?: string) {}
+    /** @internal */
+    public constructor(interactionModel: InteractionModel,
+                       audioPlayer: AudioPlayer,
+                       private _applicationID?: string) {
+        this._audioPlayer = audioPlayer;
+        this._interactionModel = interactionModel;
+    }
 
     public applicationID(): string {
         // Generate an application ID if it is not set
