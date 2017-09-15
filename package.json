@@ -11,6 +11,8 @@
   "files": [
     "lib/src/*.js",
     "lib/src/Index.d.ts",
+    "lib/src/SkillContext.d.ts",
+    "lib/src/SkillSession.d.ts",
     "lib/src/VirtualAlexa.d.ts"
   ],
   "nyc": {

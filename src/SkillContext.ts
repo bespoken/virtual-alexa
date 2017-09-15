@@ -27,6 +27,7 @@ export class SkillContext {
         return this._applicationID;
     }
 
+    /** @internal */
     public interactionModel(): InteractionModel {
         return this._interactionModel;
     }
@@ -50,6 +51,7 @@ export class SkillContext {
         this._accessToken = token;
     }
 
+    /** @internal */
     public audioPlayer(): AudioPlayer {
         return this._audioPlayer;
     }
