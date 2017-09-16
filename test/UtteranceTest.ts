@@ -50,6 +50,12 @@ describe("UtteranceTest", function() {
             assert.equal(utterance.intent(), "Play");
         });
 
+        it("Matches a simple phrase, ignores special characters", () => {
+            const utterance = new Utterance(model, "play?");
+            assert.isTrue(utterance.matched());
+            assert.equal(utterance.intent(), "Play");
+        });
+
         it("Matches a slotted phrase", () => {
             const utterance = new Utterance(model, "slot value");
             assert.isTrue(utterance.matched());

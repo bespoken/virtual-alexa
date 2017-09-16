@@ -105,7 +105,9 @@ export class SamplePhrase {
      * @returns {[]}
      */
     public matchesUtterance(utterance: string): string[] | undefined {
-        const match = utterance.match(this.regex);
+        // Take out any special characters
+        const cleanUtterance = utterance.replace(/[^a-zA-Z ]/g, "");
+        const match = cleanUtterance.match(this.regex);
         console.log("RegEx: " + this.regex);
         let result: string[] | undefined;
         if (match) {
