@@ -16,7 +16,7 @@ exports.handler = function (event, context, callback) {
         sessionCounter = event.session.attributes.counter;
         sessionCounter++;
     }
-    response.sessionAttributes = { counter: sessionCounter }
 
+    response.sessionAttributes = { counter: sessionCounter, sessionId: event.session.sessionId }
     context.done(null, response);
 }

@@ -4,6 +4,7 @@ import {ModuleInvoker} from "./ModuleInvoker";
 import {SkillContext} from "./SkillContext";
 import {SessionEndedReason, SkillRequest} from "./SkillRequest";
 import {Utterance} from "./Utterance";
+import {RequestFilter} from "./VirtualAlexa";
 
 type AlexaResponseCallback = (error: any, response: any, request: any) => void;
 
@@ -39,7 +40,7 @@ export abstract class SkillInteractor {
      * @param utterance
      * @param callback
      */
-    public spoken(utteranceString: string): Promise<any> {
+    public spoken(utteranceString: string, requestFilter?: RequestFilter): Promise<any> {
         let utterance = new Utterance(this.interactionModel(), utteranceString);
 
         // If we don't match anything, we use the default utterance - simple algorithm for this
@@ -50,16 +51,18 @@ export abstract class SkillInteractor {
                 + ". Using fallback utterance: " + defaultPhrase.phrase);
         }
 
-        return this.callSkillWithIntent(utterance.intent(), utterance.toJSON());
+        return this.callSkillWithIntent(utterance.intent(), utterance.toJSON(), requestFilter);
     }
 
-    public launched(): Promise<any> {
+    public launched(requestFilter?: RequestFilter): Promise<any> {
         const serviceRequest = new SkillRequest(this.skillContext);
         serviceRequest.launchRequest();
-        return this.callSkill(serviceRequest);
+        return this.callSkill(serviceRequest, requestFilter);
     }
 
-    public sessionEnded(sessionEndedReason: SessionEndedReason, errorData?: any): Promise<any> {
+    public sessionEnded(sessionEndedReason: SessionEndedReason,
+                        errorData?: any,
+                        requestFilter?: RequestFilter): Promise<any> {
         if (sessionEndedReason === SessionEndedReason.ERROR) {
             console.error("SessionEndedRequest:\n" + JSON.stringify(errorData, null, 2));
         }
@@ -67,7 +70,7 @@ export abstract class SkillInteractor {
         const serviceRequest = new SkillRequest(this.skillContext);
         // Convert to enum value and send request
         serviceRequest.sessionEndedRequest(sessionEndedReason, errorData);
-        return this.callSkill(serviceRequest).then(() => {
+        return this.callSkill(serviceRequest, requestFilter).then(() => {
             this.context().endSession();
         });
     }
@@ -78,15 +81,15 @@ export abstract class SkillInteractor {
      * @param slots
      * @param callback
      */
-    public intended(intentName: string, slots?: any): Promise<any> {
+    public intended(intentName: string, slots?: any, requestFilter?: RequestFilter): Promise<any> {
         try {
-            return this.callSkillWithIntent(intentName, slots);
+            return this.callSkillWithIntent(intentName, slots, requestFilter);
         } catch (e) {
             return Promise.reject(e);
         }
     }
 
-    public async callSkill(serviceRequest: SkillRequest): Promise<any> {
+    public async callSkill(serviceRequest: SkillRequest, requestFilter?: RequestFilter): Promise<any> {
         // Call this at the last possible minute, because of state issues
         //  What can happen is this gets queued, and then another request ends the session
         //  So we want to wait until just before we send this to create the session
@@ -96,6 +99,9 @@ export abstract class SkillInteractor {
         }
 
         const requestJSON = serviceRequest.toJSON();
+        if (requestFilter) {
+            requestFilter(requestJSON);
+        }
         console.log("CALLING: " + requestJSON.request.type);
 
         const result: any = await this.invoke(requestJSON);
@@ -113,7 +119,7 @@ export abstract class SkillInteractor {
 
     protected abstract invoke(requestJSON: any): Promise<any>;
 
-    private callSkillWithIntent(intentName: string, slots?: any): Promise<any> {
+    private callSkillWithIntent(intentName: string, slots?: any, requestFilter?: RequestFilter): Promise<any> {
         // When the user utters an intent, we suspend for it
         // We do this first to make sure everything is in the right state for what comes next
         if (this.skillContext.audioPlayerEnabled() && this.skillContext.audioPlayer().isPlaying()) {
@@ -129,7 +135,7 @@ export abstract class SkillInteractor {
             }
         }
 
-        return this.callSkill(serviceRequest);
+        return this.callSkill(serviceRequest, requestFilter);
     }
 
     // Helper method for getting interaction model

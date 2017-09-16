@@ -1,6 +1,7 @@
 import * as uuid from "uuid";
 import {AudioPlayerActivity} from "./AudioPlayer";
 import {SkillContext} from "./SkillContext";
+import {RequestFilter} from "./VirtualAlexa";
 
 export class RequestType {
     public static INTENT_REQUEST = "IntentRequest";
@@ -120,7 +121,11 @@ export class SkillRequest {
     public requiresSession(): boolean {
         let requireSession = false;
         // LaunchRequests and IntentRequests both require a session
-        if (this.requestType === RequestType.LAUNCH_REQUEST || this.requestType === RequestType.INTENT_REQUEST) {
+        // We also force a session on a session ended request, as if someone requests a session end
+        //  we will make one first if there is not. It will then be ended.
+        if (this.requestType === RequestType.LAUNCH_REQUEST
+            || this.requestType === RequestType.INTENT_REQUEST
+            || this.requestType === RequestType.SESSION_ENDED_REQUEST) {
             requireSession = true;
         }
         return requireSession;

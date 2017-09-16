@@ -12,6 +12,8 @@ export class VirtualAlexa {
         return new VirtualAlexaBuilder();
     }
 
+    private _filter: RequestFilter;
+
     /** @internal */
     private interactor: SkillInteractor;
 
@@ -25,21 +27,33 @@ export class VirtualAlexa {
     }
 
     public endSession(): Promise<any> {
-        return this.interactor.sessionEnded(SessionEndedReason.USER_INITIATED);
+        return this.interactor.sessionEnded(SessionEndedReason.USER_INITIATED, this._filter);
+    }
+
+    /**
+     * Set a filter on requests - for manipulating the payload before it is sent
+     * @param {RequestFilter} requestFilter
+     * @returns {VirtualAlexa}
+     */
+    public filter(requestFilter: RequestFilter): VirtualAlexa {
+        this._filter = requestFilter;
+        return this;
     }
 
     public intend(intentName: string, slots?: {[id: string]: string}): Promise<any> {
-        return this.interactor.intended(intentName, slots);
+        return this.interactor.intended(intentName, slots, this._filter);
     }
 
     public launch(): Promise<any> {
-        return this.interactor.launched();
+        return this.interactor.launched(this._filter);
     }
 
     public utter(utterance: string): Promise<any> {
-        return this.interactor.spoken(utterance);
+        return this.interactor.spoken(utterance, this._filter);
     }
 }
+
+export type RequestFilter = (request: any) => void;
 
 /**
  * Configuration object for VirtualAlexa.<br>
