@@ -81,7 +81,7 @@ export class SamplePhrase {
     private regex: string;
 
     public constructor(public intent: string, public phrase: string) {
-        this.phrase = phrase.toLowerCase();
+        this.phrase = phrase;
         this.regex = this.phraseToRegex(this.phrase);
     }
 
@@ -130,6 +130,10 @@ export class SamplePhrase {
             phrase = phrase.substring(0, startIndex).trim() + "(.*)" + phrase.substring(endIndex + 1).trim();
             phrase = this.phraseToRegex(phrase);
         }
-        return phrase;
+
+        // We make the regex lowercase, so that we match a phrase regardless of case
+        // We only switch to lowercase here because if we change the slotnames to lowercase,
+        //  it throws off the slot matching
+        return phrase.toLowerCase();
     }
 }

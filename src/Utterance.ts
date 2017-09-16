@@ -33,7 +33,7 @@ export class Utterance {
         let slotValue;
         for (let i = 0; i < this.matchedSample.slotCount(); i++) {
             const slotName = this.matchedSample.slotName(i);
-            if (slotName === name) {
+            if (slotName.toLowerCase() === name.toLowerCase()) {
                 slotValue = this.slots[i].trim();
                 break;
             }

@@ -110,7 +110,7 @@ export class SkillRequest {
             throw Error("Trying to add slot to intent that does not have any slots defined");
         }
 
-        if (!(slotName  in this.requestJSON.request.intent.slots)) {
+        if (!(slotName in this.requestJSON.request.intent.slots)) {
             throw Error("Trying to add undefined slot to intent: " + slotName);
         }
 

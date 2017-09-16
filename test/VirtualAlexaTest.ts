@@ -164,7 +164,7 @@ describe("VirtualAlexa Tests Using JSON", function() {
         });
 
         it("Utters slotted phrase", async () => {
-            const response = await virtualAlexa.utter("slot my slot");
+            const response = await virtualAlexa.utter("Slot my slot");
             assert.isDefined(response.slot);
             assert.equal(response.slot.name, "SlotName");
             assert.equal(response.slot.value, "my slot");
