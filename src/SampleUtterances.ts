@@ -81,7 +81,7 @@ export class SamplePhrase {
     private regex: string;
 
     public constructor(public intent: string, public phrase: string) {
-        this.phrase = phrase;
+        this.phrase = phrase.toLowerCase();
         this.regex = this.phraseToRegex(this.phrase);
     }
 

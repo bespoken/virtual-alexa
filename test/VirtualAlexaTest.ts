@@ -135,7 +135,7 @@ describe("VirtualAlexa Tests Using JSON", function() {
     const sampleUtterances = {
         "AMAZON.CancelIntent": ["cancel it now"],
         "MultipleSlots": ["multiple {SlotA} and {SlotB}", "reversed {SlotB} then {SlotA}"],
-        "Play": ["play", "play next", "play now"],
+        "Play": ["play", "play next", "play now", "PLAY case"],
         "SlottedIntent": ["slot {SlotName}"],
     };
 
@@ -156,6 +156,11 @@ describe("VirtualAlexa Tests Using JSON", function() {
 
         it("Utters simple phrase with different case", async () => {
             await virtualAlexa.utter("play NOW");
+        });
+
+        it("Utters simple phrase with different case where sample is upper case", async () => {
+            const response = await virtualAlexa.utter("play case");
+            assert.equal(response.intent, "Play");
         });
 
         it("Utters slotted phrase", async () => {
