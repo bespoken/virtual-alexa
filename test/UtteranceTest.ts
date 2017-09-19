@@ -32,12 +32,19 @@ describe("UtteranceTest", function() {
                     {name: "country", type: "COUNTRY_CODE"},
                 ],
             },
+            {
+                intent: "NumberSlot",
+                slots: [
+                    {name: "number", type: "AMAZON.NUMBER"},
+                ],
+            },
         ],
     };
 
     const sampleUtterances = {
         CustomSlot: ["{country}"],
         MultipleSlots: ["multiple {SlotA} and {SlotB}", "reversed {SlotB} then {SlotA}"],
+        NumberSlot: ["{number}"],
         Play: ["play", "play next", "play now"],
         SlottedIntent: ["slot {SlotName}"],
     };
@@ -132,6 +139,14 @@ describe("UtteranceTest", function() {
             assert.equal(utterance.intent(), "CustomSlot");
             assert.equal(utterance.slot(0), "US");
             assert.equal(utterance.slotByName("country"), "US");
+        });
+
+        it("Matches a phrase with slot with number value", () => {
+            const utterance = new Utterance(model, "19801");
+            assert.isTrue(utterance.matched());
+            assert.equal(utterance.intent(), "NumberSlot");
+            assert.equal(utterance.slot(0), "19801");
+            assert.equal(utterance.slotByName("number"), "19801");
         });
     });
 });
