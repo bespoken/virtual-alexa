@@ -79,31 +79,63 @@ describe("VirtualAlexa Tests Using Unified Interaction Model", function() {
                     {name: "SlotB", type: "SLOT_TYPE"},
                 ],
             },
+            {
+                name: "CustomSlot",
+                samples: ["custom {customSlot}"],
+                slots: [
+                    {name: "customSlot", type: "COUNTRY_CODE"},
+                ],
+            },
         ],
+        types: [{
+            name: "COUNTRY_CODE",
+            values: [
+                {
+                    id: "US",
+                    name: {
+                        synonyms: ["USA", "America", "US"],
+                        value: "US",
+                    },
+                },
+                {
+                    id: "DE",
+                    name: {
+                        synonyms: ["Germany", "DE"],
+                        value: "DE",
+                    },
+                },
+            ],
+        }],
     };
 
-    it("Parses the JSON and does a simple utterance", (done) => {
+    it("Parses the JSON and does a simple utterance", async () => {
         const virtualAlexa = VirtualAlexa.Builder()
             .handler("test.resources.index.handler")
             .interactionModel(interactionModel)
             .create();
-        virtualAlexa.utter("play now").then((response) => {
-            assert.isDefined(response);
-            assert.isTrue(response.success);
-            done();
-        });
+        const response = await virtualAlexa.utter("play now");
+        assert.isDefined(response);
+        assert.isTrue(response.success);
     });
 
-    it("Parses the file and does a simple utterance", (done) => {
+    it("Parses the file and does a simple utterance", async () => {
         const virtualAlexa = VirtualAlexa.Builder()
             .handler("test.resources.index.handler")
             .interactionModelFile("./test/resources/InteractionModel.json")
             .create();
-        virtualAlexa.intend("AMAZON.CancelIntent").then((response) => {
-            assert.isDefined(response);
-            assert.isTrue(response.success);
-            done();
-        });
+        const response = await virtualAlexa.intend("AMAZON.CancelIntent");
+        assert.isDefined(response);
+        assert.isTrue(response.success);
+    });
+
+    it("Utters builtin intent with custom phrase", async () => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test.resources.index.handler")
+            .interactionModel(interactionModel)
+            .create();
+
+        const response = await virtualAlexa.utter("custom DE");
+        assert.equal(response.intent, "CustomSlot");
     });
 });
 

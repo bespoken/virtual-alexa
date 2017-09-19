@@ -2,6 +2,7 @@ import {assert} from "chai";
 import {IntentSchema} from "../src/IntentSchema";
 import {InteractionModel} from "../src/InteractionModel";
 import {SampleUtterances} from "../src/SampleUtterances";
+import {SlotTypes} from "../src/SlotTypes";
 import {Utterance} from "../src/Utterance";
 
 describe("UtteranceTest", function() {
@@ -25,17 +26,52 @@ describe("UtteranceTest", function() {
                     {name: "SlotB", type: "SLOT_TYPE"},
                 ],
             },
+            {
+                intent: "CustomSlot",
+                slots: [
+                    {name: "country", type: "COUNTRY_CODE"},
+                ],
+            },
         ],
     };
 
     const sampleUtterances = {
+        CustomSlot: ["{country}"],
         MultipleSlots: ["multiple {SlotA} and {SlotB}", "reversed {SlotB} then {SlotA}"],
         Play: ["play", "play next", "play now"],
         SlottedIntent: ["slot {SlotName}"],
     };
 
+    const slotTypes = [{
+        name: "COUNTRY_CODE",
+        values: [
+            {
+                id: "US",
+                name: {
+                    synonyms: ["USA", "America", "US"],
+                    value: "US",
+                },
+            },
+            {
+                id: "DE",
+                name: {
+                    synonyms: ["Germany", "DE"],
+                    value: "DE",
+                },
+            },
+            {
+                id: "UK",
+                name: {
+                    synonyms: ["England", "Britain", "UK", "United Kingdom", "Great Britain"],
+                    value: "UK",
+                },
+            },
+        ],
+    }];
+
+    const is = IntentSchema.fromJSON(intentSchema);
     const model = new InteractionModel(IntentSchema.fromJSON(intentSchema),
-        SampleUtterances.fromJSON(sampleUtterances));
+        SampleUtterances.fromJSON(sampleUtterances, is, new SlotTypes(slotTypes)));
 
     describe("#matchIntent", () => {
         it("Matches a simple phrase", () => {
@@ -88,6 +124,14 @@ describe("UtteranceTest", function() {
             assert.equal(utterance.slot(1), "b");
             assert.equal(utterance.slotByName("SlotA"), "b");
             assert.equal(utterance.slotByName("SlotB"), "a");
+        });
+
+        it("Matches a phrase with slot with enumerated values", () => {
+            const utterance = new Utterance(model, "US");
+            assert.isTrue(utterance.matched());
+            assert.equal(utterance.intent(), "CustomSlot");
+            assert.equal(utterance.slot(0), "US");
+            assert.equal(utterance.slotByName("country"), "US");
         });
     });
 });

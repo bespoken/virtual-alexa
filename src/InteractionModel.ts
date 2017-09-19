@@ -1,6 +1,7 @@
 import * as fs from "fs";
 import {IntentSchema} from "./IntentSchema";
 import {SampleUtterances} from "./SampleUtterances";
+import {SlotTypes} from "./SlotTypes";
 
 /**
  * Parses and interprets an interaction model
@@ -35,12 +36,18 @@ export class InteractionModel {
             }
         }
 
+        let slotTypes;
+        if (interactionModel.types) {
+            slotTypes = new SlotTypes(interactionModel.types);
+        }
         const schema = new IntentSchema(schemaJSON);
-        const samples = SampleUtterances.fromJSON(sampleJSON);
+        const samples = SampleUtterances.fromJSON(sampleJSON, schema, slotTypes);
+
         return new InteractionModel(schema, samples);
     }
 
-    public constructor(public intentSchema: IntentSchema, public sampleUtterances: SampleUtterances) {}
+    public constructor(public intentSchema: IntentSchema,
+                       public sampleUtterances: SampleUtterances) {}
 
     public hasIntent(intent: string): boolean {
         return this.intentSchema.hasIntent(intent);

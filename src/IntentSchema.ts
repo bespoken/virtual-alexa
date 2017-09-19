@@ -61,6 +61,15 @@ export class Intent {
 
         this.slots.push(slot);
     }
+
+    public slotForName(name: string): IntentSlot {
+        for (const slot of this.slots) {
+            if (name.toLowerCase() === slot.name.toLowerCase()) {
+                return slot;
+            }
+        }
+        return undefined;
+    }
 }
 
 export class IntentSlot {

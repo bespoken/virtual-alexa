@@ -326,6 +326,32 @@
           }
         }
       ]
+    },
+    {
+      "name": "COUNTRY_CODE",
+      "values": [
+        {
+          "id": "US",
+          "name": {
+            "value": "US",
+            "synonyms": ["USA", "America", "US"]
+          }
+        },
+        {
+          "id": "DE",
+          "name": {
+            "value": "DE",
+            "synonyms": ["Germany", "DE"]
+          }
+        },
+        {
+          "id": "UK",
+          "name": {
+            "value": "UK",
+            "synonyms": ["England", "Britain", "UK", "United Kingdom", "Great Britain"]
+          }
+        }
+      ]
     }
   ]
 }
