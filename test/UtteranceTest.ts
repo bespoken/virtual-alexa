@@ -78,7 +78,8 @@ describe("UtteranceTest", function() {
 
     const is = IntentSchema.fromJSON(intentSchema);
     const model = new InteractionModel(IntentSchema.fromJSON(intentSchema),
-        SampleUtterances.fromJSON(sampleUtterances, is, new SlotTypes(slotTypes)));
+        SampleUtterances.fromJSON(sampleUtterances),
+        new SlotTypes(slotTypes));
 
     describe("#matchIntent", () => {
         it("Matches a simple phrase", () => {
@@ -147,6 +148,11 @@ describe("UtteranceTest", function() {
             assert.equal(utterance.intent(), "NumberSlot");
             assert.equal(utterance.slot(0), "19801");
             assert.equal(utterance.slotByName("number"), "19801");
+        });
+
+        it("Does not match a phrase with to a slot of number type", () => {
+            const utterance = new Utterance(model, "19801a");
+            assert.isFalse(utterance.matched());
         });
     });
 });

@@ -1,8 +1,8 @@
 import * as fs from "fs";
-import * as Path from "path";
 import {BuiltinUtterances} from "./BuiltinUtterances";
-import {SlotTypes} from "./SlotTypes";
 import {IntentSchema} from "./IntentSchema";
+import {InteractionModel} from "./InteractionModel";
+import {SlotTypes} from "./SlotTypes";
 
 export class SampleUtterances {
     public static fromFile(file: string): SampleUtterances {
@@ -12,10 +12,8 @@ export class SampleUtterances {
         return utterances;
     }
 
-    public static fromJSON(sampleUtterancesJSON: any,
-                           intentSchema?: IntentSchema,
-                           slotTypes?: SlotTypes): SampleUtterances {
-        const sampleUtterances = new SampleUtterances(intentSchema, slotTypes);
+    public static fromJSON(sampleUtterancesJSON: any) {
+        const sampleUtterances = new SampleUtterances();
         for (const intent of Object.keys(sampleUtterancesJSON)) {
             for (const sample of sampleUtterancesJSON[intent]) {
                 sampleUtterances.addSample(intent, sample);
@@ -24,9 +22,10 @@ export class SampleUtterances {
         return sampleUtterances;
     }
 
+    public interactionModel: InteractionModel;
     private samples: {[id: string]: SamplePhrase[]} = {};
 
-    public constructor(public intentSchema?: IntentSchema, public slotTypes?: SlotTypes) {
+    public constructor() {
         const builtinValues = BuiltinUtterances.values();
         // We add each phrase one-by-one
         // It is possible the built-ins have additional samples defined
@@ -41,7 +40,7 @@ export class SampleUtterances {
         if (!(intent in this.samples)) {
             this.samples[intent] = [];
         }
-        this.samples[intent].push(new SamplePhrase(intent, sample, this.intentSchema, this.slotTypes));
+        this.samples[intent].push(new SamplePhrase(this, intent, sample));
     }
 
     public samplesForIntent(intent: string): SamplePhrase [] {
@@ -84,10 +83,9 @@ export class SamplePhrase {
     private slotNames: string[] = [];
     private regex: string;
 
-    public constructor(public intent: string,
-                       public phrase: string,
-                       public intentSchema?: IntentSchema,
-                       public slotTypes?: SlotTypes) {
+    public constructor(public sampleUtterances: SampleUtterances,
+                       public intent: string,
+                       public phrase: string) {
         this.phrase = phrase;
         this.regex = this.phraseToRegex(this.phrase);
     }
@@ -118,12 +116,20 @@ export class SamplePhrase {
         console.log("RegEx: " + this.regex);
         let result: string[] | undefined;
         if (match) {
-            result = (this.slotTypes)
+            result = (this.sampleUtterances.interactionModel.slotTypes)
                 ? this.checkSlots(match.slice(1))
                 : match.slice(1);
         }
 
         return result;
+    }
+
+    private intentSchema(): IntentSchema {
+        return this.sampleUtterances.interactionModel.intentSchema;
+    }
+
+    private slotTypes(): SlotTypes {
+        return this.sampleUtterances.interactionModel.slotTypes;
     }
 
     private checkSlots(slotValues: string []): string[] | undefined {
@@ -135,12 +141,12 @@ export class SamplePhrase {
         for (const slotValue of slotValues) {
             const slotName = this.slotName(index);
             // Look up the slot type for the name
-            const slotType = this.intentSchema.intent(this.intent).slotForName(slotName);
+            const slotType = this.intentSchema().intent(this.intent).slotForName(slotName);
             if (!slotType) {
                 throw new Error("Invalid schema - not slot: " + slotName + " for intent: " + this.intent);
             }
 
-            const slotMatch = this.slotTypes.matchesSlot(slotType.type, slotValue);
+            const slotMatch = this.slotTypes().matchesSlot(slotType.type, slotValue);
             if (!slotMatch.matches) {
                 return undefined;
 

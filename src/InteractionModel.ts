@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import {BuiltinSlotTypes} from "./BuiltinSlotTypes";
 import {IntentSchema} from "./IntentSchema";
 import {SampleUtterances} from "./SampleUtterances";
 import {SlotTypes} from "./SlotTypes";
@@ -41,13 +42,20 @@ export class InteractionModel {
             slotTypes = new SlotTypes(interactionModel.types);
         }
         const schema = new IntentSchema(schemaJSON);
-        const samples = SampleUtterances.fromJSON(sampleJSON, schema, slotTypes);
+        const samples = SampleUtterances.fromJSON(sampleJSON);
 
-        return new InteractionModel(schema, samples);
+        return new InteractionModel(schema, samples, slotTypes);
     }
 
     public constructor(public intentSchema: IntentSchema,
-                       public sampleUtterances: SampleUtterances) {}
+                       public sampleUtterances: SampleUtterances,
+                       public slotTypes?: SlotTypes) {
+        if (!this.slotTypes) {
+            this.slotTypes = new SlotTypes([]);
+        }
+        this.slotTypes.addTypes(BuiltinSlotTypes.values());
+        sampleUtterances.interactionModel = this;
+    }
 
     public hasIntent(intent: string): boolean {
         return this.intentSchema.hasIntent(intent);

@@ -1,11 +1,20 @@
 export class SlotTypes {
-    public types: ISlotType[];
+    public types: SlotType[];
 
-    public constructor(slotTypes: any[]) {
-        this.types = slotTypes;
+    public constructor(slotTypes: ISlotType[]) {
+        this.types = [];
+        for (const type of slotTypes) {
+            this.types.push(new SlotType(type.name, type.values));
+        }
     }
 
-    public slotType(name: string): ISlotType {
+    public addTypes(slotTypes: SlotType[]) {
+        console.log("AddTypes: " + this.types.length + " New: " + slotTypes.length);
+        this.types = this.types.concat(slotTypes);
+        console.log("AddTypes: " + this.types.length);
+    }
+
+    public slotType(name: string): SlotType {
         let slotType;
         name = name.toLowerCase();
         for (const o of this.types) {
@@ -26,8 +35,23 @@ export class SlotTypes {
             return new SlotMatch(true, value);
         }
 
+        return slotType.match(value);
+    }
+}
+
+export class SlotMatch {
+    public constructor(public matches: boolean,
+                       public slotValueName?: string,
+                       public slotValueID?: string,
+                       public slotValueSynonym?: string) {}
+}
+
+export class SlotType implements ISlotType {
+    public constructor(public name: string, public values: ISlotValue[]) {}
+
+    public match(value: string) {
         let match: SlotMatch = new SlotMatch(false);
-        for (const slotValue of slotType.values) {
+        for (const slotValue of this.values) {
             if (slotValue.name.synonyms) {
                 for (const synonym of slotValue.name.synonyms) {
                     if (synonym.toLowerCase() === value) {
@@ -47,13 +71,6 @@ export class SlotTypes {
         }
         return match;
     }
-}
-
-export class SlotMatch {
-    public constructor(public matches: boolean,
-                       public slotValueName?: string,
-                       public slotValueID?: string,
-                       public slotValueSynonym?: string) {}
 }
 
 export interface ISlotType {
