@@ -17,6 +17,9 @@ describe("UtteranceTest", function() {
                 intent: "Hello",
             },
             {
+                intent: "NoSampleUtterances",
+            },
+            {
                 intent: "SlottedIntent",
                 slots: [
                     {name: "SlotName", type: "SLOT_TYPE"},

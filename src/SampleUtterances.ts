@@ -44,7 +44,11 @@ export class SampleUtterances {
     }
 
     public samplesForIntent(intent: string): SamplePhrase [] {
-        return this.samples[intent];
+        let samples: SamplePhrase[] = [];
+        if (intent in this.samples) {
+            samples = this.samples[intent];
+        }
+        return samples;
     }
 
     /**
