@@ -51,19 +51,31 @@ export class Utterance {
     }
 
     private matchIntent(): void {
+        const matches = [];
         for (const intent of this.interactionModel.intentSchema.intents()) {
             const intentName = intent.name;
             for (const sample of this.interactionModel.sampleUtterances.samplesForIntent(intentName)) {
-                const slots = sample.matchesUtterance(this.phrase);
-                if (slots) {
-                    this.matchedSample = sample;
-                    this.slots = slots;
+                const sampleTest = sample.matchesUtterance(this.phrase);
+                if (sampleTest.matches()) {
+                    matches.push(sampleTest);
                 }
             }
+        }
 
-            if (this.matchedSample) {
-                break;
+        if (matches.length > 0) {
+            let topMatch;
+            for (const match of matches) {
+                if (!topMatch || match.score() > topMatch.score()) {
+                    topMatch = match;
+                } else if (topMatch.score() === match.score()) {
+                    // If the scores are the same, check to see which has more specific slots
+                    if (match.scoreSlots() > topMatch.scoreSlots()) {
+                        topMatch = match;
+                    }
+                }
             }
+            this.matchedSample = topMatch.samplePhrase;
+            this.slots = topMatch.slotValues();
         }
     }
 }

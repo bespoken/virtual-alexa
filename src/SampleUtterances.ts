@@ -2,7 +2,7 @@ import * as fs from "fs";
 import {BuiltinUtterances} from "./BuiltinUtterances";
 import {IntentSchema} from "./IntentSchema";
 import {InteractionModel} from "./InteractionModel";
-import {SlotTypes} from "./SlotTypes";
+import {SlotMatch, SlotTypes} from "./SlotTypes";
 
 export class SampleUtterances {
     public static fromFile(file: string): SampleUtterances {
@@ -81,13 +81,13 @@ export class SampleUtterances {
  */
 export class SamplePhrase {
     private slotNames: string[] = [];
-    private regex: string;
+    private _regex: string;
 
     public constructor(public sampleUtterances: SampleUtterances,
                        public intent: string,
                        public phrase: string) {
         this.phrase = phrase;
-        this.regex = this.phraseToRegex(this.phrase);
+        this._regex = this.phraseToRegex(this.phrase);
     }
 
     public slotName(index: number): string | undefined {
@@ -102,6 +102,10 @@ export class SamplePhrase {
         return this.slotNames.length;
     }
 
+    public regex(): string {
+        return this._regex;
+    }
+
     /**
      * Tests to see if the utterances matches the sample phrase
      * If it does, returns an array of matching slot values
@@ -109,54 +113,8 @@ export class SamplePhrase {
      * @param {string} utterance
      * @returns {[]}
      */
-    public matchesUtterance(utterance: string): string[] | undefined {
-        // Take out any special characters
-        const cleanUtterance = utterance.replace(/[^0-9a-zA-Z ]/g, "");
-        const match = cleanUtterance.match(this.regex);
-        console.log("RegEx: " + this.regex);
-        let result: string[] | undefined;
-        if (match) {
-            result = (this.sampleUtterances.interactionModel.slotTypes)
-                ? this.checkSlots(match.slice(1))
-                : match.slice(1);
-        }
-
-        return result;
-    }
-
-    private intentSchema(): IntentSchema {
-        return this.sampleUtterances.interactionModel.intentSchema;
-    }
-
-    private slotTypes(): SlotTypes {
-        return this.sampleUtterances.interactionModel.slotTypes;
-    }
-
-    private checkSlots(slotValues: string []): string[] | undefined {
-        // Build an array of results - we want to pass back the exact value that matched (not change the case)
-        const result = [];
-        let index = 0;
-
-        // We check each slot value against valid values
-        for (const slotValue of slotValues) {
-            const slotName = this.slotName(index);
-            // Look up the slot type for the name
-            const slotType = this.intentSchema().intent(this.intent).slotForName(slotName);
-            if (!slotType) {
-                throw new Error("Invalid schema - not slot: " + slotName + " for intent: " + this.intent);
-            }
-
-            const slotMatch = this.slotTypes().matchesSlot(slotType.type, slotValue);
-            if (!slotMatch.matches) {
-                return undefined;
-
-            } else {
-                result.push(slotMatch.slotValueName);
-            }
-            index++;
-        }
-
-        return result;
+    public matchesUtterance(utterance: string): SamplePhraseTest {
+        return new SamplePhraseTest(this, utterance);
     }
 
     /**
@@ -178,5 +136,95 @@ export class SamplePhrase {
         // We only switch to lowercase here because if we change the slotnames to lowercase,
         //  it throws off the slot matching
         return phrase.toLowerCase();
+    }
+}
+
+export class SamplePhraseTest {
+    private slotMatches: SlotMatch[];
+    private matched = false;
+    private matchString: string;
+
+    public constructor(public samplePhrase: SamplePhrase, private utterance: string) {
+        const cleanUtterance = utterance.replace(/[^0-9a-zA-Z ]/g, "");
+        const matchArray = cleanUtterance.match(samplePhrase.regex());
+        console.log("RegEx: " + samplePhrase.regex());
+
+        this.matched = false;
+        // If we have a regex match, check all the slots match their types
+        if (matchArray) {
+            this.slotMatches = this.checkSlots(matchArray.slice(1));
+            if (this.slotMatches) {
+                this.matched = true;
+                this.matchString = matchArray[0];
+            }
+        }
+    }
+
+    public matches(): boolean {
+        return this.matched;
+    }
+
+    // We assign a score based on the number of non-slot value letters that match
+    public score(): number {
+        let slotValueLength = 0;
+        for (const slotValue of this.slotValues()) {
+            slotValueLength += slotValue.length;
+        }
+
+        const score = this.matchString.length - slotValueLength;
+        return score;
+    }
+
+    public scoreSlots(): number {
+        let typed = 0;
+        for (const slotMatch of this.slotMatches) {
+            if (!slotMatch.untyped) {
+                typed++;
+            }
+        }
+        return typed;
+    }
+
+    public slotValues(): string [] {
+        const values = [];
+        for (const slotMatch of this.slotMatches) {
+            values.push(slotMatch.slotValueName);
+        }
+        return values;
+    }
+
+    private checkSlots(slotValues: string []): SlotMatch[] | undefined {
+        // Build an array of results - we want to pass back the exact value that matched (not change the case)
+        const result = [];
+        let index = 0;
+
+        // We check each slot value against valid values
+        for (const slotValue of slotValues) {
+            const slotName = this.samplePhrase.slotName(index);
+            // Look up the slot type for the name
+            const slotType = this.intentSchema().intent(this.samplePhrase.intent).slotForName(slotName);
+            if (!slotType) {
+                throw new Error("Invalid schema - not slot: " + slotName + " for intent: " + this.samplePhrase.intent);
+            }
+
+            const slotMatch = this.slotTypes().matchesSlot(slotType.type, slotValue);
+            if (!slotMatch.matches) {
+                return undefined;
+
+            } else {
+                result.push(slotMatch);
+            }
+            index++;
+        }
+
+        return result;
+    }
+
+    private intentSchema(): IntentSchema {
+        return this.samplePhrase.sampleUtterances.interactionModel.intentSchema;
+    }
+
+    private slotTypes(): SlotTypes {
+        return this.samplePhrase.sampleUtterances.interactionModel.slotTypes;
     }
 }
