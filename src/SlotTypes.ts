@@ -32,7 +32,9 @@ export class SlotTypes {
         const slotType = this.slotType(name);
         // If no slot type definition is provided, we just assume it is a match
         if (!slotType) {
-            return new SlotMatch(true, value);
+            const match = new SlotMatch(true, value);
+            match.untyped = true;
+            return match;
         }
 
         return slotType.match(value);
@@ -40,10 +42,13 @@ export class SlotTypes {
 }
 
 export class SlotMatch {
+    public untyped: boolean;
     public constructor(public matches: boolean,
                        public slotValueName?: string,
                        public slotValueID?: string,
-                       public slotValueSynonym?: string) {}
+                       public slotValueSynonym?: string) {
+        this.untyped = false;
+    }
 }
 
 export class SlotType implements ISlotType {

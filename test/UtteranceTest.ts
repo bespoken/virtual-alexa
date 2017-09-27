@@ -14,6 +14,9 @@ describe("UtteranceTest", function() {
                 intent: "Play",
             },
             {
+                intent: "Hello",
+            },
+            {
                 intent: "SlottedIntent",
                 slots: [
                     {name: "SlotName", type: "SLOT_TYPE"},
@@ -43,8 +46,9 @@ describe("UtteranceTest", function() {
 
     const sampleUtterances = {
         CustomSlot: ["{country}"],
-        MultipleSlots: ["multiple {SlotA} and {SlotB}", "reversed {SlotB} then {SlotA}"],
-        NumberSlot: ["{number}"],
+        Hello: ["hi", "hello", "hi there"],
+        MultipleSlots: ["multiple {SlotA} and {SlotB}", "reversed {SlotB} then {SlotA}", "{SlotA}"],
+        NumberSlot: ["{number}", "{number} test"],
         Play: ["play", "play next", "play now"],
         SlottedIntent: ["slot {SlotName}"],
     };
@@ -142,6 +146,12 @@ describe("UtteranceTest", function() {
             assert.equal(utterance.slotByName("country"), "US");
         });
 
+        it("Does not match a phrase with slot with enumerated values", () => {
+            const utterance = new Utterance(model, "hi");
+            assert.isTrue(utterance.matched());
+            assert.equal(utterance.intent(), "Hello");
+        });
+
         it("Matches a phrase with slot with number value", () => {
             const utterance = new Utterance(model, "19801");
             assert.isTrue(utterance.matched());
@@ -151,8 +161,14 @@ describe("UtteranceTest", function() {
         });
 
         it("Does not match a phrase with to a slot of number type", () => {
-            const utterance = new Utterance(model, "19801a");
-            assert.isFalse(utterance.matched());
+            const utterance = new Utterance(model, "19801a test");
+            assert.equal(utterance.intent(), "MultipleSlots");
+        });
+
+        it("Matches a more specific phrase", () => {
+            const utterance = new Utterance(model, "1900 test");
+            assert.isTrue(utterance.matched());
+            assert.equal(utterance.intent(), "NumberSlot");
         });
     });
 });
