@@ -146,6 +146,9 @@ describe("VirtualAlexa Tests Using JSON", function() {
                 intent: "AMAZON.CancelIntent",
             },
             {
+                intent: "AMAZON.StopIntent",
+            },
+            {
                 intent: "Play",
             },
             {
@@ -168,7 +171,7 @@ describe("VirtualAlexa Tests Using JSON", function() {
         "AMAZON.CancelIntent": ["cancel it now"],
         "MultipleSlots": ["multiple {SlotA} and {SlotB}", "reversed {SlotB} then {SlotA}"],
         "Play": ["play", "play next", "play now", "PLAY case"],
-        "SlottedIntent": ["slot {SlotName}"],
+        "SlottedIntent": ["slot {SlotName}"]
     };
 
     describe("#utter", () => {
@@ -287,6 +290,21 @@ describe("VirtualAlexa Tests Using JSON", function() {
 
             virtualAlexa.launch().then(() => {
                 virtualAlexa.endSession().then(() => {
+                    done();
+                });
+            });
+        });
+
+        it("Starts and Is Asked To Stop", (done) => {
+            const virtualAlexa = VirtualAlexa.Builder()
+                .handler("test.resources.index.handler")
+                .sampleUtterances(sampleUtterances)
+                .intentSchema(intentSchema)
+                .create();
+
+            virtualAlexa.launch().then(() => {
+                virtualAlexa.utter("stop").then(() => {
+                    assert.isUndefined(virtualAlexa.context().session());
                     done();
                 });
             });

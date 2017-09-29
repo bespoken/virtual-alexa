@@ -107,7 +107,7 @@ export abstract class SkillInteractor {
         const result: any = await this.invoke(requestJSON);
         if (this.context().activeSession()) {
             this.context().session().used();
-            if (result && result.shouldEndSession) {
+            if (result && result.response && result.response.shouldEndSession) {
                 this.context().endSession();
             } else {
                 this.context().session().updateAttributes(result.sessionAttributes);

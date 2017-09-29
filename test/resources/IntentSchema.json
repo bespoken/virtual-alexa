@@ -4,6 +4,9 @@
       "intent": "Play"
     },
     {
+      "intent": "Stop"
+    },
+    {
       "intent": "SlottedIntent",
       "slots": [
         {

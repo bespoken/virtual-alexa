@@ -44,6 +44,15 @@ describe("UtteranceTest", function() {
                     {name: "number", type: "AMAZON.NUMBER"},
                 ],
             },
+            {
+                intent: "StringSlot",
+                slots: [
+                    {name: "stringSlot", type: "StringSlotType"},
+                ],
+            },
+            {
+                intent: "AMAZON.HelpIntent",
+            },
         ],
     };
 
@@ -54,6 +63,7 @@ describe("UtteranceTest", function() {
         NumberSlot: ["{number}", "{number} test"],
         Play: ["play", "play next", "play now"],
         SlottedIntent: ["slot {SlotName}"],
+        StringSlot: ["{stringSlot}"],
     };
 
     const slotTypes = [{
@@ -105,6 +115,12 @@ describe("UtteranceTest", function() {
             const utterance = new Utterance(model, "play?");
             assert.isTrue(utterance.matched());
             assert.equal(utterance.intent(), "Play");
+        });
+
+        it("Matches help", () => {
+            const utterance = new Utterance(model, "help");
+            assert.isTrue(utterance.matched());
+            assert.equal(utterance.intent(), "AMAZON.HelpIntent");
         });
 
         it("Matches a slotted phrase", () => {

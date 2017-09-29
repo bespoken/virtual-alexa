@@ -18,5 +18,8 @@ exports.handler = function (event, context, callback) {
     }
 
     response.sessionAttributes = { counter: sessionCounter, sessionId: event.session.sessionId }
+    if (event.request.intent && event.request.intent.name == "AMAZON.StopIntent") {
+        response.response = { shouldEndSession: true };
+    }
     context.done(null, response);
 }
