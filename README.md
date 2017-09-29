@@ -66,7 +66,7 @@ alexa.utter("play").then((payload) => {
 That's all there is to getting started. Take a look here for a more in-depth example:  
 https://github.com/bespoken/giftionary/blob/master/test/index.test.js
 
-And read all the docs here:
+And read all the docs here:  
 https://bespoken.github.io/virtual-alexa/api/
 
 ## How Do I Talk To You?
