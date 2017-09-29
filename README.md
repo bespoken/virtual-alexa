@@ -71,7 +71,7 @@ And read all the docs here:
 https://bespoken.github.io/virtual-alexa/api/
 
 ## How Do I Talk To You?
-Easy, you can open [an issue here](https://github.com/bespoken/virtual-alexa/issues), or find us on [our Gitter](https://gitter.im/bespoken/bst).
+Easy, you can open [an issue here](https://github.com/bespoken/virtual-alexa/issues), or find us on [our Gitter](https://gitter.im/bespoken/virtual-alexa).
 
 We are also on the [Alexa Slack channel](http://amazonalexa.slack.com) - @jpkbst, @jperata, @chrisramon and @ankraiza.
 
