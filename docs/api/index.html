@@ -89,32 +89,19 @@
 				<h1 id="bespoken-virtual-alexa-sdk">Bespoken Virtual Alexa SDK</h1>
 				<p>The Bespoken Virtual Device SDK allows for interacting with skills (and, soon, Actions) programmatically.</p>
 				<p>The Virtual Alexa class allows for easy interaction programmatically:</p>
-				<ul>
-					<li><p>Via Emulation</p>
-						<ul>
-							<li>utter: Generates JSON as if the user said the given phrase</li>
-							<li>intend: Generates JSON as if the given intent was uttered</li>
-						</ul>
-					</li>
-					<li><p>Via AVS integration:</p>
-						<ul>
-							<li>speak: Interacts directly with the Alexa Voice Service,
-							sending audio files directly to the service and returning the result.</li>
-						</ul>
-					</li>
-				</ul>
-				<h2 id="why-do-i-need-this-">Why Do I Need This?</h2>
+				<pre><code>* utter: Generates JSON as <span class="hljs-keyword">if</span> the<span class="hljs-built_in"> user </span>said the given phrase
+* intend: Generates JSON as <span class="hljs-keyword">if</span> the given intent was uttered
+</code></pre><h2 id="why-do-i-need-this-">Why Do I Need This?</h2>
 				<p>This library allows for easy testing of skills.</p>
-				<p>You can use it for:
-					1) Unit-testing - ensuring individual routines work correctly
-					2) Regression testing - ensuring the code as a whole works properly
-				3) Validation testing - ensuring your skill works correctly regardless of speech recognition anomalies</p>
+				<p>You can use it for:</p>
+				<p>1) Unit-testing - ensuring individual routines work correctly
+				2) Regression testing - ensuring the code as a whole works properly</p>
 				<h2 id="how-do-i-get-it-">How Do I Get It?</h2>
-				<pre><code>npm <span class="hljs-keyword">install</span> bespoken-<span class="hljs-keyword">virtual</span> <span class="hljs-comment">--save</span>
+				<pre><code>npm <span class="hljs-keyword">install</span> <span class="hljs-keyword">virtual</span>-alexa <span class="hljs-comment">--save-dev</span>
 </code></pre><h2 id="how-do-i-use-it-">How Do I Use It?</h2>
 				<p>Easy! Just add a line of code like so:</p>
-				<pre><code><span class="hljs-keyword">const</span> bvd = <span class="hljs-built_in">require</span>(<span class="hljs-string">"bespoken-virtual"</span>);
-<span class="hljs-keyword">const</span> alexa = bvd.VirtualAlexa.builder()
+				<pre><code><span class="hljs-keyword">const</span> va = <span class="hljs-built_in">require</span>(<span class="hljs-string">"virtual-alexa"</span>);
+<span class="hljs-keyword">const</span> alexa = va.VirtualAlexa.Builder()
     .handler(<span class="hljs-string">"index.handler"</span>) <span class="hljs-comment">// Lambda function file and name</span>
     .intentSchemaFile(<span class="hljs-string">"./speechAssets/IntentSchema.json"</span>) <span class="hljs-comment">// Path to IntentSchema.json</span>
     .sampleUtterancesFile(<span class="hljs-string">"./speechAssets/SampleUtterances.txt"</span>) <span class="hljs-comment">// Path to SampleUtterances</span>
@@ -124,9 +111,10 @@ alexa.utter(<span class="hljs-string">"play"</span>).then(<span class="hljs-func
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"OutputSpeech: "</span> + payload.response.outputSpeech.ssml);
     <span class="hljs-comment">// Prints out returned SSML, e.g., "&lt;speak&gt; Welcome to my Skill &lt;/speak&gt;"</span>
 });
-</code></pre><p>That&#39;s all there is to getting started. Read the docs in more depth here.</p>
+</code></pre><p>That&#39;s all there is to getting started. Take a look here for a more in-depth example:<br><a href="https://github.com/bespoken/giftionary/blob/master/test/index.test.js">https://github.com/bespoken/giftionary/blob/master/test/index.test.js</a></p>
+				<p>And read all the docs here:<br><a href="https://bespoken.github.io/virtual-alexa/api/">https://bespoken.github.io/virtual-alexa/api/</a></p>
 				<h2 id="how-do-i-talk-to-you-">How Do I Talk To You?</h2>
-				<p>Easy, you can open <a href="https://github.com/bespoken/virtual-device/issues">an issue here</a>, or find us on <a href="https://gitter.im/bespoken/bst">our Gitter</a>.</p>
+				<p>Easy, you can open <a href="https://github.com/bespoken/virtual-alexa/issues">an issue here</a>, or find us on <a href="https://gitter.im/bespoken/bst">our Gitter</a>.</p>
 				<p>We are also on the <a href="http://amazonalexa.slack.com">Alexa Slack channel</a> - @jpkbst, @jperata, @chrisramon and @ankraiza.</p>
 				<p>We look forward to hearing from you!</p>
 			</div>
@@ -142,10 +130,19 @@ alexa.utter(<span class="hljs-string">"play"</span>).then(<span class="hljs-func
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-class">
+						<a href="classes/skillcontext.html" class="tsd-kind-icon">Skill<wbr>Context</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/skillsession.html" class="tsd-kind-icon">Skill<wbr>Session</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="classes/virtualalexa.html" class="tsd-kind-icon">Virtual<wbr>Alexa</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/virtualalexabuilder.html" class="tsd-kind-icon">Virtual<wbr>Alexa<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#requestfilter" class="tsd-kind-icon">Request<wbr>Filter</a>
 					</li>
 				</ul>
 			</nav>
