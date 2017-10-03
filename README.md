@@ -40,7 +40,7 @@ This library allows for easy testing of skills.
 
 You can use it for:
 
-1) Unit-testing - ensuring individual routines work correctly
+1) Unit-testing - ensuring individual routines work correctly  
 2) Regression testing - ensuring the code as a whole works properly
 
 ## How Do I Get It?
