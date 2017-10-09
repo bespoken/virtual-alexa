@@ -64,7 +64,29 @@ alexa.utter("play").then((payload) => {
 });
 ```
 
-That's all there is to getting started. Take a look here for a more in-depth example:  
+Here's a more in-depth example, in the form of a Jest unit test:
+```
+test("Plays once", (done) => {
+    alexa.utter("get started").then((payload) => {
+        expect(payload.response.outputSpeech.ssml).toContain("What is the search term for it");
+        return alexa.utter("incorrect guess");
+
+    }).then((payload) => {
+        expect(payload.response.outputSpeech.ssml).toContain("Nice try");
+        return alexa.utter("incorrect guess");
+
+    }).then((payload) => {
+        expect(payload.response.outputSpeech.ssml).toContain("That is not correct");
+        return alexa.utter("incorrect guess");
+
+    }).then((payload) => {
+        expect(payload.response.outputSpeech.ssml).toContain("Goodbye");
+        done();
+
+    });
+});
+```
+That's all there is to getting started. Take a look here for a full example:  
 https://github.com/bespoken/giftionary/blob/master/test/index.test.js
 
 And read all the docs here:  
