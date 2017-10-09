@@ -29,7 +29,7 @@
 
 
 # Bespoken Virtual Alexa SDK
-The Bespoken Virtual Device SDK allows for interacting with skills (and, soon, Actions) programmatically.
+The Virtual Alexa SDK allows for interacting with skills programmatically.
 
 The Virtual Alexa class allows for easy interaction programmatically:
     * utter: Generates JSON as if the user said the given phrase
