@@ -28,10 +28,10 @@
 </p>
 
 
-# Bespoken Virtual Alexa SDK
-The Virtual Alexa SDK allows for interacting with skills programmatically.
+# Virtual Alexa
+Virtual Alexa allows for interacting with skills programmatically.
 
-The Virtual Alexa class allows for easy interaction programmatically:
+The core Virtual Alexa API provides several routines - the two most essential ones:
     * utter: Generates JSON as if the user said the given phrase
     * intend: Generates JSON as if the given intent was uttered
 
