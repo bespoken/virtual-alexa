@@ -1,0 +1,17 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "intents": [
+        {
+          "name": "TellMeMoreIntent",
+          "samples": [
+            "contact info",
+            "tell me more",
+            "more details"
+          ],
+          "slots": []
+        }
+      ]
+    }
+  }
+}

@@ -2,17 +2,24 @@ import {assert} from "chai";
 import {VirtualAlexa} from "../src/VirtualAlexa";
 
 describe("VirtualAlexa Tests Using Files", function() {
-    it("Parses the files and does a simple utterance", (done) => {
+    it("Parses the files and does a simple utterance", async () => {
         const virtualAlexa = VirtualAlexa.Builder()
             .handler("test.resources.index.handler")
             .sampleUtterancesFile("./test/resources/SampleUtterances.txt")
             .intentSchemaFile("./test/resources/IntentSchema.json")
             .create();
-        virtualAlexa.utter("play now").then((response) => {
-            assert.isDefined(response);
-            assert.isTrue(response.success);
-            done();
-        });
+        const response  = await virtualAlexa.utter("play now");
+        assert.isDefined(response);
+        assert.isTrue(response.success);
+    });
+
+    it("Parses the SMAPI format interaction model and does a simple utterance", async () => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test.resources.index.handler")
+            .interactionModelFile("./test/resources/InteractionModelSMAPI.json")
+            .create();
+        const response  = await virtualAlexa.utter("contact info");
+        assert.equal(response.intent, "TellMeMoreIntent");
     });
 
     it("Has a bad filename", () => {
@@ -30,30 +37,26 @@ describe("VirtualAlexa Tests Using Files", function() {
 });
 
 describe("VirtualAlexa Tests Using URL", function() {
-    it("Calls a remote mock service via HTTPS", (done) => {
+    it("Calls a remote mock service via HTTPS", async () => {
         const virtualAlexa = VirtualAlexa.Builder()
             .intentSchemaFile("./test/resources/IntentSchema.json")
             .sampleUtterancesFile("./test/resources/SampleUtterances.txt")
             .skillURL("https://httpbin.org/post")
             .create();
-        virtualAlexa.utter("play now").then((response) => {
-            assert.isDefined(response.data);
-            assert.equal(response.url, "https://httpbin.org/post");
-            done();
-        });
+        const response = await virtualAlexa.utter("play now");
+        assert.isDefined(response.data);
+        assert.equal(response.url, "https://httpbin.org/post")
     });
 
-    it("Calls a remote mock service via HTTP", (done) => {
+    it("Calls a remote mock service via HTTP", async () => {
         const virtualAlexa = VirtualAlexa.Builder()
             .intentSchemaFile("./test/resources/IntentSchema.json")
             .sampleUtterancesFile("./test/resources/SampleUtterances.txt")
             .skillURL("http://httpbin.org/post")
             .create();
-        virtualAlexa.utter("play now").then((response) => {
-            assert.isDefined(response.data);
-            assert.equal(response.url, "http://httpbin.org/post");
-            done();
-        });
+        const response = await virtualAlexa.utter("play now");
+        assert.isDefined(response.data);
+        assert.equal(response.url, "http://httpbin.org/post");
     });
 });
 

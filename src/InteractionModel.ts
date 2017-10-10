@@ -27,7 +27,14 @@ export class InteractionModel {
         };
         const sampleJSON: any = {};
 
-        const intents = interactionModel.intents;
+        let languageModel = interactionModel;
+        // For the official interaction model that is part of SMAPI,
+        //  we pull the data off of the interactionModel.languageModel element
+        if ("interactionModel" in interactionModel) {
+            languageModel = interactionModel.interactionModel.languageModel;
+        }
+
+        const intents = languageModel.intents;
         for (const intent of intents) {
             // The name of the intent is on the property "name" instead of "intent" for the unified model
             intent.intent = intent.name;
@@ -38,8 +45,8 @@ export class InteractionModel {
         }
 
         let slotTypes;
-        if (interactionModel.types) {
-            slotTypes = new SlotTypes(interactionModel.types);
+        if (languageModel.types) {
+            slotTypes = new SlotTypes(languageModel.types);
         }
         const schema = new IntentSchema(schemaJSON);
         const samples = SampleUtterances.fromJSON(sampleJSON);
