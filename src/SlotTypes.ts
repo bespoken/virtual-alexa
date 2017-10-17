@@ -9,9 +9,7 @@ export class SlotTypes {
     }
 
     public addTypes(slotTypes: SlotType[]) {
-        console.log("AddTypes: " + this.types.length + " New: " + slotTypes.length);
         this.types = this.types.concat(slotTypes);
-        console.log("AddTypes: " + this.types.length);
     }
 
     public slotType(name: string): SlotType {

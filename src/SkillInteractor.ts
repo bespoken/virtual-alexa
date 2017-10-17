@@ -102,7 +102,6 @@ export abstract class SkillInteractor {
         if (requestFilter) {
             requestFilter(requestJSON);
         }
-        console.log("CALLING: " + requestJSON.request.type);
 
         const result: any = await this.invoke(requestJSON);
         if (this.context().activeSession()) {
