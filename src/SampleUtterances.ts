@@ -151,7 +151,6 @@ export class SamplePhraseTest {
     public constructor(public samplePhrase: SamplePhrase, private utterance: string) {
         const cleanUtterance = utterance.replace(/[^0-9a-zA-Z ]/g, "");
         const matchArray = cleanUtterance.match(samplePhrase.regex());
-        console.log("RegEx: " + samplePhrase.regex());
 
         this.matched = false;
         // If we have a regex match, check all the slots match their types
