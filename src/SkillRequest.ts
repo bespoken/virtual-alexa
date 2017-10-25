@@ -133,7 +133,6 @@ export class SkillRequest {
 
     public toJSON() {
         const applicationID = this.context.applicationID();
-        const userID = this.context.userID();
 
         // If we have a session, set the info
         if (this.includeSession() && this.context.activeSession()) {
@@ -148,9 +147,7 @@ export class SkillRequest {
                 },
                 new: newSession,
                 sessionId: sessionID,
-                user: {
-                    userId: userID,
-                },
+                user: this.userObject(this.context),
             };
 
             if (this.requestType !== RequestType.LAUNCH_REQUEST) {
@@ -188,7 +185,6 @@ export class SkillRequest {
         this.requestType = requestType;
         const applicationID = this.context.applicationID();
         const requestID = SkillRequest.requestID();
-        const userID = this.context.userID();
         const timestamp = SkillRequest.timestamp();
 
         // First create the header part of the request
@@ -199,13 +195,9 @@ export class SkillRequest {
                         applicationId: applicationID,
                     },
                     device: {
-                        supportedInterfaces: {
-                            AudioPlayer: {},
-                        },
+                        supportedInterfaces: this.context.device().supportedInterfaces(),
                     },
-                    user: {
-                        userId: userID,
-                    },
+                    user: this.userObject(this.context),
                 },
             },
             request: {
@@ -217,10 +209,30 @@ export class SkillRequest {
             version: "1.0",
         };
 
+        // If the device ID is set, we set the API endpoint and deviceId properties
+        if (this.context.device().id()) {
+            baseRequest.context.System.apiEndpoint = "https://api.amazonalexa.com/";
+            baseRequest.context.System.device.deviceId = this.context.device().id();
+        }
+
         if (this.context.accessToken() !== null) {
             baseRequest.context.System.user.accessToken = this.context.accessToken();
         }
         return baseRequest;
+    }
+
+    private userObject(context: SkillContext): any {
+        const o: any = {
+            userId: context.user().id(),
+        };
+
+        // If we have a device ID, means we have permissions enabled and a consent token
+        if (context.device().id()) {
+            o.permissions = {
+                consentToken: uuid.v4(),
+            };
+        }
+        return o;
     }
 
     /**

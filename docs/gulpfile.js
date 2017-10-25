@@ -5,8 +5,10 @@ gulp.task("default", ["typedoc"]);
 
 gulp.task("typedoc", function () {
     gulp.src([
+        "src/Device.ts",
         "src/SkillContext.ts",
         "src/SkillSession.ts",
+        "src/User.ts",
         "src/VirtualAlexa.ts",
     ]).pipe(typedoc({
             // TypeScript options (see typescript docs)

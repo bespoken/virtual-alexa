@@ -1,7 +1,9 @@
 import * as uuid from "uuid";
 import {AudioPlayer} from "./AudioPlayer";
+import {Device} from "./Device";
 import {InteractionModel} from "./InteractionModel";
 import {SkillSession} from "./SkillSession";
+import {User} from "./User";
 
 /**
  * Manages state of the Alexa device interaction across sessions.
@@ -14,9 +16,10 @@ export class SkillContext {
     /** @internal */
     private _audioPlayer: AudioPlayer;
     private _accessToken: string = null;
+    private _device: Device;
     /** @internal */
     private _interactionModel: InteractionModel;
-    private _userID: string;
+    private _user: User;
     private _session: SkillSession;
 
     /** @internal */
@@ -25,6 +28,8 @@ export class SkillContext {
                        private _applicationID?: string) {
         this._audioPlayer = audioPlayer;
         this._interactionModel = interactionModel;
+        this._device = new Device();
+        this._user = new User();
     }
 
     public applicationID(): string {
@@ -35,20 +40,17 @@ export class SkillContext {
         return this._applicationID;
     }
 
+    public device(): Device {
+        return this._device;
+    }
+
     /** @internal */
     public interactionModel(): InteractionModel {
         return this._interactionModel;
     }
 
-    public userID(): string {
-        if (this._userID === undefined || this._userID === null) {
-            this._userID = "amzn1.ask.account." + uuid.v4();
-        }
-        return this._userID;
-    }
-
-    public setUserID(userID: string) {
-        this._userID = userID;
+    public user(): User {
+        return this._user;
     }
 
     public accessToken(): string {

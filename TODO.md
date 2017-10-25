@@ -12,6 +12,9 @@ CodeV2
 - [ ] Add speak command
 - [ ] Dialog support
 - [ ] Permission support
+- [ ] Rename SkillContext and SkillSession to context and session
+- [ ] add support for list api permissioning
+- [ ] add convenience methods for permissions
 
 Design
 - [X] What is the difference between interactor and virtual alexa?

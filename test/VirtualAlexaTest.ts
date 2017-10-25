@@ -37,6 +37,7 @@ describe("VirtualAlexa Tests Using Files", function() {
 });
 
 describe("VirtualAlexa Tests Using URL", function() {
+    this.timeout(5000);
     it("Calls a remote mock service via HTTPS", async () => {
         const virtualAlexa = VirtualAlexa.Builder()
             .intentSchemaFile("./test/resources/IntentSchema.json")
@@ -45,7 +46,7 @@ describe("VirtualAlexa Tests Using URL", function() {
             .create();
         const response = await virtualAlexa.utter("play now");
         assert.isDefined(response.data);
-        assert.equal(response.url, "https://httpbin.org/post")
+        assert.equal(response.url, "https://httpbin.org/post");
     });
 
     it("Calls a remote mock service via HTTP", async () => {
@@ -174,7 +175,7 @@ describe("VirtualAlexa Tests Using JSON", function() {
         "AMAZON.CancelIntent": ["cancel it now"],
         "MultipleSlots": ["multiple {SlotA} and {SlotB}", "reversed {SlotB} then {SlotA}"],
         "Play": ["play", "play next", "play now", "PLAY case"],
-        "SlottedIntent": ["slot {SlotName}"]
+        "SlottedIntent": ["slot {SlotName}"],
     };
 
     describe("#utter", () => {
@@ -189,11 +190,19 @@ describe("VirtualAlexa Tests Using JSON", function() {
         });
 
         it("Utters simple phrase", async () => {
-            await virtualAlexa.utter("play now");
+            const response = await virtualAlexa.filter((request) => {
+                assert.isUndefined(request.context.System.device.deviceId);
+                assert.isUndefined(request.context.System.apiEndpoint, "https://api.amazonalexa.com/");
+                assert.isDefined(request.context.System.device.supportedInterfaces.AudioPlayer);
+                assert.isDefined(request.context.System.user.userId);
+                assert.isUndefined(request.context.System.user.permissions);
+            }).utter("play now");
+            assert.equal(response.intent, "Play");
         });
 
         it("Utters simple phrase with different case", async () => {
-            await virtualAlexa.utter("play NOW");
+            const response = await virtualAlexa.utter("play NOW");
+            assert.equal(response.intent, "Play");
         });
 
         it("Utters simple phrase with different case where sample is upper case", async () => {
@@ -230,6 +239,27 @@ describe("VirtualAlexa Tests Using JSON", function() {
             assert.equal(response.sessionAttributes.counter, 0);
             response  = await virtualAlexa.utter("play now");
             assert.equal(response.sessionAttributes.counter, 1);
+        });
+    });
+
+    describe("#utterWithDeviceInfo", () => {
+        it("Utters simple phrase with device info", async () => {
+            const virtualAlexa = VirtualAlexa.Builder()
+                .handler("test.resources.index.handler")
+                .sampleUtterances(sampleUtterances)
+                .intentSchema(intentSchema)
+                .create();
+            virtualAlexa.context().device().setID("testID");
+
+            const response = await virtualAlexa.filter((request) => {
+                assert.isDefined(request.context.System.device.deviceId);
+                assert.equal(request.context.System.apiEndpoint, "https://api.amazonalexa.com/");
+                assert.isDefined(request.context.System.device.supportedInterfaces.AudioPlayer);
+                assert.isDefined(request.context.System.user.userId);
+                assert.isDefined(request.context.System.user.permissions);
+                assert.isDefined(request.context.System.user.permissions.consentToken);
+            }).utter("play now");
+            assert.equal(response.intent, "Play");
         });
     });
 

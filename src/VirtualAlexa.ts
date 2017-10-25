@@ -71,6 +71,8 @@ export class VirtualAlexaBuilder {
     /** @internal */
     private _applicationID: string;
     /** @internal */
+    private _deviceID: string;
+    /** @internal */
     private _handler: string;
     /** @internal */
     private _intentSchema: any;
