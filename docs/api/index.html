@@ -86,9 +86,9 @@
 						<img alt="Read The Docs" class="badge" src="https://badges.gitter.im/bespoken/bst.svg">
 					</a>
 				</p>
-				<h1 id="bespoken-virtual-alexa-sdk">Bespoken Virtual Alexa SDK</h1>
-				<p>The Bespoken Virtual Device SDK allows for interacting with skills (and, soon, Actions) programmatically.</p>
-				<p>The Virtual Alexa class allows for easy interaction programmatically:</p>
+				<h1 id="virtual-alexa">Virtual Alexa</h1>
+				<p>Virtual Alexa allows for interacting with skills programmatically.</p>
+				<p>The core Virtual Alexa API provides several routines - the two most essential ones:</p>
 				<pre><code>* utter: Generates JSON as <span class="hljs-keyword">if</span> the<span class="hljs-built_in"> user </span>said the given phrase
 * intend: Generates JSON as <span class="hljs-keyword">if</span> the given intent was uttered
 </code></pre><h2 id="why-do-i-need-this-">Why Do I Need This?</h2>
@@ -110,7 +110,27 @@ alexa.utter(<span class="hljs-string">"play"</span>).then(<span class="hljs-func
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"OutputSpeech: "</span> + payload.response.outputSpeech.ssml);
     <span class="hljs-comment">// Prints out returned SSML, e.g., "&lt;speak&gt; Welcome to my Skill &lt;/speak&gt;"</span>
 });
-</code></pre><p>That&#39;s all there is to getting started. Take a look here for a more in-depth example:<br><a href="https://github.com/bespoken/giftionary/blob/master/test/index.test.js">https://github.com/bespoken/giftionary/blob/master/test/index.test.js</a></p>
+</code></pre><p>Here&#39;s a more in-depth example, in the form of a Jest unit test:</p>
+				<pre><code>test(<span class="hljs-string">"Plays once"</span>, (<span class="hljs-name">done</span>) =&gt; {
+    alexa.utter(<span class="hljs-string">"get started"</span>).then((<span class="hljs-name">payload</span>) =&gt; {
+        expect(<span class="hljs-name">payload</span>.response.outputSpeech.ssml).toContain(<span class="hljs-string">"What is the search term for it"</span>)<span class="hljs-comment">;</span>
+        return alexa.utter(<span class="hljs-string">"incorrect guess"</span>)<span class="hljs-comment">;</span>
+
+    }).then((<span class="hljs-name">payload</span>) =&gt; {
+        expect(<span class="hljs-name">payload</span>.response.outputSpeech.ssml).toContain(<span class="hljs-string">"Nice try"</span>)<span class="hljs-comment">;</span>
+        return alexa.utter(<span class="hljs-string">"incorrect guess"</span>)<span class="hljs-comment">;</span>
+
+    }).then((<span class="hljs-name">payload</span>) =&gt; {
+        expect(<span class="hljs-name">payload</span>.response.outputSpeech.ssml).toContain(<span class="hljs-string">"That is not correct"</span>)<span class="hljs-comment">;</span>
+        return alexa.utter(<span class="hljs-string">"incorrect guess"</span>)<span class="hljs-comment">;</span>
+
+    }).then((<span class="hljs-name">payload</span>) =&gt; {
+        expect(<span class="hljs-name">payload</span>.response.outputSpeech.ssml).toContain(<span class="hljs-string">"Goodbye"</span>)<span class="hljs-comment">;</span>
+        done()<span class="hljs-comment">;</span>
+
+    })<span class="hljs-comment">;</span>
+})<span class="hljs-comment">;</span>
+</code></pre><p>That&#39;s all there is to getting started. Take a look here for a full example:<br><a href="https://github.com/bespoken/giftionary/blob/master/test/index.test.js">https://github.com/bespoken/giftionary/blob/master/test/index.test.js</a></p>
 				<p>And read all the docs here:<br><a href="https://bespoken.github.io/virtual-alexa/api/">https://bespoken.github.io/virtual-alexa/api/</a></p>
 				<h2 id="how-do-i-talk-to-you-">How Do I Talk To You?</h2>
 				<p>Easy, you can open <a href="https://github.com/bespoken/virtual-alexa/issues">an issue here</a>, or find us on <a href="https://gitter.im/bespoken/virtual-alexa">our Gitter</a>.</p>
@@ -129,10 +149,16 @@ alexa.utter(<span class="hljs-string">"play"</span>).then(<span class="hljs-func
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-class">
+						<a href="classes/device.html" class="tsd-kind-icon">Device</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="classes/skillcontext.html" class="tsd-kind-icon">Skill<wbr>Context</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/skillsession.html" class="tsd-kind-icon">Skill<wbr>Session</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/user.html" class="tsd-kind-icon">User</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/virtualalexa.html" class="tsd-kind-icon">Virtual<wbr>Alexa</a>
