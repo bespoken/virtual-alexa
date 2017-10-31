@@ -22,18 +22,29 @@ export class SampleUtterances {
         return sampleUtterances;
     }
 
-    public interactionModel: InteractionModel;
+    private _interactionModel: InteractionModel;
     private samples: {[id: string]: SamplePhrase[]} = {};
 
-    public constructor() {
+    // This is its own method, because it needs to be called at a particular point in initialization
+    // We call it after loading the sample utterances and intents, while initializing the interaction model
+    // Once we have the interaction model, we go back in add the builtin utterances
+    public setInteractionModel(interactionModel: InteractionModel) {
+        this._interactionModel = interactionModel;
+
         const builtinValues = BuiltinUtterances.values();
         // We add each phrase one-by-one
         // It is possible the built-ins have additional samples defined
         for (const key of Object.keys(builtinValues)) {
-            for (const phrase of builtinValues[key]) {
-                this.addSample(key, phrase);
+            if (this._interactionModel.hasIntent(key)) {
+                for (const phrase of builtinValues[key]) {
+                    this.addSample(key, phrase);
+                }
             }
         }
+    }
+
+    public interactionModel(): InteractionModel {
+        return this._interactionModel;
     }
 
     public addSample(intent: string, sample: string) {
@@ -224,10 +235,10 @@ export class SamplePhraseTest {
     }
 
     private intentSchema(): IntentSchema {
-        return this.samplePhrase.sampleUtterances.interactionModel.intentSchema;
+        return this.samplePhrase.sampleUtterances.interactionModel().intentSchema;
     }
 
     private slotTypes(): SlotTypes {
-        return this.samplePhrase.sampleUtterances.interactionModel.slotTypes;
+        return this.samplePhrase.sampleUtterances.interactionModel().slotTypes;
     }
 }

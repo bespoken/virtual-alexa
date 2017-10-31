@@ -60,8 +60,10 @@ export class InteractionModel {
         if (!this.slotTypes) {
             this.slotTypes = new SlotTypes([]);
         }
+
+        this.sampleUtterances.setInteractionModel(this);
         this.slotTypes.addTypes(BuiltinSlotTypes.values());
-        sampleUtterances.interactionModel = this;
+
     }
 
     public hasIntent(intent: string): boolean {

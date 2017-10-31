@@ -147,6 +147,9 @@ describe("VirtualAlexa Tests Using JSON", function() {
     const intentSchema = {
         intents: [
             {
+                intent: "AFirstIntent",
+            },
+            {
                 intent: "AMAZON.CancelIntent",
             },
             {
@@ -172,6 +175,7 @@ describe("VirtualAlexa Tests Using JSON", function() {
     };
 
     const sampleUtterances = {
+        "AFirstIntent": ["default"],
         "AMAZON.CancelIntent": ["cancel it now"],
         "MultipleSlots": ["multiple {SlotA} and {SlotB}", "reversed {SlotB} then {SlotA}"],
         "Play": ["play", "play next", "play now", "PLAY case"],
@@ -222,14 +226,19 @@ describe("VirtualAlexa Tests Using JSON", function() {
             assert.equal(response.intent, "AMAZON.CancelIntent");
         });
 
-        it("Utters builtin intent not in schema", async () => {
-            const response = await virtualAlexa.utter("page up");
-            assert.equal(response.intent, "AMAZON.CancelIntent");
-        });
-
         it("Utters builtin intent with custom phrase", async () => {
             const response = await virtualAlexa.utter("cancel it now");
             assert.equal(response.intent, "AMAZON.CancelIntent");
+        });
+
+        it("Utters builtin intent not in schema", async () => {
+            const response = await virtualAlexa.utter("page up");
+            assert.equal(response.intent, "AFirstIntent");
+        });
+
+        it("Defaults to first phrase", async () => {
+            const response = await virtualAlexa.utter("nonexistent phrase");
+            assert.equal(response.intent, "AFirstIntent");
         });
 
         it("Utters phrases and maintains session", async () => {
