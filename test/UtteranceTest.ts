@@ -179,6 +179,20 @@ describe("UtteranceTest", function() {
             assert.equal(utterance.slotByName("number"), "19801");
         });
 
+        it("Matches a phrase with slot with long-form number value", () => {
+            let utterance = new Utterance(model, "one");
+            assert.isTrue(utterance.matched());
+            assert.equal(utterance.intent(), "NumberSlot");
+            assert.equal(utterance.slot(0), "1");
+            assert.equal(utterance.slotByName("number"), "1");
+
+            utterance = new Utterance(model, "Thirteen");
+            assert.equal(utterance.slotByName("number"), "13");
+
+            utterance = new Utterance(model, " ten ");
+            assert.equal(utterance.slotByName("number"), "10");
+        });
+
         it("Does not match a phrase with to a slot of number type", () => {
             const utterance = new Utterance(model, "19801a test");
             assert.equal(utterance.intent(), "MultipleSlots");
