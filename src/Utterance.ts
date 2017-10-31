@@ -43,9 +43,11 @@ export class Utterance {
 
     public toJSON(): any {
         const json: any = {};
-        for (let i = 0; i < this.slots.length; i++) {
-            const slotName = this.matchedSample.slotName(i);
-            json[slotName] = this.slot(i);
+        if (this.slots.length) {
+            for (let i = 0; i < this.slots.length; i++) {
+                const slotName = this.matchedSample.slotName(i);
+                json[slotName] = this.slot(i);
+            }
         }
         return json;
     }
