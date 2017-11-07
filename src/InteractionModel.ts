@@ -34,6 +34,11 @@ export class InteractionModel {
             languageModel = interactionModel.interactionModel.languageModel;
         }
 
+        // There is another version of the model from the interaction model builder
+        if ("languageModel" in interactionModel) {
+            languageModel = interactionModel.languageModel;
+        }
+
         const intents = languageModel.intents;
         for (const intent of intents) {
             // The name of the intent is on the property "name" instead of "intent" for the unified model

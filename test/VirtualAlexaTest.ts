@@ -22,6 +22,15 @@ describe("VirtualAlexa Tests Using Files", function() {
         assert.equal(response.intent, "TellMeMoreIntent");
     });
 
+    it("Parses the Interaction Model format V2 and does a simple utterance", async () => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test.resources.index.handler")
+            .interactionModelFile("./test/resources/LanguageModel.json")
+            .create();
+        const response  = await virtualAlexa.utter("contact info");
+        assert.equal(response.intent, "TellMeMoreIntent");
+    });
+
     it("Has a bad filename", () => {
         try {
             VirtualAlexa.Builder()

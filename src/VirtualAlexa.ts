@@ -27,7 +27,7 @@ export class VirtualAlexa {
     }
 
     public endSession(): Promise<any> {
-        return this.interactor.sessionEnded(SessionEndedReason.USER_INITIATED, this._filter);
+        return this.interactor.sessionEnded(SessionEndedReason.USER_INITIATED, undefined, this._filter);
     }
 
     /**
