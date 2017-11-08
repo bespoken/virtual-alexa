@@ -27,9 +27,6 @@ export class RemoteSkillInteractor extends SkillInteractor {
 
         return new Promise((resolve, reject) => {
             const req = httpModule.request(requestOptions, (response: any) => {
-                console.log(`STATUS: ${response.statusCode}`);
-                console.log(`HEADERS: ${JSON.stringify(response.headers)}`);
-
                 if (response.statusCode !== 200) {
                     reject("Invalid response: " + response.statusCode + " Message: " + response.statusMessage);
                     return;
