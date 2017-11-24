@@ -179,8 +179,7 @@ describe("VirtualAlexa Tests Using Unified Interaction Model", function() {
 
         const response = await virtualAlexa.utter("slotEmptySynonymArray value1");
         assert.equal(response.intent, "SlottedIntentEmptySynonymArray");
-        assert.equal(response.slot.value, "SlottedIntentEmptySynonymArray");
-
+        assert.equal(response.slot.value, "VALUE1");
     });
 });
 

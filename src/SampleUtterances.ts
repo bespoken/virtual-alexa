@@ -143,7 +143,7 @@ export class SamplePhrase {
         if (startIndex !== -1) {
             const endIndex = phrase.indexOf("}", startIndex);
             this.slotNames.push(phrase.substring(startIndex + 1, endIndex));
-            phrase = phrase.substring(0, startIndex).trim() + " (.*) " + phrase.substring(endIndex + 1).trim();
+            phrase = phrase.substring(0, startIndex).trim() + "(.*)" + phrase.substring(endIndex + 1).trim();
             phrase = this.phraseToRegex(phrase);
         }
 
@@ -166,7 +166,7 @@ export class SamplePhraseTest {
         this.matched = false;
         // If we have a regex match, check all the slots match their types
         if (matchArray) {
-            this.slotMatches = this.checkSlots(matchArray.slice(1));
+            this.slotMatches = this.checkSlots(matchArray[0], matchArray.slice(1));
             if (this.slotMatches) {
                 this.matched = true;
                 this.matchString = matchArray[0];
@@ -207,13 +207,22 @@ export class SamplePhraseTest {
         return values;
     }
 
-    private checkSlots(slotValues: string []): SlotMatch[] | undefined {
+    private checkSlots(input: string, slotValues: string []): SlotMatch[] | undefined {
         // Build an array of results - we want to pass back the exact value that matched (not change the case)
         const result = [];
         let index = 0;
 
         // We check each slot value against valid values
         for (const slotValue of slotValues) {
+            // If the whole of the match is not a slot, make sure there is a leading or trailing space on the slot
+            // This is to avoid matching a sample like "sample {slot}" with "sampleslot"
+            // Ideally, this would be done as a regex - seemingly possible, but the regex is very confusing
+            if (input !== slotValue) {
+                if (slotValue.trim().length > 0 && !slotValue.startsWith(" ") && !slotValue.endsWith(" ")) {
+                    return undefined;
+                }
+            }
+
             const slotName = this.samplePhrase.slotName(index);
             // Look up the slot type for the name
             const slotType = this.intentSchema().intent(this.samplePhrase.intent).slotForName(slotName);
