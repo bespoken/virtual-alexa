@@ -85,6 +85,13 @@ describe("VirtualAlexa Tests Using Unified Interaction Model", function() {
                 ],
             },
             {
+                name: "SlottedIntentEmptySynonymArray",
+                samples: ["slotEmptySynonymArray {SlotEmptySynonymArray}"],
+                slots: [
+                    {name: "SlotEmptySynonymArray", type: "SLOT_EMPTY_SYNONYM_ARRAY_TYPE"},
+                ],
+            },
+            {
                 name: "MultipleSlots",
                 samples: ["multiple {SlotA} and {SlotB}", "reversed {SlotB} then {SlotA}"],
                 slots: [
@@ -100,7 +107,20 @@ describe("VirtualAlexa Tests Using Unified Interaction Model", function() {
                 ],
             },
         ],
-        types: [{
+        types: [
+            {
+                name: "SLOT_EMPTY_SYNONYM_ARRAY_TYPE",
+                values: [
+                    {
+                        id: "null",
+                        name: {
+                            synonyms: [],
+                            value: "VALUE1",
+                        },
+                    },
+                ],
+            },
+            {
             name: "COUNTRY_CODE",
             values: [
                 {
@@ -149,6 +169,18 @@ describe("VirtualAlexa Tests Using Unified Interaction Model", function() {
 
         const response = await virtualAlexa.utter("custom DE");
         assert.equal(response.intent, "CustomSlot");
+    });
+
+    it("Utters slotted phrase with empty synonym array", async () => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test.resources.index.handler")
+            .interactionModel(interactionModel)
+            .create();
+
+        const response = await virtualAlexa.utter("slotEmptySynonymArray value1");
+        assert.equal(response.intent, "SlottedIntentEmptySynonymArray");
+        assert.equal(response.slot.value, "SlottedIntentEmptySynonymArray");
+
     });
 });
 
@@ -228,6 +260,13 @@ describe("VirtualAlexa Tests Using JSON", function() {
             assert.isDefined(response.slot);
             assert.equal(response.slot.name, "SlotName");
             assert.equal(response.slot.value, "my slot");
+        });
+
+        it("Utters slotted phrase with no space", async () => {
+            // Make sure our regular expression expects a space for between sample phrase and slot
+            const response = await virtualAlexa.utter("Slotmy slot");
+            assert.isDefined(response.intent);
+            assert.equal(response.intent, "AFirstIntent");
         });
 
         it("Utters builtin intent", async () => {

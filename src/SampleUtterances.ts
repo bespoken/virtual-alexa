@@ -143,7 +143,7 @@ export class SamplePhrase {
         if (startIndex !== -1) {
             const endIndex = phrase.indexOf("}", startIndex);
             this.slotNames.push(phrase.substring(startIndex + 1, endIndex));
-            phrase = phrase.substring(0, startIndex).trim() + "(.*)" + phrase.substring(endIndex + 1).trim();
+            phrase = phrase.substring(0, startIndex).trim() + " (.*) " + phrase.substring(endIndex + 1).trim();
             phrase = this.phraseToRegex(phrase);
         }
 
