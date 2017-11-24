@@ -56,7 +56,7 @@ export class SlotType implements ISlotType {
         let match: SlotMatch = new SlotMatch(false);
 
         for (const slotValue of this.values) {
-            // First check the name value - the name and the synonym are both valid matches
+            // First check the name value - the value and the synonyms are both valid matches
             // Refer here for definitive rules:
             //  https://developer.amazon.com/docs/custom-skills/
             //      define-synonyms-and-ids-for-slot-type-values-entity-resolution.html

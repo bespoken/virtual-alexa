@@ -137,6 +137,13 @@ describe("VirtualAlexa Tests Using Unified Interaction Model", function() {
                         value: "DE",
                     },
                 },
+                {
+                    id: "UK",
+                    name: {
+                        synonyms: ["United Kingdom", "England"],
+                        value: "UK",
+                    },
+                },
             ],
         }],
     };
@@ -180,6 +187,17 @@ describe("VirtualAlexa Tests Using Unified Interaction Model", function() {
         const response = await virtualAlexa.utter("slotEmptySynonymArray value1");
         assert.equal(response.intent, "SlottedIntentEmptySynonymArray");
         assert.equal(response.slot.value, "VALUE1");
+    });
+
+    it("Utters slotted phrase with different synonym array", async () => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test.resources.index.handler")
+            .interactionModel(interactionModel)
+            .create();
+
+        const response = await virtualAlexa.utter("custom UK");
+        assert.equal(response.intent, "CustomSlot");
+        assert.equal(response.slot.value, "UK");
     });
 });
 
