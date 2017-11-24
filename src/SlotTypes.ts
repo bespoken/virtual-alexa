@@ -54,17 +54,20 @@ export class SlotType implements ISlotType {
 
     public match(value: string) {
         let match: SlotMatch = new SlotMatch(false);
+
         for (const slotValue of this.values) {
-            if (slotValue.name.synonyms) {
+            // First check the name value - the value and the synonyms are both valid matches
+            // Refer here for definitive rules:
+            //  https://developer.amazon.com/docs/custom-skills/
+            //      define-synonyms-and-ids-for-slot-type-values-entity-resolution.html
+            if (slotValue.name.value.toLowerCase() === value) {
+                match = new SlotMatch(true, slotValue.name.value);
+            } else if (slotValue.name.synonyms) {
                 for (const synonym of slotValue.name.synonyms) {
                     if (synonym.toLowerCase() === value) {
                         match = new SlotMatch(true, slotValue.name.value, slotValue.id, synonym);
                         break;
                     }
-                }
-            } else {
-                if (slotValue.name.value.toLowerCase() === value) {
-                    match = new SlotMatch(true, slotValue.name.value);
                 }
             }
 
