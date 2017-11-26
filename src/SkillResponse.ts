@@ -9,6 +9,14 @@ export class SkillResponse {
         this.wrapJSON(rawJSON);
     }
 
+    public attr(key: string): string {
+        return _.get(this.sessionAttributes, key);
+    }
+
+    public attrs(...keys: string []): any {
+        return _.pick(this.sessionAttributes, keys);
+    }
+
     public card(): any | undefined {
         return _.get(this, "response.card");
     }
