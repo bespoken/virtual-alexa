@@ -9,10 +9,20 @@ export class SkillResponse {
         this.wrapJSON(rawJSON);
     }
 
+    /**
+     * Gets the named key from the session attributes
+     * @param {string} key
+     * @returns {string}
+     */
     public attr(key: string): string {
         return _.get(this.sessionAttributes, key);
     }
 
+    /**
+     * Gets the named set of keys from the session attributes - uses lodash "pick" function
+     * @param {string} keys
+     * @returns {any}
+     */
     public attrs(...keys: string []): any {
         return _.pick(this.sessionAttributes, keys);
     }
