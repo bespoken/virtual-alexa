@@ -1,5 +1,10 @@
 import * as _ from "lodash";
 
+/**
+ * Wrapper object for the Alexa Response.
+ *
+ * Provides a number of convenience methods for accessing it.
+ */
 export class SkillResponse {
     public response: any;
     public sessionAttributes?: any;
