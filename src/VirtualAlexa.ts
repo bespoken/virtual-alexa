@@ -88,6 +88,8 @@ export class VirtualAlexaBuilder {
     private _sampleUtterancesFile: string;
     /** @internal */
     private _skillURL: string;
+    /** @internal */
+    private _locale: string;
 
     /**
      * The application ID of the skill [Optional]
@@ -194,6 +196,16 @@ export class VirtualAlexaBuilder {
         return this;
     }
 
+    /**
+     * The Locale that is going to be tested
+     * @param {string} locale
+     * @returns {VirtualAlexaBuilder}
+     */
+    public locale(locale: string): VirtualAlexaBuilder {
+        this._locale = locale;
+        return this;
+    }
+
     public create(): VirtualAlexa {
         let model;
         if (this._interactionModel) {
@@ -217,9 +229,9 @@ export class VirtualAlexaBuilder {
 
         let interactor;
         if (this._handler) {
-            interactor = new LocalSkillInteractor(this._handler, model, this._applicationID);
+            interactor = new LocalSkillInteractor(this._handler, model, this._applicationID, this._locale);
         } else if (this._skillURL) {
-            interactor = new RemoteSkillInteractor(this._skillURL, model, this._applicationID);
+            interactor = new RemoteSkillInteractor(this._skillURL, model, this._applicationID, this._locale);
         } else {
             throw new Error("Either a handler or skillURL must be provided.");
         }

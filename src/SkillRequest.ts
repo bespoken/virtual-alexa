@@ -37,7 +37,7 @@ export class SkillRequest {
 
     private requestJSON: any = null;
     private requestType: string;
-    public constructor(private context: SkillContext, private locale?: string) {}
+    public constructor(private context: SkillContext) {}
 
     /**
      * Generates an intentName request with the specified IntentName
@@ -195,7 +195,7 @@ export class SkillRequest {
                 },
             },
             request: {
-                locale: "en-US",
+                locale: this.context.locale(),
                 requestId: requestID,
                 timestamp,
                 type: requestType,

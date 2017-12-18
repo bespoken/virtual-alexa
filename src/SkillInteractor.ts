@@ -24,9 +24,9 @@ export enum AlexaEvent {
 export abstract class SkillInteractor {
     protected skillContext: SkillContext = null;
 
-    public constructor(protected model: InteractionModel, applicationID?: string) {
+    public constructor(protected model: InteractionModel, applicationID?: string, locale?: string) {
         const audioPlayer = new AudioPlayer(this);
-        this.skillContext = new SkillContext(this.model, audioPlayer, applicationID);
+        this.skillContext = new SkillContext(this.model, audioPlayer, applicationID, locale);
         this.skillContext.newSession();
     }
 
