@@ -8,9 +8,40 @@ describe("VirtualAlexa Tests Using Files", function() {
             .sampleUtterancesFile("./test/resources/SampleUtterances.txt")
             .intentSchemaFile("./test/resources/IntentSchema.json")
             .create();
+
+        let requestToCheck: any;
+        assert(virtualAlexa.filter((request) => {
+            requestToCheck = request;
+        }));
+
+        const response  = await virtualAlexa.utter("play now");
+
+        assert.isDefined(response);
+
+        assert.isTrue(response.success);
+        assert.equal(virtualAlexa.context().locale(), "en-US");
+        assert.equal(requestToCheck.request.locale, "en-US");
+
+    });
+
+    it("Parses the files and does a simple utterance", async () => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test.resources.index.handler")
+            .sampleUtterancesFile("./test/resources/SampleUtterances.txt")
+            .intentSchemaFile("./test/resources/IntentSchema.json")
+            .locale("de-DE")
+            .create();
+
+        let requestToCheck: any;
+        assert(virtualAlexa.filter((request) => {
+            requestToCheck = request;
+        }));
         const response  = await virtualAlexa.utter("play now");
         assert.isDefined(response);
+
         assert.isTrue(response.success);
+        assert.equal(virtualAlexa.context().locale(), "de-DE");
+        assert.equal(requestToCheck.request.locale, "de-DE");
     });
 
     it("Parses the SMAPI format interaction model and does a simple utterance", async () => {
