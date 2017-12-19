@@ -62,6 +62,39 @@ describe("VirtualAlexa Tests Using Files", function() {
         assert.equal(response.intent, "TellMeMoreIntent");
     });
 
+    it("Parses the Interaction Model from a locale and does a simple utterance", async () => {
+        process.chdir("test/resources");
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("index.handler")
+            .locale("de-DE")
+            .create();
+        const response  = await virtualAlexa.utter("contact info");
+        assert.equal(response.intent, "TellMeMoreIntent");
+        process.chdir("../..");
+    });
+
+    it("Parses the Interaction Model from the default locale and does a simple utterance", async () => {
+        process.chdir("test/resources");
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("index.handler")
+            .create();
+        const response  = await virtualAlexa.utter("contact info");
+        assert.equal(response.intent, "TellMeMoreIntent");
+        process.chdir("../..");
+    });
+
+    it("Throws error when locale file is not present", async () => {
+        try {
+            const virtualAlexa = VirtualAlexa.Builder()
+                .handler("index.handler")
+                .create();
+            assert(false, "This should not be reached");
+
+        } catch (e) {
+            assert.isDefined(e);
+        }
+    });
+
     it("Has a bad filename", () => {
         try {
             VirtualAlexa.Builder()
