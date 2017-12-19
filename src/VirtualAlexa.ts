@@ -228,10 +228,12 @@ export class VirtualAlexaBuilder {
         }
 
         let interactor;
+        const locale = this._locale ? this._locale : "en-US";
+
         if (this._handler) {
-            interactor = new LocalSkillInteractor(this._handler, model, this._applicationID, this._locale);
+            interactor = new LocalSkillInteractor(this._handler, model, locale, this._applicationID);
         } else if (this._skillURL) {
-            interactor = new RemoteSkillInteractor(this._skillURL, model, this._applicationID, this._locale);
+            interactor = new RemoteSkillInteractor(this._skillURL, model, locale, this._applicationID);
         } else {
             throw new Error("Either a handler or skillURL must be provided.");
         }

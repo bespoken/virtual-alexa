@@ -25,8 +25,8 @@ export class SkillContext {
     /** @internal */
     public constructor(interactionModel: InteractionModel,
                        audioPlayer: AudioPlayer,
-                       private _applicationID?: string,
-                       private _locale?: string
+                       private _locale: string,
+                       private _applicationID?: string
     ) {
         this._audioPlayer = audioPlayer;
         this._interactionModel = interactionModel;
