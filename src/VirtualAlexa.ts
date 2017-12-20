@@ -208,6 +208,8 @@ export class VirtualAlexaBuilder {
 
     public create(): VirtualAlexa {
         let model;
+        const locale = this._locale ? this._locale : "en-US";
+
         if (this._interactionModel) {
             model = InteractionModel.fromJSON(this._interactionModel);
 
@@ -224,11 +226,16 @@ export class VirtualAlexaBuilder {
             const utterances = SampleUtterances.fromFile(this._sampleUtterancesFile);
             model = new InteractionModel(schema, utterances);
         } else {
-            throw new Error("Either an interaction model or intent schema and sample utterances must be provided.");
+            model = InteractionModel.fromLocale(locale);
+            if (!model) {
+                throw new Error(
+                    "Either an interaction model or intent schema and sample utterances must be provided.\n" +
+                    "Alternatively, if you specify a locale, Virtual Alexa will automatically check for the " +
+                    "interaction model under the directory \"./models\" - e.g., \"./models/en-US.json\"");
+            }
         }
 
         let interactor;
-        const locale = this._locale ? this._locale : "en-US";
 
         if (this._handler) {
             interactor = new LocalSkillInteractor(this._handler, model, locale, this._applicationID);
