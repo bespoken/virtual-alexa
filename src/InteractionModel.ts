@@ -67,6 +67,7 @@ export class InteractionModel {
 
         return InteractionModel.fromFile(modelPath);
     }
+
     public constructor(public intentSchema: IntentSchema,
                        public sampleUtterances: SampleUtterances,
                        public slotTypes?: SlotTypes) {

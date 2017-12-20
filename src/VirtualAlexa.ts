@@ -228,7 +228,10 @@ export class VirtualAlexaBuilder {
         } else {
             model = InteractionModel.fromLocale(locale);
             if (!model) {
-                throw new Error("Either an interaction model or intent schema and sample utterances must be provided.");
+                throw new Error(
+                    "Either an interaction model or intent schema and sample utterances must be provided.\n" +
+                    "Alternatively, if you specify a locale, Virtual Alexa will automatically check for the " +
+                    "interaction model under the directory \"./models\" - e.g., \"./models/en-US.json\"");
             }
         }
 
