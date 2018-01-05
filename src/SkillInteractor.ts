@@ -47,7 +47,7 @@ export abstract class SkillInteractor {
         if (!utterance.matched()) {
             const defaultPhrase = this.interactionModel().sampleUtterances.defaultUtterance();
             utterance = new Utterance(this.interactionModel(), defaultPhrase.phrase);
-            console.warn("No intentName matches utterance: " + utterance
+            console.warn("No intentName matches utterance: " + utteranceString
                 + ". Using fallback utterance: " + defaultPhrase.phrase);
         }
 
