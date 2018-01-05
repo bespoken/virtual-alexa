@@ -1,13 +1,17 @@
 import * as path from "path";
 
 export class ModuleInvoker {
-    public static invoke(handler: string, event: any): Promise<any> {
+    public static invokeHandler(handler: string, event: any): Promise<any> {
         const handlerParts = handler.split(".");
         const functionName = handlerParts[handlerParts.length - 1];
         const fileName = handlerParts.slice(0, handlerParts.length - 1).join("/") + ".js";
         const fullPath = path.join(process.cwd(), fileName);
         const handlerModule = require(fullPath);
 
+        return ModuleInvoker.invokeFunction(handlerModule[functionName], event);
+    }
+
+    public static invokeFunction(lambdaFunction: (...args: any[]) => void, event: any): Promise<any> {
         return new Promise<any>((resolve, reject) => {
             const callback = (error: Error, result: any) => {
                 if (error) {
@@ -18,8 +22,7 @@ export class ModuleInvoker {
             };
 
             const context = new LambdaContext(callback);
-
-            handlerModule[functionName](event, context, callback);
+            lambdaFunction(event, context, callback);
         });
     }
 }

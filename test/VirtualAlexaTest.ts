@@ -500,3 +500,26 @@ describe("VirtualAlexa Tests Using JSON", function() {
 
     });
 });
+
+describe("VirtualAlexa Tests Using Custom Function", function() {
+    describe("#launch", () => {
+        it("Launches with filter", async () => {
+            const myFunction = function(event: any, context: any) {
+                context.done(null, { custom: true });
+            };
+
+            const virtualAlexa = VirtualAlexa.Builder()
+                .handler(myFunction)
+                .sampleUtterancesFile("./test/resources/SampleUtterances.txt")
+                .intentSchemaFile("./test/resources/IntentSchema.json")
+                .create();
+
+            const reply = await virtualAlexa.filter((request) => {
+                request.session.sessionId = "Filtered";
+            }).launch();
+
+            assert.isTrue(reply.custom);
+        });
+
+    });
+});

@@ -73,7 +73,7 @@ export class VirtualAlexaBuilder {
     /** @internal */
     private _deviceID: string;
     /** @internal */
-    private _handler: string;
+    private _handler: string | ((...args: any[]) => void);
     /** @internal */
     private _intentSchema: any;
     /** @internal */
@@ -102,14 +102,14 @@ export class VirtualAlexaBuilder {
     }
 
     /**
-     * The name of the handler for a Lambda function to be called<br>
+     * The name of the handler, or the handler itself, for a Lambda function to be called<br>
      * The name should be in the format "index.handler" where:<br>
      * `index` is the name of the file - such as index.js<br>
      * `handler` is the name of the exported function to call on the file<br>
-     * @param {string} handlerName
+     * @param {string | Function} handlerName
      * @returns {VirtualAlexaBuilder}
      */
-    public handler(handlerName: string): VirtualAlexaBuilder {
+    public handler(handlerName: string | ((...args: any[]) => void)): VirtualAlexaBuilder {
         this._handler = handlerName;
         return this;
     }
