@@ -59,6 +59,15 @@ export class InteractionModel {
         return new InteractionModel(schema, samples, slotTypes);
     }
 
+    public static fromLocale(locale: string): InteractionModel {
+        const modelPath = "./models/" + locale + ".json";
+        if (!fs.existsSync(modelPath)) {
+            return undefined;
+        }
+
+        return InteractionModel.fromFile(modelPath);
+    }
+
     public constructor(public intentSchema: IntentSchema,
                        public sampleUtterances: SampleUtterances,
                        public slotTypes?: SlotTypes) {

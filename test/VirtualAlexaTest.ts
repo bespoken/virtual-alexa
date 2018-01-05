@@ -8,9 +8,40 @@ describe("VirtualAlexa Tests Using Files", function() {
             .sampleUtterancesFile("./test/resources/SampleUtterances.txt")
             .intentSchemaFile("./test/resources/IntentSchema.json")
             .create();
+
+        let requestToCheck: any;
+        assert(virtualAlexa.filter((request) => {
+            requestToCheck = request;
+        }));
+
+        const response  = await virtualAlexa.utter("play now");
+
+        assert.isDefined(response);
+
+        assert.isTrue(response.success);
+        assert.equal(virtualAlexa.context().locale(), "en-US");
+        assert.equal(requestToCheck.request.locale, "en-US");
+
+    });
+
+    it("Parses the files and does a simple utterance", async () => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test.resources.index.handler")
+            .sampleUtterancesFile("./test/resources/SampleUtterances.txt")
+            .intentSchemaFile("./test/resources/IntentSchema.json")
+            .locale("de-DE")
+            .create();
+
+        let requestToCheck: any;
+        assert(virtualAlexa.filter((request) => {
+            requestToCheck = request;
+        }));
         const response  = await virtualAlexa.utter("play now");
         assert.isDefined(response);
+
         assert.isTrue(response.success);
+        assert.equal(virtualAlexa.context().locale(), "de-DE");
+        assert.equal(requestToCheck.request.locale, "de-DE");
     });
 
     it("Parses the SMAPI format interaction model and does a simple utterance", async () => {
@@ -29,6 +60,39 @@ describe("VirtualAlexa Tests Using Files", function() {
             .create();
         const response  = await virtualAlexa.utter("contact info");
         assert.equal(response.intent, "TellMeMoreIntent");
+    });
+
+    it("Parses the Interaction Model from a locale and does a simple utterance", async () => {
+        process.chdir("test/resources");
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("index.handler")
+            .locale("de-DE")
+            .create();
+        const response  = await virtualAlexa.utter("contact info");
+        assert.equal(response.intent, "TellMeMoreIntent");
+        process.chdir("../..");
+    });
+
+    it("Parses the Interaction Model from the default locale and does a simple utterance", async () => {
+        process.chdir("test/resources");
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("index.handler")
+            .create();
+        const response  = await virtualAlexa.utter("contact info");
+        assert.equal(response.intent, "TellMeMoreIntent");
+        process.chdir("../..");
+    });
+
+    it("Throws error when locale file is not present", async () => {
+        try {
+            const virtualAlexa = VirtualAlexa.Builder()
+                .handler("index.handler")
+                .create();
+            assert(false, "This should not be reached");
+
+        } catch (e) {
+            assert.isDefined(e);
+        }
     });
 
     it("Has a bad filename", () => {

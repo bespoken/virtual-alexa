@@ -64,6 +64,7 @@ alexa.utter("play").then((payload) => {
 });
 ```
 
+### Virtual Alexa With Promises
 Here's a more in-depth example, in the form of a Jest unit test:
 ```
 test("Plays once", (done) => {
@@ -86,8 +87,40 @@ test("Plays once", (done) => {
     });
 });
 ```
-That's all there is to getting started. Take a look here for a full example:  
+You can see the full example this is taken from here:  
 https://github.com/bespoken/giftionary/blob/master/test/index.test.js
+
+### Virtual Alexa With Async/Await
+And here is one that uses async/await (which makes it even more readable):
+```
+it("Accepts responses without dollars", async function () {
+    const alexa = bvd.VirtualAlexa.Builder()
+        .handler("index.handler") // Lambda function file and name
+        .intentSchemaFile("./speechAssets/IntentSchema.json")
+        .sampleUtterancesFile("./speechAssets/SampleUtterances.txt")
+        .create();
+
+    const launchResponse = await alexa.launch();
+    assert.include(launchResponse.response.outputSpeech.ssml, "Welcome to guess the price");
+
+    const playerOneResponse = await alexa.utter("2");
+    assert.include(playerOneResponse.response.outputSpeech.ssml, "what is your name");
+    assert.include(playerOneResponse.response.outputSpeech.ssml, "contestant one");
+
+    const playerTwoResponse = await alexa.utter("john");
+    assert.include(playerTwoResponse.response.outputSpeech.ssml, "what is your name");
+    assert.include(playerTwoResponse.response.outputSpeech.ssml, "Contestant 2");
+
+    const gameStartResponse =  await alexa.utter("juan");
+    assert.include(gameStartResponse.response.outputSpeech.ssml, "let's start the game");
+    assert.include(gameStartResponse.response.outputSpeech.ssml, "Guess the price");
+
+    const priceGuessResponse = await alexa.utter("200");
+    assert.include(priceGuessResponse.response.outputSpeech.ssml, "the actual price was");
+});
+```
+This one is using Mocha (and Babel) - you can see the full example here:  
+https://github.com/bespoken/GuessThePrice/blob/master/test/index-test.js
 
 And read all the docs here:  
 https://bespoken.github.io/virtual-alexa/api/

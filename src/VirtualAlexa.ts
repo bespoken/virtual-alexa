@@ -88,6 +88,8 @@ export class VirtualAlexaBuilder {
     private _sampleUtterancesFile: string;
     /** @internal */
     private _skillURL: string;
+    /** @internal */
+    private _locale: string;
 
     /**
      * The application ID of the skill [Optional]
@@ -194,8 +196,20 @@ export class VirtualAlexaBuilder {
         return this;
     }
 
+    /**
+     * The Locale that is going to be tested
+     * @param {string} locale
+     * @returns {VirtualAlexaBuilder}
+     */
+    public locale(locale: string): VirtualAlexaBuilder {
+        this._locale = locale;
+        return this;
+    }
+
     public create(): VirtualAlexa {
         let model;
+        const locale = this._locale ? this._locale : "en-US";
+
         if (this._interactionModel) {
             model = InteractionModel.fromJSON(this._interactionModel);
 
@@ -212,14 +226,21 @@ export class VirtualAlexaBuilder {
             const utterances = SampleUtterances.fromFile(this._sampleUtterancesFile);
             model = new InteractionModel(schema, utterances);
         } else {
-            throw new Error("Either an interaction model or intent schema and sample utterances must be provided.");
+            model = InteractionModel.fromLocale(locale);
+            if (!model) {
+                throw new Error(
+                    "Either an interaction model or intent schema and sample utterances must be provided.\n" +
+                    "Alternatively, if you specify a locale, Virtual Alexa will automatically check for the " +
+                    "interaction model under the directory \"./models\" - e.g., \"./models/en-US.json\"");
+            }
         }
 
         let interactor;
+
         if (this._handler) {
-            interactor = new LocalSkillInteractor(this._handler, model, this._applicationID);
+            interactor = new LocalSkillInteractor(this._handler, model, locale, this._applicationID);
         } else if (this._skillURL) {
-            interactor = new RemoteSkillInteractor(this._skillURL, model, this._applicationID);
+            interactor = new RemoteSkillInteractor(this._skillURL, model, locale, this._applicationID);
         } else {
             throw new Error("Either a handler or skillURL must be provided.");
         }
