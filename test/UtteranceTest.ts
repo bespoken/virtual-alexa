@@ -98,6 +98,10 @@ describe("UtteranceTest", function() {
         SampleUtterances.fromJSON(sampleUtterances),
         new SlotTypes(slotTypes));
 
+    console.log("location: ", process.cwd());
+
+    const japaneseModel = InteractionModel.fromFile("./test/resources/japanese_skill/models/ja-JP.json");
+
     describe("#matchIntent", () => {
         it("Matches a simple phrase", () => {
             const utterance = new Utterance(model, "play");
@@ -202,6 +206,22 @@ describe("UtteranceTest", function() {
             const utterance = new Utterance(model, "1900 test");
             assert.isTrue(utterance.matched());
             assert.equal(utterance.intent(), "NumberSlot");
+        });
+
+        describe("Matches for International Languages", function() {
+            it("Matches a slotted phrase", () => {
+                const utterance = new Utterance(japaneseModel, "5人のプレーヤー");
+                assert.isTrue(utterance.matched());
+                assert.equal(utterance.intent(), "GetIntentWithSlot");
+                assert.equal(utterance.slot(0), "5");
+                assert.equal(utterance.slotByName("number"), "5");
+            });
+
+            it("Matches a slotted phrase, no slot value", () => {
+                const utterance = new Utterance(japaneseModel, "おはよう");
+                assert.isTrue(utterance.matched());
+                assert.equal(utterance.intent(), "GetIntent");
+            });
         });
     });
 });
