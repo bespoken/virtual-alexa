@@ -210,7 +210,7 @@ describe("UtteranceTest", function() {
 
         describe("Matches for International Languages", function() {
             it("Matches a slotted phrase", () => {
-                const utterance = new Utterance(japaneseModel, "5人のプレーヤー");
+                const utterance = new Utterance(japaneseModel, "5 人のプレーヤー");
                 assert.isTrue(utterance.matched());
                 assert.equal(utterance.intent(), "GetIntentWithSlot");
                 assert.equal(utterance.slot(0), "5");

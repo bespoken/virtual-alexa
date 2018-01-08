@@ -55,11 +55,10 @@ export class SampleUtterances {
     }
 
     public samplesForIntent(intent: string): SamplePhrase [] {
-        let samples: SamplePhrase[] = [];
-        if (intent in this.samples) {
-            samples = this.samples[intent];
+        if (!(intent in this.samples)) {
+            return [];
         }
-        return samples;
+        return this.samples[intent];
     }
 
     /**
@@ -160,8 +159,7 @@ export class SamplePhraseTest {
     private matchString: string;
 
     public constructor(public samplePhrase: SamplePhrase, private utterance: string) {
-        const cleanUtterance = utterance.replace(/[^0-9a-zA-Z ]/g, "");
-        const matchArray = cleanUtterance.match(samplePhrase.regex());
+        const matchArray = utterance.match(samplePhrase.regex());
 
         this.matched = false;
         // If we have a regex match, check all the slots match their types

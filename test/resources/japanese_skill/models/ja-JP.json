@@ -14,14 +14,6 @@
         "samples": []
       },
       {
-        "name": "GetIntent",
-        "samples": [
-          "a fact",
-          "おはよう"
-        ],
-        "slots": []
-      },
-      {
         "name": "GetIntentWithSlot",
 
         "samples": [
@@ -35,6 +27,14 @@
             "samples": []
           }
         ]
+      },
+      {
+        "name": "GetIntent",
+        "samples": [
+          "a fact",
+          "おはよう"
+        ],
+        "slots": []
       }
     ],
     "invocationName": "こんにちは世界"
