@@ -58,7 +58,7 @@ describe("UtteranceTest", function() {
 
     const sampleUtterances = {
         CustomSlot: ["{country}"],
-        Hello: ["hi", "hello", "hi there"],
+        Hello: ["hi", "hello", "hi there", "good morning"],
         MultipleSlots: ["multiple {SlotA} and {SlotB}", "reversed {SlotB} then {SlotA}", "{SlotA}"],
         NumberSlot: ["{number}", "{number} test"],
         Play: ["play", "play next", "play now"],
@@ -206,6 +206,12 @@ describe("UtteranceTest", function() {
             const utterance = new Utterance(model, "1900 test");
             assert.isTrue(utterance.matched());
             assert.equal(utterance.intent(), "NumberSlot");
+        });
+
+        it("Matches with symbols in the phrase", () => {
+            const utterance = new Utterance(model, "good? #%.morning");
+            assert.isTrue(utterance.matched());
+            assert.equal(utterance.intent(), "Hello");
         });
 
         describe("Matches for International Languages", function() {
