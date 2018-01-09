@@ -159,8 +159,8 @@ export class SamplePhraseTest {
     private matchString: string;
 
     public constructor(public samplePhrase: SamplePhrase, private utterance: string) {
-        const cleanUtterane = utterance.replace(/[!"¿?|#$%/()=+-_<>*{}·¡[]/g, "");
-        const matchArray = cleanUtterane.match(samplePhrase.regex());
+        const cleanUtterance = utterance.replace(/[\!\"\¿\?|\#\$\%\/\(\)\=\+\-\_\<\>\*\{\}\·\¡\[\]\.]/g, "");
+        const matchArray = cleanUtterance.match(samplePhrase.regex());
 
         this.matched = false;
         // If we have a regex match, check all the slots match their types
