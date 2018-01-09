@@ -214,6 +214,12 @@ describe("UtteranceTest", function() {
             assert.equal(utterance.intent(), "Hello");
         });
 
+        it("Matches with punctuation in the phrase", () => {
+            const utterance = new Utterance(model, "good, -morning:");
+            assert.isTrue(utterance.matched());
+            assert.equal(utterance.intent(), "Hello");
+        });
+
         describe("Matches for International Languages", function() {
             it("Matches a slotted phrase", () => {
                 const utterance = new Utterance(japaneseModel, "5 人のプレーヤー");

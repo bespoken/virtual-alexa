@@ -159,7 +159,7 @@ export class SamplePhraseTest {
     private matchString: string;
 
     public constructor(public samplePhrase: SamplePhrase, private utterance: string) {
-        const cleanUtterance = utterance.replace(/[\!\"\¿\?|\#\$\%\/\(\)\=\+\-\_\<\>\*\{\}\·\¡\[\]\.]/g, "");
+        const cleanUtterance = utterance.replace(/[\!\"\¿\?|\#\$\%\/\(\)\=\+\-\_\<\>\*\{\}\·\¡\[\]\.\,\;\:]/g, "");
         const matchArray = cleanUtterance.match(samplePhrase.regex());
 
         this.matched = false;
