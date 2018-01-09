@@ -1,0 +1,42 @@
+{
+  "languageModel": {
+    "intents": [
+      {
+        "name": "AMAZON.CancelIntent",
+        "samples": []
+      },
+      {
+        "name": "AMAZON.HelpIntent",
+        "samples": []
+      },
+      {
+        "name": "AMAZON.StopIntent",
+        "samples": []
+      },
+      {
+        "name": "GetIntentWithSlot",
+
+        "samples": [
+          "{number}人のプレーヤー",
+          "{number} 人のプレーヤー"
+        ],
+        "slots": [
+          {
+            "name": "number",
+            "type": "AMAZON.Number",
+            "samples": []
+          }
+        ]
+      },
+      {
+        "name": "GetIntent",
+        "samples": [
+          "a fact",
+          "おはよう"
+        ],
+        "slots": []
+      }
+    ],
+    "invocationName": "こんにちは世界"
+  }
+}

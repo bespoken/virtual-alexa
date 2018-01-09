@@ -58,7 +58,7 @@ describe("UtteranceTest", function() {
 
     const sampleUtterances = {
         CustomSlot: ["{country}"],
-        Hello: ["hi", "hello", "hi there"],
+        Hello: ["hi", "hello", "hi there", "good morning"],
         MultipleSlots: ["multiple {SlotA} and {SlotB}", "reversed {SlotB} then {SlotA}", "{SlotA}"],
         NumberSlot: ["{number}", "{number} test"],
         Play: ["play", "play next", "play now"],
@@ -97,6 +97,10 @@ describe("UtteranceTest", function() {
     const model = new InteractionModel(IntentSchema.fromJSON(intentSchema),
         SampleUtterances.fromJSON(sampleUtterances),
         new SlotTypes(slotTypes));
+
+    console.log("location: ", process.cwd());
+
+    const japaneseModel = InteractionModel.fromFile("./test/resources/japanese_skill/models/ja-JP.json");
 
     describe("#matchIntent", () => {
         it("Matches a simple phrase", () => {
@@ -202,6 +206,34 @@ describe("UtteranceTest", function() {
             const utterance = new Utterance(model, "1900 test");
             assert.isTrue(utterance.matched());
             assert.equal(utterance.intent(), "NumberSlot");
+        });
+
+        it("Matches with symbols in the phrase", () => {
+            const utterance = new Utterance(model, "good? #%.morning");
+            assert.isTrue(utterance.matched());
+            assert.equal(utterance.intent(), "Hello");
+        });
+
+        it("Matches with punctuation in the phrase", () => {
+            const utterance = new Utterance(model, "good, -morning:");
+            assert.isTrue(utterance.matched());
+            assert.equal(utterance.intent(), "Hello");
+        });
+
+        describe("Matches for International Languages", function() {
+            it("Matches a slotted phrase", () => {
+                const utterance = new Utterance(japaneseModel, "5 人のプレーヤー");
+                assert.isTrue(utterance.matched());
+                assert.equal(utterance.intent(), "GetIntentWithSlot");
+                assert.equal(utterance.slot(0), "5");
+                assert.equal(utterance.slotByName("number"), "5");
+            });
+
+            it("Matches a slotted phrase, no slot value", () => {
+                const utterance = new Utterance(japaneseModel, "おはよう");
+                assert.isTrue(utterance.matched());
+                assert.equal(utterance.intent(), "GetIntent");
+            });
         });
     });
 });
