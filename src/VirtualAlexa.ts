@@ -1,3 +1,4 @@
+import {AudioPlayer} from "./AudioPlayer";
 import {IntentSchema} from "./IntentSchema";
 import {InteractionModel} from "./InteractionModel";
 import {LocalSkillInteractor} from "./LocalSkillInteractor";
@@ -12,6 +13,10 @@ export class VirtualAlexa {
         return new VirtualAlexaBuilder();
     }
 
+    /** @internal */
+    private _audioPlayer: AudioPlayer;
+
+    /** @internal */
     private _filter: RequestFilter;
 
     /** @internal */
@@ -20,6 +25,11 @@ export class VirtualAlexa {
     /** @internal */
     public constructor(interactor: SkillInteractor) {
         this.interactor = interactor;
+    }
+
+    // Provides access to the AudioPlayer object, for sending audio requests
+    public audioPlayer(): AudioPlayer {
+        return this.interactor.context().audioPlayer();
     }
 
     public context(): SkillContext {
@@ -70,8 +80,6 @@ export type RequestFilter = (request: any) => void;
 export class VirtualAlexaBuilder {
     /** @internal */
     private _applicationID: string;
-    /** @internal */
-    private _deviceID: string;
     /** @internal */
     private _handler: string | ((...args: any[]) => void);
     /** @internal */
@@ -148,7 +156,7 @@ export class VirtualAlexaBuilder {
 
     /**
      * File path that contains to the new, unified interaction model
-     * @param json
+     * @param filePath
      * @returns {VirtualAlexaBuilder}
      */
     public interactionModelFile(filePath: string): VirtualAlexaBuilder {
@@ -166,7 +174,7 @@ export class VirtualAlexaBuilder {
      *      "IntentTwo": ["AnotherSample"]
      * }
      * ```
-     * @param json
+     * @param utterances
      * @returns {VirtualAlexaBuilder}
      */
     public sampleUtterances(utterances: any): VirtualAlexaBuilder {
@@ -245,7 +253,6 @@ export class VirtualAlexaBuilder {
             throw new Error("Either a handler or skillURL must be provided.");
         }
 
-        const alexa = new VirtualAlexa(interactor);
-        return alexa;
+        return new VirtualAlexa(interactor);
     }
 }

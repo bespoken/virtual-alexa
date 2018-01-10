@@ -67,7 +67,6 @@ export class SkillContext {
         return this._locale ? this._locale : "en-US";
     }
 
-    /** @internal */
     public audioPlayer(): AudioPlayer {
         return this._audioPlayer;
     }

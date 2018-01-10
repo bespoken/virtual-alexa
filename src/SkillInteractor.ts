@@ -104,6 +104,11 @@ export abstract class SkillInteractor {
         }
 
         const result: any = await this.invoke(requestJSON);
+
+        if (result.response !== undefined && result.response.directives !== undefined) {
+            this.context().audioPlayer().directivesReceived(result.response.directives);
+        }
+
         if (this.context().activeSession()) {
             this.context().session().used();
             if (result && result.response && result.response.shouldEndSession) {
