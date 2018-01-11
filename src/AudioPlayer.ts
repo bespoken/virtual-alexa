@@ -45,7 +45,6 @@ export class AudioPlayer {
     }
 
     public once(audioPlayerRequest: string, listener: (...args: any[]) => void) {
-
         this._emitter.once(audioPlayerRequest, listener);
     }
 
@@ -83,20 +82,34 @@ export class AudioPlayer {
         return this.audioPlayerRequest(RequestType.AUDIO_PLAYER_PLAYBACK_STARTED);
     }
 
+    /**
+     * The currently playing track
+     * @returns {AudioItem}
+     */
     public playing(): AudioItem {
         return this._playing;
     }
 
+    /**
+     * Emulates the device begin playback again after finishing handling an utterance
+     */
     public resume() {
         this._suspended = false;
         this.playbackStarted();
     }
 
+    /**
+     * Emulates the device stopping playback while handling an utterance
+     */
     public suspend() {
         this._suspended = true;
         this.playbackStopped();
     }
 
+    /**
+     * Is the AudioPlayer stopped due to handling an utterance
+     * @returns {boolean}
+     */
     public suspended(): boolean {
         return this._suspended;
     }
@@ -112,14 +125,19 @@ export class AudioPlayer {
         }
     }
 
-    private audioPlayerRequest(requestType: string): Promise<any> {
+    private async audioPlayerRequest(requestType: string): Promise<any> {
         const nowPlaying = this.playing();
         const serviceRequest = new SkillRequest(this.skillInstance.context());
         serviceRequest.audioPlayerRequest(requestType, nowPlaying.stream.token, nowPlaying.stream.offsetInMilliseconds);
-        return this.skillInstance.callSkill(serviceRequest).then((o: any) => {
+        const reply = await this.skillInstance.callSkill(serviceRequest);
+
+        // Call the emitter on the next go-round
+        // We do want to return to the caller first, thus the setImmediate
+        setImmediate(() => {
             this._emitter.emit(requestType, nowPlaying.clone());
-            return o;
         });
+
+        return reply;
     }
 
     private enqueue(audioItem: AudioItem, playBehavior: string) {
