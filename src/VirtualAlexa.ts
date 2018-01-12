@@ -14,12 +14,6 @@ export class VirtualAlexa {
     }
 
     /** @internal */
-    private _audioPlayer: AudioPlayer;
-
-    /** @internal */
-    private _filter: RequestFilter;
-
-    /** @internal */
     private interactor: SkillInteractor;
 
     /** @internal */
@@ -37,7 +31,7 @@ export class VirtualAlexa {
     }
 
     public endSession(): Promise<any> {
-        return this.interactor.sessionEnded(SessionEndedReason.USER_INITIATED, undefined, this._filter);
+        return this.interactor.sessionEnded(SessionEndedReason.USER_INITIATED, undefined);
     }
 
     /**
@@ -46,20 +40,20 @@ export class VirtualAlexa {
      * @returns {VirtualAlexa}
      */
     public filter(requestFilter: RequestFilter): VirtualAlexa {
-        this._filter = requestFilter;
+        this.interactor.filter(requestFilter);
         return this;
     }
 
     public intend(intentName: string, slots?: {[id: string]: string}): Promise<any> {
-        return this.interactor.intended(intentName, slots, this._filter);
+        return this.interactor.intended(intentName, slots);
     }
 
     public launch(): Promise<any> {
-        return this.interactor.launched(this._filter);
+        return this.interactor.launched();
     }
 
     public utter(utterance: string): Promise<any> {
-        return this.interactor.spoken(utterance, this._filter);
+        return this.interactor.spoken(utterance);
     }
 }
 

@@ -24,10 +24,15 @@ export class AudioPlayer {
     public static PLAY_BEHAVIOR_ENQUEUE = "ENQUEUE";
     public static PLAY_BEHAVIOR_REPLACE_ENQUEUED = "REPLACE_ENQUEUED";
 
+    /** @internal */
     private _emitter: EventEmitter = null;
+    /** @internal */
     private _playing: AudioItem = null;
+    /** @internal */
     private _queue: AudioItem[] = [];
+    /** @internal */
     private _activity: AudioPlayerActivity = null;
+    /** @internal */
     private _suspended: boolean = false;
 
     /** @internal */
@@ -36,16 +41,20 @@ export class AudioPlayer {
         this._emitter = new EventEmitter();
     }
 
+    /**
+     * The current state of the AudioPlayer
+     * @returns {AudioPlayerActivity}
+     */
     public activity(): AudioPlayerActivity {
         return this._activity;
     }
 
-    public on(audioPlayerRequest: string, listener: (...args: any[]) => void) {
-        this._emitter.on(audioPlayerRequest, listener);
-    }
-
-    public once(audioPlayerRequest: string, listener: (...args: any[]) => void) {
-        this._emitter.once(audioPlayerRequest, listener);
+    /**
+     * Convenience method to check if the AudioPlayer is playing
+     * @returns {boolean}
+     */
+    public isPlaying(): boolean {
+        return (this._activity === AudioPlayerActivity.PLAYING);
     }
 
     /**
@@ -79,7 +88,7 @@ export class AudioPlayer {
 
     public playbackStopped(): Promise<any> {
         this._activity = AudioPlayerActivity.STOPPED;
-        return this.audioPlayerRequest(RequestType.AUDIO_PLAYER_PLAYBACK_STARTED);
+        return this.audioPlayerRequest(RequestType.AUDIO_PLAYER_PLAYBACK_STOPPED);
     }
 
     /**
@@ -95,7 +104,9 @@ export class AudioPlayer {
      */
     public resume() {
         this._suspended = false;
-        this.playbackStarted();
+        if (!this.isPlaying()) {
+            this.playbackStarted();
+        }
     }
 
     /**
@@ -112,10 +123,6 @@ export class AudioPlayer {
      */
     public suspended(): boolean {
         return this._suspended;
-    }
-
-    public isPlaying(): boolean {
-        return (this._activity === AudioPlayerActivity.PLAYING);
     }
 
     /** @internal */
