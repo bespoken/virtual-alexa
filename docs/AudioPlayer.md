@@ -1,5 +1,4 @@
 # Virtual Alexa and the Audio Player
-
 Virtual Alexa emulates the Alexa AudioPlayer interface.
 
 It does this via:
@@ -22,7 +21,7 @@ The internal state of the AudioPlayer can be inspected by calling:
 * virtualAlexa.audioPlayer.playing()
 Returns the current track playing
 * virtualAlexa.audioPlayer.activity()
-The current state of the AudioPlayer (PLAYING, IDLE,
+The current state of the AudioPlayer (PLAYING, IDLE, STOPPED, etc.
 
 ## Example Unit Test
 ```
