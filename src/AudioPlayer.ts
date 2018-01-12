@@ -42,14 +42,6 @@ export class AudioPlayer {
     }
 
     /**
-     * The current state of the AudioPlayer
-     * @returns {AudioPlayerActivity}
-     */
-    public activity(): AudioPlayerActivity {
-        return this._activity;
-    }
-
-    /**
      * Convenience method to check if the AudioPlayer is playing
      * @returns {boolean}
      */
@@ -89,6 +81,14 @@ export class AudioPlayer {
     public playbackStopped(): Promise<any> {
         this._activity = AudioPlayerActivity.STOPPED;
         return this.audioPlayerRequest(RequestType.AUDIO_PLAYER_PLAYBACK_STOPPED);
+    }
+
+    /**
+     * The current state of the AudioPlayer
+     * @returns {AudioPlayerActivity}
+     */
+    public playerActivity(): AudioPlayerActivity {
+        return this._activity;
     }
 
     /**

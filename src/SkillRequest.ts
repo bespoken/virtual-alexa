@@ -158,13 +158,13 @@ export class SkillRequest {
         // For intent, launch and session ended requests, send the audio player state if there is one
         if (this.requiresSession()) {
             if (this.context.audioPlayerEnabled()) {
-                const activity = AudioPlayerActivity[this.context.audioPlayer().activity()];
+                const activity = AudioPlayerActivity[this.context.audioPlayer().playerActivity()];
                 this.requestJSON.context.AudioPlayer = {
                     playerActivity: activity,
                 };
 
                 // Anything other than IDLE, we send token and offset
-                if (this.context.audioPlayer().activity() !== AudioPlayerActivity.IDLE) {
+                if (this.context.audioPlayer().playerActivity() !== AudioPlayerActivity.IDLE) {
                     const playing = this.context.audioPlayer().playing();
                     this.requestJSON.context.AudioPlayer.token = playing.stream.token;
                     this.requestJSON.context.AudioPlayer.offsetInMilliseconds = playing.stream.offsetInMilliseconds;
