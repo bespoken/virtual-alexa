@@ -28,7 +28,6 @@ SimplePlayer.prototype.handle = function () {
     var userId = this.event.context ? this.event.context.System.user.userId : this.event.session.user.userId;
     var podcastIndex;
 
-    console.log("RequestType: " + requestType);
     // On launch, we tell the user what they can do (Play audio :-))
     if (requestType === "LaunchRequest") {
         this.say("Welcome to the Simple Audio Player. Say Play to play some audio!", "You can say Play");

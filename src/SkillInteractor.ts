@@ -80,12 +80,8 @@ export abstract class SkillInteractor {
      * @param intentName
      * @param slots
      */
-    public intended(intentName: string, slots?: any): Promise<any> {
-        try {
-            return this.callSkillWithIntent(intentName, slots);
-        } catch (e) {
-            return Promise.reject(e);
-        }
+    public async intended(intentName: string, slots?: any): Promise<any> {
+        return this.callSkillWithIntent(intentName, slots);
     }
 
     public filter(requestFilter: RequestFilter): void {
