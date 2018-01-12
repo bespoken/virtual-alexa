@@ -44,6 +44,9 @@ SimplePlayer.prototype.handle = function () {
         if (intent.name === "Play") {
             this.play(podcastFeed[podcastIndex], 0, "REPLACE_ALL", podcastIndex);
 
+        } if (intent.name === "Ignore") {
+            this.say("Ignoring", "You can say Play");
+
         } else if (intent.name === "AMAZON.NextIntent") {
             // If we have reached the end of the feed, start back at the beginning
             podcastIndex >= podcastFeed.length - 1 ? podcastIndex = 0 : podcastIndex++;

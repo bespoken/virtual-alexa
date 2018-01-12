@@ -78,14 +78,20 @@ describe("AudioPlayer launches and plays a track", function() {
             result = await virtualAlexa.utter("previous");
             assert.include(result.response.directives[0].audioItem.stream.url, "episode-013");
 
+            // Make sure that audio stops and starts on an "ignored" intent
+            result = await virtualAlexa.utter("ignore");
+
             assert.equal(requests[0].type, "LaunchRequest");
             assert.equal(requests[1].type, "IntentRequest");
             assert.equal(requests[2].type, "AudioPlayer.PlaybackStarted");
             assert.equal(requests[3].type, "AudioPlayer.PlaybackStopped");
             assert.equal(requests[4].type, "IntentRequest");
             assert.equal(requests[5].type, "AudioPlayer.PlaybackStarted");
+            assert.equal(requests[6].type, "AudioPlayer.PlaybackStopped");
+            assert.equal(requests[7].type, "IntentRequest");
+            assert.equal(requests[8].type, "AudioPlayer.PlaybackStarted");
         } catch (e) {
-            console.log(e);
+            assert.fail(e);
         }
 
     });
