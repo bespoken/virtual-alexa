@@ -6,7 +6,7 @@
 export class AudioItem {
     public stream: AudioItemStream;
 
-    public constructor (private _json: any) {
+    public constructor(private _json: any) {
         this.stream = new AudioItemStream();
         this.stream.url = _json.stream.url;
         this.stream.token = _json.stream.token;

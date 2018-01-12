@@ -1,3 +1,4 @@
+import {AudioPlayer} from "./AudioPlayer";
 import {IntentSchema} from "./IntentSchema";
 import {InteractionModel} from "./InteractionModel";
 import {LocalSkillInteractor} from "./LocalSkillInteractor";
@@ -12,8 +13,6 @@ export class VirtualAlexa {
         return new VirtualAlexaBuilder();
     }
 
-    private _filter: RequestFilter;
-
     /** @internal */
     private interactor: SkillInteractor;
 
@@ -22,12 +21,17 @@ export class VirtualAlexa {
         this.interactor = interactor;
     }
 
+    // Provides access to the AudioPlayer object, for sending audio requests
+    public audioPlayer(): AudioPlayer {
+        return this.interactor.context().audioPlayer();
+    }
+
     public context(): SkillContext {
         return this.interactor.context();
     }
 
     public endSession(): Promise<any> {
-        return this.interactor.sessionEnded(SessionEndedReason.USER_INITIATED, undefined, this._filter);
+        return this.interactor.sessionEnded(SessionEndedReason.USER_INITIATED, undefined);
     }
 
     /**
@@ -36,20 +40,20 @@ export class VirtualAlexa {
      * @returns {VirtualAlexa}
      */
     public filter(requestFilter: RequestFilter): VirtualAlexa {
-        this._filter = requestFilter;
+        this.interactor.filter(requestFilter);
         return this;
     }
 
     public intend(intentName: string, slots?: {[id: string]: string}): Promise<any> {
-        return this.interactor.intended(intentName, slots, this._filter);
+        return this.interactor.intended(intentName, slots);
     }
 
     public launch(): Promise<any> {
-        return this.interactor.launched(this._filter);
+        return this.interactor.launched();
     }
 
     public utter(utterance: string): Promise<any> {
-        return this.interactor.spoken(utterance, this._filter);
+        return this.interactor.spoken(utterance);
     }
 }
 
@@ -70,8 +74,6 @@ export type RequestFilter = (request: any) => void;
 export class VirtualAlexaBuilder {
     /** @internal */
     private _applicationID: string;
-    /** @internal */
-    private _deviceID: string;
     /** @internal */
     private _handler: string | ((...args: any[]) => void);
     /** @internal */
@@ -148,7 +150,7 @@ export class VirtualAlexaBuilder {
 
     /**
      * File path that contains to the new, unified interaction model
-     * @param json
+     * @param filePath
      * @returns {VirtualAlexaBuilder}
      */
     public interactionModelFile(filePath: string): VirtualAlexaBuilder {
@@ -166,7 +168,7 @@ export class VirtualAlexaBuilder {
      *      "IntentTwo": ["AnotherSample"]
      * }
      * ```
-     * @param json
+     * @param utterances
      * @returns {VirtualAlexaBuilder}
      */
     public sampleUtterances(utterances: any): VirtualAlexaBuilder {
@@ -245,7 +247,6 @@ export class VirtualAlexaBuilder {
             throw new Error("Either a handler or skillURL must be provided.");
         }
 
-        const alexa = new VirtualAlexa(interactor);
-        return alexa;
+        return new VirtualAlexa(interactor);
     }
 }

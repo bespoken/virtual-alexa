@@ -125,6 +125,9 @@ https://github.com/bespoken/GuessThePrice/blob/master/test/index-test.js
 And read all the docs here:  
 https://bespoken.github.io/virtual-alexa/api/
 
+## AudioPlayer Interface
+We also support the AudioPlayer! [Read more here](https://github.com/bespoken/virtual-alexa/blob/master/docs/AudioPlayer.md).
+
 ## How Do I Talk To You?
 Easy, you can open [an issue here](https://github.com/bespoken/virtual-alexa/issues), or find us on [our Gitter](https://gitter.im/bespoken/virtual-alexa).
 
