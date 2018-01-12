@@ -16,29 +16,43 @@ export enum AudioPlayerActivity {
  * Emulates the behavior of the audio player
  */
 export class AudioPlayer {
-    public static DIRECTIVE_PLAY = "AudioPlayer.Play";
-    public static DIRECTIVE_STOP = "AudioPlayer.Stop";
-    public static DIRECTIVE_CLEAR_QUEUE = "AudioPlayer.ClearQueue";
-
-    public static PLAY_BEHAVIOR_REPLACE_ALL = "REPLACE_ALL";
-    public static PLAY_BEHAVIOR_ENQUEUE = "ENQUEUE";
-    public static PLAY_BEHAVIOR_REPLACE_ENQUEUED = "REPLACE_ENQUEUED";
+    /** @internal */
+    private static DIRECTIVE_PLAY = "AudioPlayer.Play";
 
     /** @internal */
-    private _emitter: EventEmitter = null;
+    private static DIRECTIVE_STOP = "AudioPlayer.Stop";
+
+    /** @internal */
+    private static DIRECTIVE_CLEAR_QUEUE = "AudioPlayer.ClearQueue";
+
+    /** @internal */
+    private static PLAY_BEHAVIOR_REPLACE_ALL = "REPLACE_ALL";
+
+    /** @internal */
+    private static PLAY_BEHAVIOR_ENQUEUE = "ENQUEUE";
+
+    /** @internal */
+    private static PLAY_BEHAVIOR_REPLACE_ENQUEUED = "REPLACE_ENQUEUED";
+
+    /** @internal */
+    private _interactor: SkillInteractor;
+
     /** @internal */
     private _playing: AudioItem = null;
+
     /** @internal */
     private _queue: AudioItem[] = [];
+
     /** @internal */
     private _activity: AudioPlayerActivity = null;
+
     /** @internal */
     private _suspended: boolean = false;
 
     /** @internal */
-    public constructor(public skillInstance: SkillInteractor) {
+    public constructor(_interactor: SkillInteractor) {
         this._activity = AudioPlayerActivity.IDLE;
-        this._emitter = new EventEmitter();
+        this._interactor = _interactor;
     }
 
     /**
@@ -134,17 +148,9 @@ export class AudioPlayer {
 
     private async audioPlayerRequest(requestType: string): Promise<any> {
         const nowPlaying = this.playing();
-        const serviceRequest = new SkillRequest(this.skillInstance.context());
+        const serviceRequest = new SkillRequest(this._interactor.context());
         serviceRequest.audioPlayerRequest(requestType, nowPlaying.stream.token, nowPlaying.stream.offsetInMilliseconds);
-        const reply = await this.skillInstance.callSkill(serviceRequest);
-
-        // Call the emitter on the next go-round
-        // We do want to return to the caller first, thus the setImmediate
-        setImmediate(() => {
-            this._emitter.emit(requestType, nowPlaying.clone());
-        });
-
-        return reply;
+        return this._interactor.callSkill(serviceRequest);
     }
 
     private enqueue(audioItem: AudioItem, playBehavior: string) {
@@ -199,7 +205,7 @@ export class AudioPlayer {
         this._playing = this.dequeue();
         // If the URL for AudioItem is http, we throw an error
         if (this._playing.stream.url.startsWith("http:")) {
-            this.skillInstance.sessionEnded(SessionEndedReason.ERROR, {
+            this._interactor.sessionEnded(SessionEndedReason.ERROR, {
                 message: "The URL specified in the Play directive must be HTTPS",
                 type: "INVALID_RESPONSE",
             });

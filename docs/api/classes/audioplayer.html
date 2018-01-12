@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>SkillContext | Bespoken Virtual Alexa</title>
+	<title>AudioPlayer | Bespoken Virtual Alexa</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -52,10 +52,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="skillcontext.html">SkillContext</a>
+					<a href="audioplayer.html">AudioPlayer</a>
 				</li>
 			</ul>
-			<h1>Class SkillContext</h1>
+			<h1>Class AudioPlayer</h1>
 		</div>
 	</div>
 </header>
@@ -65,17 +65,15 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Manages state of the Alexa device interaction across sessions.</p>
+						<p>Emulates the behavior of the audio player</p>
 					</div>
-					<p>Holds information about the user, the current session, as well as the AudioPlayer, if in use.</p>
-					<p>To emulate a user with a linked account, set the access token property.</p>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">SkillContext</span>
+						<span class="target">AudioPlayer</span>
 					</li>
 				</ul>
 			</section>
@@ -86,25 +84,24 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="skillcontext.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="audioplayer.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="skillcontext.html#accesstoken" class="tsd-kind-icon">access<wbr>Token</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="skillcontext.html#activesession" class="tsd-kind-icon">active<wbr>Session</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="skillcontext.html#applicationid" class="tsd-kind-icon">applicationID</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="skillcontext.html#audioplayer" class="tsd-kind-icon">audio<wbr>Player</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="skillcontext.html#audioplayerenabled" class="tsd-kind-icon">audio<wbr>Player<wbr>Enabled</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="skillcontext.html#device" class="tsd-kind-icon">device</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="skillcontext.html#endsession" class="tsd-kind-icon">end<wbr>Session</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="skillcontext.html#interactionmodel" class="tsd-kind-icon">interaction<wbr>Model</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="skillcontext.html#locale" class="tsd-kind-icon">locale</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="skillcontext.html#newsession" class="tsd-kind-icon">new<wbr>Session</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="skillcontext.html#session" class="tsd-kind-icon">session</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="skillcontext.html#setaccesstoken" class="tsd-kind-icon">set<wbr>Access<wbr>Token</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="skillcontext.html#user" class="tsd-kind-icon">user</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioplayer.html#directivesreceived" class="tsd-kind-icon">directives<wbr>Received</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioplayer.html#isplaying" class="tsd-kind-icon">is<wbr>Playing</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioplayer.html#playbackfinished" class="tsd-kind-icon">playback<wbr>Finished</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioplayer.html#playbacknearlyfinished" class="tsd-kind-icon">playback<wbr>Nearly<wbr>Finished</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioplayer.html#playbackoffset" class="tsd-kind-icon">playback<wbr>Offset</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioplayer.html#playbackstarted" class="tsd-kind-icon">playback<wbr>Started</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioplayer.html#playbackstopped" class="tsd-kind-icon">playback<wbr>Stopped</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioplayer.html#playeractivity" class="tsd-kind-icon">player<wbr>Activity</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioplayer.html#playing" class="tsd-kind-icon">playing</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioplayer.html#resume" class="tsd-kind-icon">resume</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioplayer.html#suspend" class="tsd-kind-icon">suspend</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioplayer.html#suspended" class="tsd-kind-icon">suspended</a></li>
 							</ul>
 						</section>
 					</div>
@@ -116,13 +113,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Skill<wbr>Context<span class="tsd-signature-symbol">(</span>interactionModel<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">InteractionModel</span>, audioPlayer<span class="tsd-signature-symbol">: </span><a href="audioplayer.html" class="tsd-signature-type">AudioPlayer</a>, _locale<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, _applicationID<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="skillcontext.html" class="tsd-signature-type">SkillContext</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Audio<wbr>Player<span class="tsd-signature-symbol">(</span>_interactor<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">SkillInteractor</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="audioplayer.html" class="tsd-signature-type">AudioPlayer</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/SkillContext.ts#L23">SkillContext.ts:23</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/AudioPlayer.ts#L50">AudioPlayer.ts:50</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -134,19 +131,10 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>interactionModel: <span class="tsd-signature-type">InteractionModel</span></h5>
-								</li>
-								<li>
-									<h5>audioPlayer: <a href="audioplayer.html" class="tsd-signature-type">AudioPlayer</a></h5>
-								</li>
-								<li>
-									<h5>_locale: <span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> _applicationID: <span class="tsd-signature-type">string</span></h5>
+									<h5>_interactor: <span class="tsd-signature-type">SkillInteractor</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="skillcontext.html" class="tsd-signature-type">SkillContext</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="audioplayer.html" class="tsd-signature-type">AudioPlayer</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -154,135 +142,16 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="accesstoken" class="tsd-anchor"></a>
-					<h3>access<wbr>Token</h3>
+					<a name="directivesreceived" class="tsd-anchor"></a>
+					<h3>directives<wbr>Received</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">access<wbr>Token<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon">directives<wbr>Received<span class="tsd-signature-symbol">(</span>directives<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/SkillContext.ts#L58">SkillContext.ts:58</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="activesession" class="tsd-anchor"></a>
-					<h3>active<wbr>Session</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">active<wbr>Session<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/SkillContext.ts#L90">SkillContext.ts:90</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="applicationid" class="tsd-anchor"></a>
-					<h3>applicationID</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">applicationID<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/SkillContext.ts#L37">SkillContext.ts:37</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="audioplayer" class="tsd-anchor"></a>
-					<h3>audio<wbr>Player</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">audio<wbr>Player<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="audioplayer.html" class="tsd-signature-type">AudioPlayer</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/SkillContext.ts#L70">SkillContext.ts:70</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="audioplayer.html" class="tsd-signature-type">AudioPlayer</a></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="audioplayerenabled" class="tsd-anchor"></a>
-					<h3>audio<wbr>Player<wbr>Enabled</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">audio<wbr>Player<wbr>Enabled<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/SkillContext.ts#L74">SkillContext.ts:74</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="device" class="tsd-anchor"></a>
-					<h3>device</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">device<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="device.html" class="tsd-signature-type">Device</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/SkillContext.ts#L45">SkillContext.ts:45</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="device.html" class="tsd-signature-type">Device</a></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="endsession" class="tsd-anchor"></a>
-					<h3>end<wbr>Session</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">end<wbr>Session<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/SkillContext.ts#L86">SkillContext.ts:86</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="interactionmodel" class="tsd-anchor"></a>
-					<h3>interaction<wbr>Model</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">interaction<wbr>Model<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">InteractionModel</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/SkillContext.ts#L50">SkillContext.ts:50</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/AudioPlayer.ts#L143">AudioPlayer.ts:143</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -291,78 +160,10 @@
 									<dd></dd>
 								</dl>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">InteractionModel</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="locale" class="tsd-anchor"></a>
-					<h3>locale</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">locale<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/SkillContext.ts#L66">SkillContext.ts:66</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="newsession" class="tsd-anchor"></a>
-					<h3>new<wbr>Session</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new<wbr>Session<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/SkillContext.ts#L78">SkillContext.ts:78</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="session" class="tsd-anchor"></a>
-					<h3>session</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">session<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="skillsession.html" class="tsd-signature-type">SkillSession</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/SkillContext.ts#L82">SkillContext.ts:82</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="skillsession.html" class="tsd-signature-type">SkillSession</a></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="setaccesstoken" class="tsd-anchor"></a>
-					<h3>set<wbr>Access<wbr>Token</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Access<wbr>Token<span class="tsd-signature-symbol">(</span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/SkillContext.ts#L62">SkillContext.ts:62</a></li>
-								</ul>
-							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>token: <span class="tsd-signature-type">string</span></h5>
+									<h5>directives: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -370,19 +171,243 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="user" class="tsd-anchor"></a>
-					<h3>user</h3>
+					<a name="isplaying" class="tsd-anchor"></a>
+					<h3>is<wbr>Playing</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">user<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="user.html" class="tsd-signature-type">User</a></li>
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Playing<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/SkillContext.ts#L54">SkillContext.ts:54</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/AudioPlayer.ts#L62">AudioPlayer.ts:62</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="user.html" class="tsd-signature-type">User</a></h4>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Convenience method to check if the AudioPlayer is playing</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="playbackfinished" class="tsd-anchor"></a>
+					<h3>playback<wbr>Finished</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">playback<wbr>Finished<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/AudioPlayer.ts#L80">AudioPlayer.ts:80</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="playbacknearlyfinished" class="tsd-anchor"></a>
+					<h3>playback<wbr>Nearly<wbr>Finished</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">playback<wbr>Nearly<wbr>Finished<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/AudioPlayer.ts#L76">AudioPlayer.ts:76</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="playbackoffset" class="tsd-anchor"></a>
+					<h3>playback<wbr>Offset</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">playback<wbr>Offset<span class="tsd-signature-symbol">(</span>offset<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/AudioPlayer.ts#L70">AudioPlayer.ts:70</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Emulates a certain amount of a track being played back</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>offset: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="playbackstarted" class="tsd-anchor"></a>
+					<h3>playback<wbr>Started</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">playback<wbr>Started<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/AudioPlayer.ts#L90">AudioPlayer.ts:90</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="playbackstopped" class="tsd-anchor"></a>
+					<h3>playback<wbr>Stopped</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">playback<wbr>Stopped<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/AudioPlayer.ts#L95">AudioPlayer.ts:95</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="playeractivity" class="tsd-anchor"></a>
+					<h3>player<wbr>Activity</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">player<wbr>Activity<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">AudioPlayerActivity.BUFFER_UNDERRUN</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">AudioPlayerActivity.FINISHED</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">AudioPlayerActivity.IDLE</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">AudioPlayerActivity.PLAYING</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">AudioPlayerActivity.PAUSED</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">AudioPlayerActivity.STOPPED</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/AudioPlayer.ts#L104">AudioPlayer.ts:104</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>The current state of the AudioPlayer</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">AudioPlayerActivity.BUFFER_UNDERRUN</span>
+								<span class="tsd-signature-symbol"> | </span>
+								<span class="tsd-signature-type">AudioPlayerActivity.FINISHED</span>
+								<span class="tsd-signature-symbol"> | </span>
+								<span class="tsd-signature-type">AudioPlayerActivity.IDLE</span>
+								<span class="tsd-signature-symbol"> | </span>
+								<span class="tsd-signature-type">AudioPlayerActivity.PLAYING</span>
+								<span class="tsd-signature-symbol"> | </span>
+								<span class="tsd-signature-type">AudioPlayerActivity.PAUSED</span>
+								<span class="tsd-signature-symbol"> | </span>
+								<span class="tsd-signature-type">AudioPlayerActivity.STOPPED</span>
+							</h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="playing" class="tsd-anchor"></a>
+					<h3>playing</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">playing<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="audioitem.html" class="tsd-signature-type">AudioItem</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/AudioPlayer.ts#L112">AudioPlayer.ts:112</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>The currently playing track</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="audioitem.html" class="tsd-signature-type">AudioItem</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="resume" class="tsd-anchor"></a>
+					<h3>resume</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">resume<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/AudioPlayer.ts#L119">AudioPlayer.ts:119</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Emulates the device begin playback again after finishing handling an utterance</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="suspend" class="tsd-anchor"></a>
+					<h3>suspend</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">suspend<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/AudioPlayer.ts#L129">AudioPlayer.ts:129</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Emulates the device stopping playback while handling an utterance</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="suspended" class="tsd-anchor"></a>
+					<h3>suspended</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">suspended<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/AudioPlayer.ts#L138">AudioPlayer.ts:138</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Is the AudioPlayer stopped due to handling an utterance</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -407,63 +432,60 @@
 					<li class=" tsd-kind-class">
 						<a href="audioitemstream.html" class="tsd-kind-icon">Audio<wbr>Item<wbr>Stream</a>
 					</li>
-					<li class=" tsd-kind-class">
-						<a href="audioplayer.html" class="tsd-kind-icon">Audio<wbr>Player</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="device.html" class="tsd-kind-icon">Device</a>
-					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
-						<a href="skillcontext.html" class="tsd-kind-icon">Skill<wbr>Context</a>
+						<a href="audioplayer.html" class="tsd-kind-icon">Audio<wbr>Player</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="skillcontext.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="audioplayer.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="skillcontext.html#accesstoken" class="tsd-kind-icon">access<wbr>Token</a>
+								<a href="audioplayer.html#directivesreceived" class="tsd-kind-icon">directives<wbr>Received</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="skillcontext.html#activesession" class="tsd-kind-icon">active<wbr>Session</a>
+								<a href="audioplayer.html#isplaying" class="tsd-kind-icon">is<wbr>Playing</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="skillcontext.html#applicationid" class="tsd-kind-icon">applicationID</a>
+								<a href="audioplayer.html#playbackfinished" class="tsd-kind-icon">playback<wbr>Finished</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="skillcontext.html#audioplayer" class="tsd-kind-icon">audio<wbr>Player</a>
+								<a href="audioplayer.html#playbacknearlyfinished" class="tsd-kind-icon">playback<wbr>Nearly<wbr>Finished</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="skillcontext.html#audioplayerenabled" class="tsd-kind-icon">audio<wbr>Player<wbr>Enabled</a>
+								<a href="audioplayer.html#playbackoffset" class="tsd-kind-icon">playback<wbr>Offset</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="skillcontext.html#device" class="tsd-kind-icon">device</a>
+								<a href="audioplayer.html#playbackstarted" class="tsd-kind-icon">playback<wbr>Started</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="skillcontext.html#endsession" class="tsd-kind-icon">end<wbr>Session</a>
+								<a href="audioplayer.html#playbackstopped" class="tsd-kind-icon">playback<wbr>Stopped</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="skillcontext.html#interactionmodel" class="tsd-kind-icon">interaction<wbr>Model</a>
+								<a href="audioplayer.html#playeractivity" class="tsd-kind-icon">player<wbr>Activity</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="skillcontext.html#locale" class="tsd-kind-icon">locale</a>
+								<a href="audioplayer.html#playing" class="tsd-kind-icon">playing</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="skillcontext.html#newsession" class="tsd-kind-icon">new<wbr>Session</a>
+								<a href="audioplayer.html#resume" class="tsd-kind-icon">resume</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="skillcontext.html#session" class="tsd-kind-icon">session</a>
+								<a href="audioplayer.html#suspend" class="tsd-kind-icon">suspend</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="skillcontext.html#setaccesstoken" class="tsd-kind-icon">set<wbr>Access<wbr>Token</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="skillcontext.html#user" class="tsd-kind-icon">user</a>
+								<a href="audioplayer.html#suspended" class="tsd-kind-icon">suspended</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-class">
+						<a href="device.html" class="tsd-kind-icon">Device</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="skillcontext.html" class="tsd-kind-icon">Skill<wbr>Context</a>
+					</li>
 					<li class=" tsd-kind-class">
 						<a href="skillsession.html" class="tsd-kind-icon">Skill<wbr>Session</a>
 					</li>
