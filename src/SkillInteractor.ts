@@ -1,18 +1,10 @@
 import {AudioPlayer} from "./AudioPlayer";
 import {InteractionModel} from "./InteractionModel";
-import {ModuleInvoker} from "./ModuleInvoker";
 import {SkillContext} from "./SkillContext";
 import {SessionEndedReason, SkillRequest} from "./SkillRequest";
+import {SkillResponse} from "./SkillResponse";
 import {Utterance} from "./Utterance";
 import {RequestFilter} from "./VirtualAlexa";
-
-type AlexaResponseCallback = (error: any, response: any, request: any) => void;
-
-export enum AlexaEvent {
-    SessionEnded,
-    SkillError,
-    SkillResponse,
-}
 
 /**
  * SkillInteractor comes in two flavors:
@@ -38,10 +30,9 @@ export abstract class SkillInteractor {
     /**
      * Calls the skill with specified phrase
      * Hits the callback with the JSON payload from the response
-     * @param utterance
-     * @param callback
+     * @param utteranceString
      */
-    public spoken(utteranceString: string): Promise<any> {
+    public spoken(utteranceString: string): Promise<SkillResponse> {
         let utterance = new Utterance(this.interactionModel(), utteranceString);
 
         // If we don't match anything, we use the default utterance - simple algorithm for this
@@ -80,7 +71,7 @@ export abstract class SkillInteractor {
      * @param intentName
      * @param slots
      */
-    public async intended(intentName: string, slots?: any): Promise<any> {
+    public async intended(intentName: string, slots?: any): Promise<SkillResponse> {
         return this.callSkillWithIntent(intentName, slots);
     }
 
@@ -88,7 +79,7 @@ export abstract class SkillInteractor {
         this.requestFilter = requestFilter;
     }
 
-    public async callSkill(serviceRequest: SkillRequest): Promise<any> {
+    public async callSkill(serviceRequest: SkillRequest): Promise<SkillResponse> {
         // Call this at the last possible minute, because of state issues
         //  What can happen is this gets queued, and then another request ends the session
         //  So we want to wait until just before we send this to create the session
@@ -117,12 +108,12 @@ export abstract class SkillInteractor {
             this.context().audioPlayer().directivesReceived(result.response.directives);
         }
 
-        return result;
+        return new SkillResponse(result);
     }
 
     protected abstract invoke(requestJSON: any): Promise<any>;
 
-    private async callSkillWithIntent(intentName: string, slots?: any, requestFilter?: RequestFilter): Promise<any> {
+    private async callSkillWithIntent(intentName: string, slots?: any): Promise<SkillResponse> {
         // When the user utters an intent, we suspend for it
         // We do this first to make sure everything is in the right state for what comes next
         if (this.skillContext.audioPlayerEnabled() && this.skillContext.audioPlayer().isPlaying()) {
