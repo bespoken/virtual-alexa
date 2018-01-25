@@ -5,6 +5,8 @@ gulp.task("default", ["typedoc"]);
 
 gulp.task("typedoc", function () {
     gulp.src([
+        "src/AudioItem.ts",
+        "src/AudioPlayer.ts",
         "src/Device.ts",
         "src/SkillContext.ts",
         "src/SkillSession.ts",

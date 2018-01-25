@@ -2,7 +2,7 @@
   "name": "virtual-alexa",
   "license": "Apache-2.0",
   "private": false,
-  "version": "0.3.9",
+  "version": "0.4.2-0",
   "main": "./lib/src/Index.js",
   "typings": "./lib/src/Index.d.ts",
   "engines": {
@@ -10,6 +10,8 @@
   },
   "files": [
     "lib/src/*.js",
+    "lib/src/AudioItem.d.ts",
+    "lib/src/AudioPlayer.d.ts",
     "lib/src/Device.d.ts",
     "lib/src/Index.d.ts",
     "lib/src/SkillContext.d.ts",

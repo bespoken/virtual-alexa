@@ -44,11 +44,11 @@ export class SkillResponse {
         return _.get(this, "response.card.image");
     }
 
-    public cardSmallImageURL(): string | undefined {
+    public cardSmallImage(): string | undefined {
         return _.get(this, "response.card.image.smallImageUrl");
     }
 
-    public cardLargeImageURL(): string | undefined {
+    public cardLargeImage(): string | undefined {
         return _.get(this, "response.card.image.largeImageUrl");
     }
 
@@ -56,20 +56,16 @@ export class SkillResponse {
         return _.get(this, "response.card.title");
     }
 
-    public promptSSML(): string | undefined {
-        return _.get(this, "response.outputSpeech.ssml");
+    public prompt(): string | undefined {
+        return _.has(this, "response.outputSpeech.ssml")
+            ? _.get(this, "response.outputSpeech.ssml")
+            : _.get(this, "response.outputSpeech.text");
     }
 
-    public promptText(): string | undefined {
-        return _.get(this, "response.outputSpeech.text");
-    }
-
-    public repromptSSML(): any {
-        return _.get(this, "response.reprompt.outputSpeech.ssml");
-    }
-
-    public repromptText(): string {
-        return _.get(this, "response.reprompt.outputSpeech.text");
+    public reprompt(): string {
+        return _.has(this, "response.reprompt.outputSpeech.ssml")
+            ? _.get(this, "response.reprompt.outputSpeech.ssml")
+            : _.get(this, "response.reprompt.outputSpeech.text");
     }
 
     private wrapJSON(rawJSON: any) {

@@ -119,23 +119,19 @@ export class SkillRequest {
     }
 
     public requiresSession(): boolean {
-        let requireSession = false;
         // LaunchRequests and IntentRequests both require a session
         // We also force a session on a session ended request, as if someone requests a session end
         //  we will make one first if there is not. It will then be ended.
-        if (this.requestType === RequestType.LAUNCH_REQUEST
+        return (this.requestType === RequestType.LAUNCH_REQUEST
             || this.requestType === RequestType.INTENT_REQUEST
-            || this.requestType === RequestType.SESSION_ENDED_REQUEST) {
-            requireSession = true;
-        }
-        return requireSession;
+            || this.requestType === RequestType.SESSION_ENDED_REQUEST);
     }
 
     public toJSON() {
         const applicationID = this.context.applicationID();
 
         // If we have a session, set the info
-        if (this.includeSession() && this.context.activeSession()) {
+        if (this.requiresSession() && this.context.activeSession()) {
             const session = this.context.session();
             const newSession = session.isNew();
             const sessionID = session.id();
@@ -160,17 +156,15 @@ export class SkillRequest {
         }
 
         // For intent, launch and session ended requests, send the audio player state if there is one
-        if (this.requestType === RequestType.INTENT_REQUEST
-            || this.requestType === RequestType.LAUNCH_REQUEST
-            || this.requestType === RequestType.SESSION_ENDED_REQUEST) {
+        if (this.requiresSession()) {
             if (this.context.audioPlayerEnabled()) {
-                const activity = AudioPlayerActivity[this.context.audioPlayer().activity()];
+                const activity = AudioPlayerActivity[this.context.audioPlayer().playerActivity()];
                 this.requestJSON.context.AudioPlayer = {
                     playerActivity: activity,
                 };
 
                 // Anything other than IDLE, we send token and offset
-                if (this.context.audioPlayer().activity() !== AudioPlayerActivity.IDLE) {
+                if (this.context.audioPlayer().playerActivity() !== AudioPlayerActivity.IDLE) {
                     const playing = this.context.audioPlayer().playing();
                     this.requestJSON.context.AudioPlayer.token = playing.stream.token;
                     this.requestJSON.context.AudioPlayer.offsetInMilliseconds = playing.stream.offsetInMilliseconds;
@@ -201,7 +195,7 @@ export class SkillRequest {
                 },
             },
             request: {
-                locale: "en-US",
+                locale: this.context.locale(),
                 requestId: requestID,
                 timestamp,
                 type: requestType,
@@ -233,20 +227,5 @@ export class SkillRequest {
             };
         }
         return o;
-    }
-
-    /**
-     * Whether this request should include a session
-     * "Core" request types do, AudioPlayer ones do not
-     * @returns {boolean}
-     */
-    private includeSession(): boolean {
-        let include = false;
-        if (this.requestType === RequestType.INTENT_REQUEST ||
-            this.requestType === RequestType.LAUNCH_REQUEST ||
-            this.requestType === RequestType.SESSION_ENDED_REQUEST) {
-            include = true;
-        }
-        return include;
     }
 }

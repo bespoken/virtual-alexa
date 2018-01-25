@@ -8,9 +8,40 @@ describe("VirtualAlexa Tests Using Files", function() {
             .sampleUtterancesFile("./test/resources/SampleUtterances.txt")
             .intentSchemaFile("./test/resources/IntentSchema.json")
             .create();
+
+        let requestToCheck: any;
+        assert(virtualAlexa.filter((request) => {
+            requestToCheck = request;
+        }));
+
+        const response  = await virtualAlexa.utter("play now") as any;
+
+        assert.isDefined(response);
+
+        assert.isTrue(response.success);
+        assert.equal(virtualAlexa.context().locale(), "en-US");
+        assert.equal(requestToCheck.request.locale, "en-US");
+
+    });
+
+    it("Parses the files and does a simple utterance", async () => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test.resources.index.handler")
+            .sampleUtterancesFile("./test/resources/SampleUtterances.txt")
+            .intentSchemaFile("./test/resources/IntentSchema.json")
+            .locale("de-DE")
+            .create();
+
+        let requestToCheck: any;
+        assert(virtualAlexa.filter((request) => {
+            requestToCheck = request;
+        }));
         const response  = await virtualAlexa.utter("play now") as any;
         assert.isDefined(response);
+
         assert.isTrue(response.success);
+        assert.equal(virtualAlexa.context().locale(), "de-DE");
+        assert.equal(requestToCheck.request.locale, "de-DE");
     });
 
     it("Parses the SMAPI format interaction model and does a simple utterance", async () => {
@@ -31,6 +62,39 @@ describe("VirtualAlexa Tests Using Files", function() {
         await virtualAlexa.filter((request) => {
             assert.equal(request.request.intent.name, "TellMeMoreIntent");
         }).utter("contact info");
+    });
+
+    it("Parses the Interaction Model from a locale and does a simple utterance", async () => {
+        process.chdir("test/resources");
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("index.handler")
+            .locale("de-DE")
+            .create();
+        const response  = await virtualAlexa.utter("contact info") as any;
+        assert.equal(response.intent, "TellMeMoreIntent");
+        process.chdir("../..");
+    });
+
+    it("Parses the Interaction Model from the default locale and does a simple utterance", async () => {
+        process.chdir("test/resources");
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("index.handler")
+            .create();
+        const response  = await virtualAlexa.utter("contact info") as any;
+        assert.equal(response.intent, "TellMeMoreIntent");
+        process.chdir("../..");
+    });
+
+    it("Throws error when locale file is not present", async () => {
+        try {
+            const virtualAlexa = VirtualAlexa.Builder()
+                .handler("index.handler")
+                .create();
+            assert(false, "This should not be reached");
+
+        } catch (e) {
+            assert.isDefined(e);
+        }
     });
 
     it("Has a bad filename", () => {
@@ -270,16 +334,14 @@ describe("VirtualAlexa Tests Using JSON", function() {
             }).utter("play now");
 
             // Test the response object
-            assert.equal(response.promptSSML(), "SSML");
-            assert.isUndefined(response.promptText());
-            assert.equal(response.repromptText(), "TEXT");
-            assert.isUndefined(response.repromptSSML());
+            assert.equal(response.prompt(), "SSML");
+            assert.equal(response.reprompt(), "TEXT");
             assert.equal(response.card().content, "content");
             assert.equal(response.cardImage().smallImageUrl, "smallImageUrl");
             assert.equal(response.cardContent(), "content");
             assert.equal(response.cardTitle(), "title");
-            assert.equal(response.cardLargeImageURL(), "largeImageUrl");
-            assert.equal(response.cardSmallImageURL(), "smallImageUrl");
+            assert.equal(response.cardLargeImage(), "largeImageUrl");
+            assert.equal(response.cardSmallImage(), "smallImageUrl");
             assert.equal(response.attr("counter"), "0");
             assert.equal(response.attrs("counter", "key1").counter, "0");
             assert.isUndefined(response.attrs("counter", "key1").key1);
@@ -462,5 +524,25 @@ describe("VirtualAlexa Tests Using JSON", function() {
             assert.equal(reply.sessionAttributes.sessionId, "Filtered");
         });
 
+    });
+});
+
+describe("VirtualAlexa Tests Using Custom Function", function() {
+    it("Calls the custom function correctly", async () => {
+        const myFunction = function(event: any, context: any) {
+            context.done(null, { custom: true });
+        };
+
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler(myFunction)
+            .sampleUtterancesFile("./test/resources/SampleUtterances.txt")
+            .intentSchemaFile("./test/resources/IntentSchema.json")
+            .create();
+
+        const reply = await virtualAlexa.filter((request) => {
+            request.session.sessionId = "Filtered";
+        }).launch() as any;
+
+        assert.isTrue(reply.custom);
     });
 });

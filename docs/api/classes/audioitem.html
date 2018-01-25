@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>User | Bespoken Virtual Alexa</title>
+	<title>AudioItem | Bespoken Virtual Alexa</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -52,21 +52,29 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="user.html">User</a>
+					<a href="audioitem.html">AudioItem</a>
 				</li>
 			</ul>
-			<h1>Class User</h1>
+			<h1>Class AudioItem</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Information about an AudioItem.</p>
+					</div>
+					<p>Directly ties off to the JSON payload from Alexa.</p>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">User</span>
+						<span class="target">AudioItem</span>
 					</li>
 				</ul>
 			</section>
@@ -77,14 +85,19 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="user.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="audioitem.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="audioitem.html#stream" class="tsd-kind-icon">stream</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="user.html#id" class="tsd-kind-icon">id</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="user.html#setid" class="tsd-kind-icon">setID</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioitem.html#clone" class="tsd-kind-icon">clone</a></li>
 							</ul>
 						</section>
 					</div>
@@ -96,71 +109,60 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>User<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="user.html" class="tsd-signature-type">User</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Audio<wbr>Item<span class="tsd-signature-symbol">(</span>_json<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="audioitem.html" class="tsd-signature-type">AudioItem</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/User.ts#L5">User.ts:5</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/AudioItem.ts#L7">AudioItem.ts:7</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>internal</dt>
-									<dd></dd>
-								</dl>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> id: <span class="tsd-signature-type">string</span></h5>
+									<h5>_json: <span class="tsd-signature-type">any</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="user.html" class="tsd-signature-type">User</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="audioitem.html" class="tsd-signature-type">AudioItem</a></h4>
 						</li>
 					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="stream" class="tsd-anchor"></a>
+					<h3>stream</h3>
+					<div class="tsd-signature tsd-kind-icon">stream<span class="tsd-signature-symbol">:</span> <a href="audioitemstream.html" class="tsd-signature-type">AudioItemStream</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/AudioItem.ts#L7">AudioItem.ts:7</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="id" class="tsd-anchor"></a>
-					<h3>id</h3>
+					<a name="clone" class="tsd-anchor"></a>
+					<h3>clone</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon">clone<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="audioitem.html" class="tsd-signature-type">AudioItem</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/User.ts#L15">User.ts:15</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/AudioItem.ts#L20">AudioItem.ts:20</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="setid" class="tsd-anchor"></a>
-					<h3>setID</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">setID<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/User.ts#L19">User.ts:19</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>id: <span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Clone function to prevent changes being made to internal state</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="audioitem.html" class="tsd-signature-type">AudioItem</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -179,9 +181,24 @@
 					<li class=" tsd-kind-enum">
 						<a href="../enums/audioplayeractivity.html" class="tsd-kind-icon">Audio<wbr>Player<wbr>Activity</a>
 					</li>
-					<li class=" tsd-kind-class">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class">
 						<a href="audioitem.html" class="tsd-kind-icon">Audio<wbr>Item</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class">
+								<a href="audioitem.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="audioitem.html#stream" class="tsd-kind-icon">stream</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="audioitem.html#clone" class="tsd-kind-icon">clone</a>
+							</li>
+						</ul>
 					</li>
+				</ul>
+				<ul class="after-current">
 					<li class=" tsd-kind-class">
 						<a href="audioitemstream.html" class="tsd-kind-icon">Audio<wbr>Item<wbr>Stream</a>
 					</li>
@@ -197,24 +214,9 @@
 					<li class=" tsd-kind-class">
 						<a href="skillsession.html" class="tsd-kind-icon">Skill<wbr>Session</a>
 					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-class">
+					<li class=" tsd-kind-class">
 						<a href="user.html" class="tsd-kind-icon">User</a>
-						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="user.html#constructor" class="tsd-kind-icon">constructor</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="user.html#id" class="tsd-kind-icon">id</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="user.html#setid" class="tsd-kind-icon">setID</a>
-							</li>
-						</ul>
 					</li>
-				</ul>
-				<ul class="after-current">
 					<li class=" tsd-kind-class">
 						<a href="virtualalexa.html" class="tsd-kind-icon">Virtual<wbr>Alexa</a>
 					</li>

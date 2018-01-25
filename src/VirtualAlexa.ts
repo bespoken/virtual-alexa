@@ -1,3 +1,4 @@
+import {AudioPlayer} from "./AudioPlayer";
 import {IntentSchema} from "./IntentSchema";
 import {InteractionModel} from "./InteractionModel";
 import {LocalSkillInteractor} from "./LocalSkillInteractor";
@@ -13,8 +14,6 @@ export class VirtualAlexa {
         return new VirtualAlexaBuilder();
     }
 
-    private _filter: RequestFilter;
-
     /** @internal */
     private interactor: SkillInteractor;
 
@@ -23,12 +22,17 @@ export class VirtualAlexa {
         this.interactor = interactor;
     }
 
+    // Provides access to the AudioPlayer object, for sending audio requests
+    public audioPlayer(): AudioPlayer {
+        return this.interactor.context().audioPlayer();
+    }
+
     public context(): SkillContext {
         return this.interactor.context();
     }
 
-    public endSession(): Promise<void> {
-        return this.interactor.sessionEnded(SessionEndedReason.USER_INITIATED, undefined, this._filter);
+    public endSession(): Promise<any> {
+        return this.interactor.sessionEnded(SessionEndedReason.USER_INITIATED, undefined);
     }
 
     /**
@@ -37,25 +41,25 @@ export class VirtualAlexa {
      * @returns {VirtualAlexa}
      */
     public filter(requestFilter: RequestFilter): VirtualAlexa {
-        this._filter = requestFilter;
+        this.interactor.filter(requestFilter);
         return this;
     }
 
     public intend(intentName: string, slots?: {[id: string]: string}): Promise<SkillResponse> {
-        return this.interactor.intended(intentName, slots, this._filter);
+        return this.interactor.intended(intentName, slots);
     }
 
     public launch(): Promise<SkillResponse> {
-        return this.interactor.launched(this._filter);
+        return this.interactor.launched();
     }
 
     public resetFilter(): VirtualAlexa {
-        this._filter = undefined;
+        this.interactor.filter(undefined);
         return this;
     }
 
     public utter(utterance: string): Promise<SkillResponse> {
-        return this.interactor.spoken(utterance, this._filter);
+        return this.interactor.spoken(utterance);
     }
 }
 
@@ -77,7 +81,7 @@ export class VirtualAlexaBuilder {
     /** @internal */
     private _applicationID: string;
     /** @internal */
-    private _handler: string;
+    private _handler: string | ((...args: any[]) => void);
     /** @internal */
     private _intentSchema: any;
     /** @internal */
@@ -92,6 +96,8 @@ export class VirtualAlexaBuilder {
     private _sampleUtterancesFile: string;
     /** @internal */
     private _skillURL: string;
+    /** @internal */
+    private _locale: string;
 
     /**
      * The application ID of the skill [Optional]
@@ -104,14 +110,14 @@ export class VirtualAlexaBuilder {
     }
 
     /**
-     * The name of the handler for a Lambda function to be called<br>
+     * The name of the handler, or the handler function itself, for a Lambda to be called<br>
      * The name should be in the format "index.handler" where:<br>
      * `index` is the name of the file - such as index.js<br>
      * `handler` is the name of the exported function to call on the file<br>
-     * @param {string} handlerName
+     * @param {string | Function} handlerName
      * @returns {VirtualAlexaBuilder}
      */
-    public handler(handlerName: string): VirtualAlexaBuilder {
+    public handler(handlerName: string | ((...args: any[]) => void)): VirtualAlexaBuilder {
         this._handler = handlerName;
         return this;
     }
@@ -198,8 +204,20 @@ export class VirtualAlexaBuilder {
         return this;
     }
 
+    /**
+     * The Locale that is going to be tested
+     * @param {string} locale
+     * @returns {VirtualAlexaBuilder}
+     */
+    public locale(locale: string): VirtualAlexaBuilder {
+        this._locale = locale;
+        return this;
+    }
+
     public create(): VirtualAlexa {
         let model;
+        const locale = this._locale ? this._locale : "en-US";
+
         if (this._interactionModel) {
             model = InteractionModel.fromJSON(this._interactionModel);
 
@@ -216,14 +234,21 @@ export class VirtualAlexaBuilder {
             const utterances = SampleUtterances.fromFile(this._sampleUtterancesFile);
             model = new InteractionModel(schema, utterances);
         } else {
-            throw new Error("Either an interaction model or intent schema and sample utterances must be provided.");
+            model = InteractionModel.fromLocale(locale);
+            if (!model) {
+                throw new Error(
+                    "Either an interaction model or intent schema and sample utterances must be provided.\n" +
+                    "Alternatively, if you specify a locale, Virtual Alexa will automatically check for the " +
+                    "interaction model under the directory \"./models\" - e.g., \"./models/en-US.json\"");
+            }
         }
 
         let interactor;
+
         if (this._handler) {
-            interactor = new LocalSkillInteractor(this._handler, model, this._applicationID);
+            interactor = new LocalSkillInteractor(this._handler, model, locale, this._applicationID);
         } else if (this._skillURL) {
-            interactor = new RemoteSkillInteractor(this._skillURL, model, this._applicationID);
+            interactor = new RemoteSkillInteractor(this._skillURL, model, locale, this._applicationID);
         } else {
             throw new Error("Either a handler or skillURL must be provided.");
         }

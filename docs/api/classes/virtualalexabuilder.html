@@ -99,6 +99,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="virtualalexabuilder.html#intentschemafile" class="tsd-kind-icon">intent<wbr>Schema<wbr>File</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="virtualalexabuilder.html#interactionmodel" class="tsd-kind-icon">interaction<wbr>Model</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="virtualalexabuilder.html#interactionmodelfile" class="tsd-kind-icon">interaction<wbr>Model<wbr>File</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="virtualalexabuilder.html#locale" class="tsd-kind-icon">locale</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="virtualalexabuilder.html#sampleutterances" class="tsd-kind-icon">sample<wbr>Utterances</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="virtualalexabuilder.html#sampleutterancesfile" class="tsd-kind-icon">sample<wbr>Utterances<wbr>File</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="virtualalexabuilder.html#skillurl" class="tsd-kind-icon">skillURL</a></li>
@@ -119,7 +120,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/73f19e3/src/VirtualAlexa.ts#L97">VirtualAlexa.ts:97</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/VirtualAlexa.ts#L101">VirtualAlexa.ts:101</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -147,7 +148,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/73f19e3/src/VirtualAlexa.ts#L197">VirtualAlexa.ts:197</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/VirtualAlexa.ts#L211">VirtualAlexa.ts:211</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="virtualalexa.html" class="tsd-signature-type">VirtualAlexa</a></h4>
@@ -158,18 +159,18 @@
 					<a name="handler" class="tsd-anchor"></a>
 					<h3>handler</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">handler<span class="tsd-signature-symbol">(</span>handlerName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="virtualalexabuilder.html" class="tsd-signature-type">VirtualAlexaBuilder</a></li>
+						<li class="tsd-signature tsd-kind-icon">handler<span class="tsd-signature-symbol">(</span>handlerName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="virtualalexabuilder.html" class="tsd-signature-type">VirtualAlexaBuilder</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/73f19e3/src/VirtualAlexa.ts#L110">VirtualAlexa.ts:110</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/VirtualAlexa.ts#L114">VirtualAlexa.ts:114</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>The name of the handler for a Lambda function to be called<br>
+									<p>The name of the handler, or the handler function itself, for a Lambda to be called<br>
 										The name should be in the format &quot;index.handler&quot; where:<br>
 										<code>index</code> is the name of the file - such as index.js<br>
 									<code>handler</code> is the name of the exported function to call on the file<br></p>
@@ -178,7 +179,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>handlerName: <span class="tsd-signature-type">string</span></h5>
+									<h5>handlerName: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="virtualalexabuilder.html" class="tsd-signature-type">VirtualAlexaBuilder</a></h4>
@@ -195,7 +196,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/73f19e3/src/VirtualAlexa.ts#L121">VirtualAlexa.ts:121</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/VirtualAlexa.ts#L125">VirtualAlexa.ts:125</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -224,7 +225,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/73f19e3/src/VirtualAlexa.ts#L132">VirtualAlexa.ts:132</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/VirtualAlexa.ts#L136">VirtualAlexa.ts:136</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -253,7 +254,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/73f19e3/src/VirtualAlexa.ts#L142">VirtualAlexa.ts:142</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/VirtualAlexa.ts#L146">VirtualAlexa.ts:146</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -281,7 +282,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/73f19e3/src/VirtualAlexa.ts#L152">VirtualAlexa.ts:152</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/VirtualAlexa.ts#L156">VirtualAlexa.ts:156</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -300,6 +301,34 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="locale" class="tsd-anchor"></a>
+					<h3>locale</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">locale<span class="tsd-signature-symbol">(</span>locale<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="virtualalexabuilder.html" class="tsd-signature-type">VirtualAlexaBuilder</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/VirtualAlexa.ts#L206">VirtualAlexa.ts:206</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>The Locale that is going to be tested</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>locale: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="virtualalexabuilder.html" class="tsd-signature-type">VirtualAlexaBuilder</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="sampleutterances" class="tsd-anchor"></a>
 					<h3>sample<wbr>Utterances</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -309,7 +338,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/73f19e3/src/VirtualAlexa.ts#L170">VirtualAlexa.ts:170</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/VirtualAlexa.ts#L174">VirtualAlexa.ts:174</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -344,7 +373,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/73f19e3/src/VirtualAlexa.ts#L182">VirtualAlexa.ts:182</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/VirtualAlexa.ts#L186">VirtualAlexa.ts:186</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -374,7 +403,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/73f19e3/src/VirtualAlexa.ts#L192">VirtualAlexa.ts:192</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/e35f0ba/src/VirtualAlexa.ts#L196">VirtualAlexa.ts:196</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -404,6 +433,18 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-enum">
+						<a href="../enums/audioplayeractivity.html" class="tsd-kind-icon">Audio<wbr>Player<wbr>Activity</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="audioitem.html" class="tsd-kind-icon">Audio<wbr>Item</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="audioitemstream.html" class="tsd-kind-icon">Audio<wbr>Item<wbr>Stream</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="audioplayer.html" class="tsd-kind-icon">Audio<wbr>Player</a>
+					</li>
 					<li class=" tsd-kind-class">
 						<a href="device.html" class="tsd-kind-icon">Device</a>
 					</li>
@@ -444,6 +485,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="virtualalexabuilder.html#interactionmodelfile" class="tsd-kind-icon">interaction<wbr>Model<wbr>File</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="virtualalexabuilder.html#locale" class="tsd-kind-icon">locale</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="virtualalexabuilder.html#sampleutterances" class="tsd-kind-icon">sample<wbr>Utterances</a>

@@ -16,76 +16,51 @@ export enum AudioPlayerActivity {
  * Emulates the behavior of the audio player
  */
 export class AudioPlayer {
-    public static DIRECTIVE_PLAY = "AudioPlayer.Play";
-    public static DIRECTIVE_STOP = "AudioPlayer.Stop";
-    public static DIRECTIVE_CLEAR_QUEUE = "AudioPlayer.ClearQueue";
+    /** @internal */
+    private static DIRECTIVE_PLAY = "AudioPlayer.Play";
 
-    public static PLAY_BEHAVIOR_REPLACE_ALL = "REPLACE_ALL";
-    public static PLAY_BEHAVIOR_ENQUEUE = "ENQUEUE";
-    public static PLAY_BEHAVIOR_REPLACE_ENQUEUED = "REPLACE_ENQUEUED";
+    /** @internal */
+    private static DIRECTIVE_STOP = "AudioPlayer.Stop";
 
-    private _emitter: EventEmitter = null;
+    /** @internal */
+    private static DIRECTIVE_CLEAR_QUEUE = "AudioPlayer.ClearQueue";
+
+    /** @internal */
+    private static PLAY_BEHAVIOR_REPLACE_ALL = "REPLACE_ALL";
+
+    /** @internal */
+    private static PLAY_BEHAVIOR_ENQUEUE = "ENQUEUE";
+
+    /** @internal */
+    private static PLAY_BEHAVIOR_REPLACE_ENQUEUED = "REPLACE_ENQUEUED";
+
+    /** @internal */
+    private _interactor: SkillInteractor;
+
+    /** @internal */
     private _playing: AudioItem = null;
+
+    /** @internal */
     private _queue: AudioItem[] = [];
+
+    /** @internal */
     private _activity: AudioPlayerActivity = null;
+
+    /** @internal */
     private _suspended: boolean = false;
 
-    public constructor(public skillInstance: SkillInteractor) {
+    /** @internal */
+    public constructor(_interactor: SkillInteractor) {
         this._activity = AudioPlayerActivity.IDLE;
-        this._emitter = new EventEmitter();
+        this._interactor = _interactor;
     }
 
-    public enqueue(audioItem: AudioItem, playBehavior: string) {
-        if (playBehavior === AudioPlayer.PLAY_BEHAVIOR_ENQUEUE) {
-            this._queue.push(audioItem);
-
-        } else if (playBehavior === AudioPlayer.PLAY_BEHAVIOR_REPLACE_ALL) {
-            if (this.isPlaying()) {
-                this.playbackStopped();
-            }
-
-            this._queue = [];
-            this._queue.push(audioItem);
-
-        } else if (playBehavior === AudioPlayer.PLAY_BEHAVIOR_REPLACE_ENQUEUED) {
-            this._queue = [];
-            this._queue.push(audioItem);
-        }
-
-        if (!this.isPlaying()) {
-            this.playNext();
-        }
-    }
-
-    public activity(): AudioPlayerActivity {
-        return this._activity;
-    }
-
-    public playNext() {
-        if (this._queue.length === 0) {
-            return;
-        }
-
-        this._playing = this.dequeue();
-        // If the URL for AudioItem is http, we throw an error
-        if (this._playing.stream.url.startsWith("http:")) {
-            this.skillInstance.sessionEnded(SessionEndedReason.ERROR, {
-                message: "The URL specified in the Play directive must be HTTPS",
-                type: "INVALID_RESPONSE",
-            });
-        } else {
-            this.playbackStarted();
-
-        }
-    }
-
-    public suspend() {
-        this._suspended = true;
-        this.playbackStopped();
-    }
-
-    public suspended(): boolean {
-        return this._suspended;
+    /**
+     * Convenience method to check if the AudioPlayer is playing
+     * @returns {boolean}
+     */
+    public isPlaying(): boolean {
+        return (this._activity === AudioPlayerActivity.PLAYING);
     }
 
     /**
@@ -96,20 +71,6 @@ export class AudioPlayer {
         if (this.isPlaying()) {
             this.playing().stream.offsetInMilliseconds = offset;
         }
-    }
-
-    public on(audioPlayerRequest: string, listener: (...args: any[]) => void) {
-        this._emitter.on(audioPlayerRequest, listener);
-    }
-
-    public once(audioPlayerRequest: string, listener: (...args: any[]) => void) {
-
-        this._emitter.once(audioPlayerRequest, listener);
-    }
-
-    public resume() {
-        this._suspended = false;
-        this.playbackStarted();
     }
 
     public playbackNearlyFinished(): Promise<any> {
@@ -133,28 +94,85 @@ export class AudioPlayer {
 
     public playbackStopped(): Promise<any> {
         this._activity = AudioPlayerActivity.STOPPED;
-        return this.audioPlayerRequest(RequestType.AUDIO_PLAYER_PLAYBACK_STARTED);
+        return this.audioPlayerRequest(RequestType.AUDIO_PLAYER_PLAYBACK_STOPPED);
     }
 
+    /**
+     * The current state of the AudioPlayer
+     * @returns {AudioPlayerActivity}
+     */
+    public playerActivity(): AudioPlayerActivity {
+        return this._activity;
+    }
+
+    /**
+     * The currently playing track
+     * @returns {AudioItem}
+     */
     public playing(): AudioItem {
         return this._playing;
     }
 
+    /**
+     * Emulates the device begin playback again after finishing handling an utterance
+     */
+    public resume() {
+        this._suspended = false;
+        if (!this.isPlaying()) {
+            this.playbackStarted();
+        }
+    }
+
+    /**
+     * Emulates the device stopping playback while handling an utterance
+     */
+    public suspend() {
+        this._suspended = true;
+        this.playbackStopped();
+    }
+
+    /**
+     * Is the AudioPlayer stopped due to handling an utterance
+     * @returns {boolean}
+     */
+    public suspended(): boolean {
+        return this._suspended;
+    }
+
+    /** @internal */
     public directivesReceived(directives: any[]): void {
         for (const directive of directives) {
             this.handleDirective(directive);
         }
     }
 
-    public isPlaying(): boolean {
-        return (this._activity === AudioPlayerActivity.PLAYING);
+    private async audioPlayerRequest(requestType: string): Promise<any> {
+        const nowPlaying = this.playing();
+        const serviceRequest = new SkillRequest(this._interactor.context());
+        serviceRequest.audioPlayerRequest(requestType, nowPlaying.stream.token, nowPlaying.stream.offsetInMilliseconds);
+        return this._interactor.callSkill(serviceRequest);
     }
 
-    private audioPlayerRequest(requestType: string): Promise<any> {
-        const nowPlaying = this.playing();
-        const serviceRequest = new SkillRequest(this.skillInstance.context());
-        serviceRequest.audioPlayerRequest(requestType, nowPlaying.stream.token, nowPlaying.stream.offsetInMilliseconds);
-        return this.skillInstance.callSkill(serviceRequest);
+    private enqueue(audioItem: AudioItem, playBehavior: string) {
+        if (playBehavior === AudioPlayer.PLAY_BEHAVIOR_ENQUEUE) {
+            this._queue.push(audioItem);
+
+        } else if (playBehavior === AudioPlayer.PLAY_BEHAVIOR_REPLACE_ALL) {
+            if (this.isPlaying()) {
+                this.playbackStopped();
+            }
+
+            this._queue = [];
+            this._queue.push(audioItem);
+
+        } else if (playBehavior === AudioPlayer.PLAY_BEHAVIOR_REPLACE_ENQUEUED) {
+            this._queue = [];
+            this._queue.push(audioItem);
+        }
+
+        if (!this.isPlaying()) {
+            this.playNext();
+        }
     }
 
     private handleDirective(directive: any) {
@@ -177,5 +195,23 @@ export class AudioPlayer {
         const audioItem = this._queue[0];
         this._queue = this._queue.slice(1);
         return audioItem;
+    }
+
+    private playNext() {
+        if (this._queue.length === 0) {
+            return;
+        }
+
+        this._playing = this.dequeue();
+        // If the URL for AudioItem is http, we throw an error
+        if (this._playing.stream.url.startsWith("http:")) {
+            this._interactor.sessionEnded(SessionEndedReason.ERROR, {
+                message: "The URL specified in the Play directive must be HTTPS",
+                type: "INVALID_RESPONSE",
+            });
+        } else {
+            this.playbackStarted();
+
+        }
     }
 }

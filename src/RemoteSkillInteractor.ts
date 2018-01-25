@@ -5,8 +5,11 @@ import {InteractionModel} from "./InteractionModel";
 import {SkillInteractor} from "./SkillInteractor";
 
 export class RemoteSkillInteractor extends SkillInteractor {
-    public constructor(private urlString: string, protected model: InteractionModel, applicationID?: string) {
-        super(model, applicationID);
+    public constructor(private urlString: string,
+                       protected model: InteractionModel,
+                       locale: string,
+                       applicationID?: string) {
+        super(model, locale, applicationID);
     }
 
     protected invoke(requestJSON: any): Promise<any> {

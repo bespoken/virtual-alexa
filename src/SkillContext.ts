@@ -25,7 +25,9 @@ export class SkillContext {
     /** @internal */
     public constructor(interactionModel: InteractionModel,
                        audioPlayer: AudioPlayer,
-                       private _applicationID?: string) {
+                       private _locale: string,
+                       private _applicationID?: string
+    ) {
         this._audioPlayer = audioPlayer;
         this._interactionModel = interactionModel;
         this._device = new Device();
@@ -61,7 +63,10 @@ export class SkillContext {
         this._accessToken = token;
     }
 
-    /** @internal */
+    public locale(): string {
+        return this._locale ? this._locale : "en-US";
+    }
+
     public audioPlayer(): AudioPlayer {
         return this._audioPlayer;
     }
