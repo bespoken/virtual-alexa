@@ -1,9 +1,8 @@
+import {Utterance} from "virtual-core";
 import {AudioPlayer} from "./AudioPlayer";
 import {InteractionModel} from "./InteractionModel";
-import {ModuleInvoker} from "./ModuleInvoker";
 import {SkillContext} from "./SkillContext";
 import {SessionEndedReason, SkillRequest} from "./SkillRequest";
-import {Utterance} from "./Utterance";
 import {RequestFilter} from "./VirtualAlexa";
 
 type AlexaResponseCallback = (error: any, response: any, request: any) => void;

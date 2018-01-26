@@ -3,7 +3,7 @@ import {IntentSchema} from "./IntentSchema";
 import {InteractionModel} from "./InteractionModel";
 import {LocalSkillInteractor} from "./LocalSkillInteractor";
 import {RemoteSkillInteractor} from "./RemoteSkillInteractor";
-import {SampleUtterances} from "./SampleUtterances";
+import {SampleUtterancesBuilder} from "./SampleUtterancesBuilder";
 import {SkillContext} from "./SkillContext";
 import {SkillInteractor} from "./SkillInteractor";
 import {SessionEndedReason} from "./SkillRequest";
@@ -220,12 +220,12 @@ export class VirtualAlexaBuilder {
 
         } else if (this._intentSchema && this._sampleUtterances) {
             const schema = IntentSchema.fromJSON(this._intentSchema);
-            const utterances = SampleUtterances.fromJSON(this._sampleUtterances);
+            const utterances = SampleUtterancesBuilder.fromJSON(this._sampleUtterances);
             model = new InteractionModel(schema, utterances);
 
         } else if (this._intentSchemaFile && this._sampleUtterancesFile) {
             const schema = IntentSchema.fromFile(this._intentSchemaFile);
-            const utterances = SampleUtterances.fromFile(this._sampleUtterancesFile);
+            const utterances = SampleUtterancesBuilder.fromFile(this._sampleUtterancesFile);
             model = new InteractionModel(schema, utterances);
         } else {
             model = InteractionModel.fromLocale(locale);

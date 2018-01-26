@@ -1,5 +1,3 @@
-import * as uuid from "uuid";
-
 export class Device {
     private _id: string;
     private _supportedInterfaces: any = {};

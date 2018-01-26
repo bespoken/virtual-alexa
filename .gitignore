@@ -9,3 +9,5 @@ lib
 # Testing stuff
 coverage
 .nyc_output
+
+.DS_Store

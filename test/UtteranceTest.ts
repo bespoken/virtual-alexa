@@ -1,9 +1,9 @@
+import {SampleUtterances, SlotTypes, Utterance} from "virtual-core";
+
 import {assert} from "chai";
 import {IntentSchema} from "../src/IntentSchema";
 import {InteractionModel} from "../src/InteractionModel";
-import {SampleUtterances} from "../src/SampleUtterances";
-import {SlotTypes} from "../src/SlotTypes";
-import {Utterance} from "../src/Utterance";
+import {SampleUtterancesBuilder} from "../src/SampleUtterancesBuilder";
 
 describe("UtteranceTest", function() {
     this.timeout(10000);
@@ -95,10 +95,8 @@ describe("UtteranceTest", function() {
 
     const is = IntentSchema.fromJSON(intentSchema);
     const model = new InteractionModel(IntentSchema.fromJSON(intentSchema),
-        SampleUtterances.fromJSON(sampleUtterances),
+        SampleUtterancesBuilder.fromJSON(sampleUtterances),
         new SlotTypes(slotTypes));
-
-    console.log("location: ", process.cwd());
 
     const japaneseModel = InteractionModel.fromFile("./test/resources/japanese_skill/models/ja-JP.json");
 

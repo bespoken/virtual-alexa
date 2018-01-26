@@ -1,15 +1,14 @@
 import * as fs from "fs";
-import {BuiltinSlotTypes} from "./BuiltinSlotTypes";
+import {BuiltinSlotTypes, IModel, SampleUtterances, SlotTypes} from "virtual-core";
 import {IntentSchema} from "./IntentSchema";
-import {SampleUtterances} from "./SampleUtterances";
-import {SlotTypes} from "./SlotTypes";
+import {SampleUtterancesBuilder} from "./SampleUtterancesBuilder";
 
 /**
  * Parses and interprets an interaction model
  * Takes in intentName schema and sample utterances from files
  * Then can take a phrase and create an intentName request based on it
  */
-export class InteractionModel {
+export class InteractionModel implements IModel {
 
     // Parse the all-in-one interaction model as a file
     public static fromFile(interactionModelFile: any): InteractionModel {
@@ -54,7 +53,7 @@ export class InteractionModel {
             slotTypes = new SlotTypes(languageModel.types);
         }
         const schema = new IntentSchema(schemaJSON);
-        const samples = SampleUtterances.fromJSON(sampleJSON);
+        const samples = SampleUtterancesBuilder.fromJSON(sampleJSON);
 
         return new InteractionModel(schema, samples, slotTypes);
     }

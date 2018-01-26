@@ -1,4 +1,3 @@
-import {EventEmitter} from "events";
 import {AudioItem} from "./AudioItem";
 import {SkillInteractor} from "./SkillInteractor";
 import {RequestType, SessionEndedReason, SkillRequest} from "./SkillRequest";
