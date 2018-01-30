@@ -1,8 +1,9 @@
 import * as fs from "fs";
-import {BuiltinSlotTypes, IModel, SampleUtterances, SlotTypes} from "virtual-core";
+import {IModel, SampleUtterances, SlotTypes} from "virtual-core";
+import {BuiltinSlotTypes} from "./BuiltinSlotTypes";
+import {BuiltinUtterances} from "./BuiltinUtterances";
 import {IntentSchema} from "./IntentSchema";
 import {SampleUtterancesBuilder} from "./SampleUtterancesBuilder";
-
 /**
  * Parses and interprets an interaction model
  * Takes in intentName schema and sample utterances from files
@@ -75,8 +76,19 @@ export class InteractionModel implements IModel {
         }
 
         this.sampleUtterances.setInteractionModel(this);
-        this.slotTypes.addTypes(BuiltinSlotTypes.values());
 
+        const builtinValues = BuiltinUtterances.values();
+        // We add each phrase one-by-one
+        // It is possible the built-ins have additional samples defined
+        for (const key of Object.keys(builtinValues)) {
+            if (this.hasIntent(key)) {
+                for (const phrase of builtinValues[key]) {
+                    this.sampleUtterances.addSample(key, phrase);
+                }
+            }
+        }
+
+        this.slotTypes.addTypes(BuiltinSlotTypes.values());
     }
 
     public hasIntent(intent: string): boolean {

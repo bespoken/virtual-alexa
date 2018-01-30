@@ -41,7 +41,7 @@
     "@types/uuid": "^3.4.1",
     "lodash": "^4.17.4",
     "uuid": "^3.1.0",
-    "virtual-core": "0.0.8"
+    "virtual-core": "0.0.10"
   },
   "devDependencies": {
     "@types/chai": "^4.0.4",
