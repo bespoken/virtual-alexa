@@ -15,8 +15,9 @@ gulp.task("typedoc", function () {
     ]).pipe(typedoc({
             // TypeScript options (see typescript docs)
             excludePrivate: true,
-            excludeNotExported: true,
+            excludeNotExported: false,
             excludeExternals: true,
+            module: "commonjs",
             gaID: "UA-99287066-2",
             gaSite: "docs.bespoken.io",
             mode: "file",
