@@ -1,9 +1,9 @@
+import {Utterance} from "virtual-core";
 import {AudioPlayer} from "./AudioPlayer";
 import {InteractionModel} from "./InteractionModel";
 import {SkillContext} from "./SkillContext";
 import {SessionEndedReason, SkillRequest} from "./SkillRequest";
 import {SkillResponse} from "./SkillResponse";
-import {Utterance} from "./Utterance";
 import {RequestFilter} from "./VirtualAlexa";
 
 /**

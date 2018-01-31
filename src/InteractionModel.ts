@@ -1,15 +1,15 @@
 import * as fs from "fs";
+import {IModel, SampleUtterances, SlotTypes} from "virtual-core";
 import {BuiltinSlotTypes} from "./BuiltinSlotTypes";
+import {BuiltinUtterances} from "./BuiltinUtterances";
 import {IntentSchema} from "./IntentSchema";
-import {SampleUtterances} from "./SampleUtterances";
-import {SlotTypes} from "./SlotTypes";
-
+import {SampleUtterancesBuilder} from "./SampleUtterancesBuilder";
 /**
  * Parses and interprets an interaction model
  * Takes in intentName schema and sample utterances from files
  * Then can take a phrase and create an intentName request based on it
  */
-export class InteractionModel {
+export class InteractionModel implements IModel {
 
     // Parse the all-in-one interaction model as a file
     public static fromFile(interactionModelFile: any): InteractionModel {
@@ -54,7 +54,7 @@ export class InteractionModel {
             slotTypes = new SlotTypes(languageModel.types);
         }
         const schema = new IntentSchema(schemaJSON);
-        const samples = SampleUtterances.fromJSON(sampleJSON);
+        const samples = SampleUtterancesBuilder.fromJSON(sampleJSON);
 
         return new InteractionModel(schema, samples, slotTypes);
     }
@@ -76,8 +76,19 @@ export class InteractionModel {
         }
 
         this.sampleUtterances.setInteractionModel(this);
-        this.slotTypes.addTypes(BuiltinSlotTypes.values());
 
+        const builtinValues = BuiltinUtterances.values();
+        // We add each phrase one-by-one
+        // It is possible the built-ins have additional samples defined
+        for (const key of Object.keys(builtinValues)) {
+            if (this.hasIntent(key)) {
+                for (const phrase of builtinValues[key]) {
+                    this.sampleUtterances.addSample(key, phrase);
+                }
+            }
+        }
+
+        this.slotTypes.addTypes(BuiltinSlotTypes.values());
     }
 
     public hasIntent(intent: string): boolean {

@@ -1,6 +1,7 @@
 import * as fs from "fs";
+import {IIntentSchema, Intent, IntentSlot} from "virtual-core";
 
-export class IntentSchema {
+export class IntentSchema implements IIntentSchema{
     public static fromFile(file: string): IntentSchema {
         const data = fs.readFileSync(file);
         const json = JSON.parse(data.toString());
@@ -43,35 +44,4 @@ export class IntentSchema {
     public hasIntent(intentString: string): boolean {
         return this.intent(intentString) !== null;
     }
-}
-
-export class Intent {
-    public builtin: boolean = false;
-    public slots: IntentSlot[] = null;
-    public constructor(public name: string) {
-        if (this.name.indexOf("AMAZON") !== -1) {
-            this.builtin = true;
-        }
-    }
-
-    public addSlot(slot: IntentSlot): void {
-        if (this.slots === null) {
-            this.slots = [];
-        }
-
-        this.slots.push(slot);
-    }
-
-    public slotForName(name: string): IntentSlot {
-        for (const slot of this.slots) {
-            if (name.toLowerCase() === slot.name.toLowerCase()) {
-                return slot;
-            }
-        }
-        return undefined;
-    }
-}
-
-export class IntentSlot {
-    public constructor(public name: string, public type: string) {}
 }
