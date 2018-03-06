@@ -9,6 +9,7 @@ gulp.task("typedoc", function () {
         "src/AudioPlayer.ts",
         "src/Device.ts",
         "src/SkillContext.ts",
+        "src/SkillResponse.ts",
         "src/SkillSession.ts",
         "src/User.ts",
         "src/VirtualAlexa.ts",

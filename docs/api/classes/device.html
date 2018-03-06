@@ -85,10 +85,12 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="device.html#addsupportedinterface" class="tsd-kind-icon">add<wbr>Supported<wbr>Interface</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="device.html#audioplayersupported" class="tsd-kind-icon">audio<wbr>Player<wbr>Supported</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="device.html#displaysupported" class="tsd-kind-icon">display<wbr>Supported</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="device.html#id" class="tsd-kind-icon">id</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="device.html#setid" class="tsd-kind-icon">setID</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="device.html#supportedinterfaces" class="tsd-kind-icon">supported<wbr>Interfaces</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="device.html#videoappsupported" class="tsd-kind-icon">video<wbr>App<wbr>Supported</a></li>
 							</ul>
 						</section>
 					</div>
@@ -106,7 +108,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/10a0883/src/Device.ts#L3">Device.ts:3</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/1236abd/src/Device.ts#L3">Device.ts:3</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -129,28 +131,48 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="addsupportedinterface" class="tsd-anchor"></a>
-					<h3>add<wbr>Supported<wbr>Interface</h3>
+					<a name="audioplayersupported" class="tsd-anchor"></a>
+					<h3>audio<wbr>Player<wbr>Supported</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Supported<wbr>Interface<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, value<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">audio<wbr>Player<wbr>Supported<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/10a0883/src/Device.ts#L19">Device.ts:19</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/1236abd/src/Device.ts#L20">Device.ts:20</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>name: <span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> value: <span class="tsd-signature-type">any</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> value: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="displaysupported" class="tsd-anchor"></a>
+					<h3>display<wbr>Supported</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">display<wbr>Supported<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/1236abd/src/Device.ts#L24">Device.ts:24</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> value: <span class="tsd-signature-type">boolean</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -164,7 +186,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/10a0883/src/Device.ts#L11">Device.ts:11</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/1236abd/src/Device.ts#L12">Device.ts:12</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -181,7 +203,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/10a0883/src/Device.ts#L15">Device.ts:15</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/1236abd/src/Device.ts#L16">Device.ts:16</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -204,10 +226,33 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/10a0883/src/Device.ts#L26">Device.ts:26</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/1236abd/src/Device.ts#L32">Device.ts:32</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="videoappsupported" class="tsd-anchor"></a>
+					<h3>video<wbr>App<wbr>Supported</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">video<wbr>App<wbr>Supported<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/1236abd/src/Device.ts#L28">Device.ts:28</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> value: <span class="tsd-signature-type">boolean</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -244,7 +289,10 @@
 								<a href="device.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="device.html#addsupportedinterface" class="tsd-kind-icon">add<wbr>Supported<wbr>Interface</a>
+								<a href="device.html#audioplayersupported" class="tsd-kind-icon">audio<wbr>Player<wbr>Supported</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="device.html#displaysupported" class="tsd-kind-icon">display<wbr>Supported</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="device.html#id" class="tsd-kind-icon">id</a>
@@ -255,12 +303,18 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="device.html#supportedinterfaces" class="tsd-kind-icon">supported<wbr>Interfaces</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="device.html#videoappsupported" class="tsd-kind-icon">video<wbr>App<wbr>Supported</a>
+							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-class">
 						<a href="skillcontext.html" class="tsd-kind-icon">Skill<wbr>Context</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="skillresponse.html" class="tsd-kind-icon">Skill<wbr>Response</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="skillsession.html" class="tsd-kind-icon">Skill<wbr>Session</a>
