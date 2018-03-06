@@ -46,6 +46,16 @@ export abstract class SkillInteractor {
         return this.callSkillWithIntent(utterance.intent(), utterance.toJSON());
     }
 
+    /**
+     * Passes in an Display.ElementSelected request with the specified token
+     * @param token
+     */
+    public async elementSelected(token: any): Promise<SkillResponse> {
+        const serviceRequest = new SkillRequest(this.skillContext);
+        serviceRequest.elementSelectedRequest(token);
+        return this.callSkill(serviceRequest);
+    }
+
     public launched(): Promise<any> {
         const serviceRequest = new SkillRequest(this.skillContext);
         serviceRequest.launchRequest();

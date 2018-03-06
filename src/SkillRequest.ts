@@ -4,6 +4,7 @@ import {SkillContext} from "./SkillContext";
 import {RequestFilter} from "./VirtualAlexa";
 
 export class RequestType {
+    public static DISPLAY_ELEMENT_SELECTED_REQUEST = "Display.ElementSelected";
     public static INTENT_REQUEST = "IntentRequest";
     public static LAUNCH_REQUEST = "LaunchRequest";
     public static SESSION_ENDED_REQUEST = "SessionEndedRequest";
@@ -81,6 +82,12 @@ export class SkillRequest {
         return this;
     }
 
+    public elementSelectedRequest(token: any): SkillRequest {
+        this.requestJSON = this.baseRequest(RequestType.DISPLAY_ELEMENT_SELECTED_REQUEST);
+        this.requestJSON.request.token = token;
+        return this;
+    }
+
     public launchRequest(): SkillRequest {
         this.requestJSON = this.baseRequest(RequestType.LAUNCH_REQUEST);
         return this;
@@ -123,6 +130,7 @@ export class SkillRequest {
         // We also force a session on a session ended request, as if someone requests a session end
         //  we will make one first if there is not. It will then be ended.
         return (this.requestType === RequestType.LAUNCH_REQUEST
+            || this.requestType === RequestType.DISPLAY_ELEMENT_SELECTED_REQUEST
             || this.requestType === RequestType.INTENT_REQUEST
             || this.requestType === RequestType.SESSION_ENDED_REQUEST);
     }
@@ -205,7 +213,7 @@ export class SkillRequest {
 
         // If the device ID is set, we set the API endpoint and deviceId properties
         if (this.context.device().id()) {
-            baseRequest.context.System.apiEndpoint = "https://api.amazonalexa.com/";
+            baseRequest.context.System.apiEndpoint = "https://api.amazonalexa.com";
             baseRequest.context.System.device.deviceId = this.context.device().id();
         }
 
