@@ -26,7 +26,7 @@ export class SkillContext {
     public constructor(interactionModel: InteractionModel,
                        audioPlayer: AudioPlayer,
                        private _locale: string,
-                       private _applicationID?: string
+                       private _applicationID?: string,
     ) {
         this._audioPlayer = audioPlayer;
         this._interactionModel = interactionModel;
@@ -69,10 +69,6 @@ export class SkillContext {
 
     public audioPlayer(): AudioPlayer {
         return this._audioPlayer;
-    }
-
-    public audioPlayerEnabled(): boolean {
-        return this._audioPlayer !== null;
     }
 
     public newSession(): void {

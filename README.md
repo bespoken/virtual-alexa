@@ -128,6 +128,9 @@ https://bespoken.github.io/virtual-alexa/api/
 ## AudioPlayer Interface
 We also support the AudioPlayer! [Read more here](https://github.com/bespoken/virtual-alexa/blob/master/docs/AudioPlayer.md).
 
+## Display Interface
+We also support the Display Interface! [Read more here](https://github.com/bespoken/virtual-alexa/blob/master/docs/Display.md).
+
 ## How Do I Talk To You?
 Easy, you can open [an issue here](https://github.com/bespoken/virtual-alexa/issues), or find us on [our Gitter](https://gitter.im/bespoken/virtual-alexa).
 

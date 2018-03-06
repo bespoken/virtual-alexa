@@ -414,15 +414,34 @@ describe("VirtualAlexa Tests Using JSON", function() {
                 .intentSchema(intentSchema)
                 .create();
             virtualAlexa.context().device().setID("testID");
+            virtualAlexa.context().device().audioPlayerSupported(true);
+            virtualAlexa.context().device().displaySupported(true);
+            virtualAlexa.context().device().videoAppSupported(true);
 
             await virtualAlexa.filter((request) => {
                 assert.isDefined(request.context.System.device.deviceId);
-                assert.equal(request.context.System.apiEndpoint, "https://api.amazonalexa.com/");
+                assert.equal(request.context.System.apiEndpoint, "https://api.amazonalexa.com");
                 assert.isDefined(request.context.System.device.supportedInterfaces.AudioPlayer);
+                assert.isDefined(request.context.System.device.supportedInterfaces.Display);
+                assert.isDefined(request.context.System.device.supportedInterfaces.VideoApp);
                 assert.isDefined(request.context.System.user.userId);
                 assert.isDefined(request.context.System.user.permissions);
                 assert.isDefined(request.context.System.user.permissions.consentToken);
                 assert.equal(request.request.intent.name, "Play");
+            }).utter("play now");
+        });
+
+        it("Removes audio player capability", async () => {
+            const virtualAlexa = VirtualAlexa.Builder()
+                .handler("test.resources.index.handler")
+                .sampleUtterances(sampleUtterances)
+                .intentSchema(intentSchema)
+                .create();
+            virtualAlexa.context().device().setID("testID");
+            virtualAlexa.context().device().audioPlayerSupported(false);
+
+            await virtualAlexa.filter((request) => {
+                assert.isUndefined(request.context.System.device.supportedInterfaces.AudioPlayer);
             }).utter("play now");
         });
     });
@@ -544,5 +563,42 @@ describe("VirtualAlexa Tests Using Custom Function", function() {
         }).launch() as any;
 
         assert.isTrue(reply.custom);
+    });
+});
+
+describe("Echo Show Tests", () => {
+    it("Gets echo display stuff from response", async () => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test.resources.index.handler")
+            .sampleUtterancesFile("./test/resources/SampleUtterances.txt")
+            .intentSchemaFile("./test/resources/IntentSchema.json")
+            .create();
+        virtualAlexa.context().device().setID("testID");
+        virtualAlexa.context().device().audioPlayerSupported(false);
+        virtualAlexa.context().device().displaySupported(true);
+
+        const response = await virtualAlexa.utter("play now");
+        assert.isDefined(response.display());
+        assert.equal(response.primaryText(), "PrimaryText");
+        assert.equal(response.primaryText("ListToken1"), "ListItem1PrimaryText");
+        assert.isUndefined(response.secondaryText("ListToken1"));
+        assert.equal(response.secondaryText("ListToken2"), "ListItem2SecondaryText");
+        assert.equal(response.tertiaryText("ListToken2"), "ListItem2TertiaryText");
+    });
+
+    it("Selects an element", async () => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test.resources.index.handler")
+            .sampleUtterancesFile("./test/resources/SampleUtterances.txt")
+            .intentSchemaFile("./test/resources/IntentSchema.json")
+            .create();
+        virtualAlexa.context().device().setID("testID");
+        virtualAlexa.context().device().audioPlayerSupported(false);
+        virtualAlexa.context().device().displaySupported(true);
+
+        await virtualAlexa.filter((request) => {
+            assert.equal(request.request.type, "Display.ElementSelected");
+            assert.equal(request.request.token, "ListToken1");
+        }).selectElement("ListToken1");
     });
 });

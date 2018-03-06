@@ -165,7 +165,7 @@ export class SkillRequest {
 
         // For intent, launch and session ended requests, send the audio player state if there is one
         if (this.requiresSession()) {
-            if (this.context.audioPlayerEnabled()) {
+            if (this.context.device().audioPlayerSupported()) {
                 const activity = AudioPlayerActivity[this.context.audioPlayer().playerActivity()];
                 this.requestJSON.context.AudioPlayer = {
                     playerActivity: activity,
