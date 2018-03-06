@@ -46,6 +46,16 @@ export abstract class SkillInteractor {
         return this.callSkillWithIntent(utterance.intent(), utterance.toJSON());
     }
 
+    /**
+     * Passes in an Display.ElementSelected request with the specified token
+     * @param token
+     */
+    public async elementSelected(token: any): Promise<SkillResponse> {
+        const serviceRequest = new SkillRequest(this.skillContext);
+        serviceRequest.elementSelectedRequest(token);
+        return this.callSkill(serviceRequest);
+    }
+
     public launched(): Promise<any> {
         const serviceRequest = new SkillRequest(this.skillContext);
         serviceRequest.launchRequest();
@@ -116,7 +126,7 @@ export abstract class SkillInteractor {
     private async callSkillWithIntent(intentName: string, slots?: any): Promise<SkillResponse> {
         // When the user utters an intent, we suspend for it
         // We do this first to make sure everything is in the right state for what comes next
-        if (this.skillContext.audioPlayerEnabled() && this.skillContext.audioPlayer().isPlaying()) {
+        if (this.skillContext.device().audioPlayerSupported() && this.skillContext.audioPlayer().isPlaying()) {
             this.skillContext.audioPlayer().suspend();
         }
 
@@ -130,7 +140,7 @@ export abstract class SkillInteractor {
         }
 
         const result = await this.callSkill(serviceRequest);
-        if (this.skillContext.audioPlayerEnabled() && this.skillContext.audioPlayer().suspended()) {
+        if (this.skillContext.device().audioPlayerSupported() && this.skillContext.audioPlayer().suspended()) {
             this.skillContext.audioPlayer().resume();
         }
         return result;

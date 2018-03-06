@@ -31,6 +31,10 @@ export class VirtualAlexa {
         return this.interactor.context();
     }
 
+    /**
+     * Sends a SessionEndedRequest to the skill
+     * @returns {Promise<any>}
+     */
     public endSession(): Promise<any> {
         return this.interactor.sessionEnded(SessionEndedReason.USER_INITIATED, undefined);
     }
@@ -45,10 +49,29 @@ export class VirtualAlexa {
         return this;
     }
 
+    /**
+     * Sends the specified intent, with the optional map of slot values
+     * @param {string} intentName
+     * @param {{[p: string]: string}} slots
+     * @returns {Promise<SkillResponse>}
+     */
     public intend(intentName: string, slots?: {[id: string]: string}): Promise<SkillResponse> {
         return this.interactor.intended(intentName, slots);
     }
 
+    /**
+     * Sends a Display.ElementSelected request with the specified token
+     * @param {string} token
+     * @returns {Promise<SkillResponse>}
+     */
+    public selectElement(token: any): Promise<SkillResponse> {
+        return this.interactor.elementSelected(token);
+    }
+
+    /**
+     * Sends a launch request to the skill
+     * @returns {Promise<SkillResponse>}
+     */
     public launch(): Promise<SkillResponse> {
         return this.interactor.launched();
     }
@@ -58,6 +81,11 @@ export class VirtualAlexa {
         return this;
     }
 
+    /**
+     * Sends the specified utterance as an Intent request to the skill
+     * @param {string} utterance
+     * @returns {Promise<SkillResponse>}
+     */
     public utter(utterance: string): Promise<SkillResponse> {
         return this.interactor.spoken(utterance);
     }

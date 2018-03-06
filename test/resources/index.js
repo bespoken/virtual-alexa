@@ -16,6 +16,38 @@ exports.handler = function (event, context) {
                 text: "text",
                 title: "title"
             },
+            directives: [
+                {
+                    template: {
+                        backButton: "VISIBLE",
+                        backgroundImage: "Image",
+                        listItems: [
+                            {
+                                token: "ListToken1",
+                                image: {},
+                                textContent: {
+                                    primaryText: { text: "ListItem1PrimaryText" }
+                                }
+                            },
+                            {
+                                token: "ListToken2",
+                                image: {},
+                                textContent: {
+                                    secondaryText: { text: "ListItem2SecondaryText" },
+                                    tertiaryText: { text: "ListItem2TertiaryText" }
+                                }
+                            }
+                        ],
+                        textContent: {
+                            primaryText: { text: "PrimaryText" }
+                        },
+                        title: "Title",
+                        token: "TemplateToken",
+                        type: "ListTemplate1",
+                    },
+                    type: "Display.RenderTemplate"
+                }
+            ],
             outputSpeech: {
                 ssml: "SSML"
             },

@@ -56,6 +56,53 @@ export class SkillResponse {
         return _.get(this, "response.card.title");
     }
 
+    public directive(type: string): any {
+        let o;
+        if (this.response.directives) {
+            for (const directive of this.response.directives) {
+                if (directive.type === type) {
+                    o = directive;
+                    break;
+                }
+            }
+        }
+        return o;
+    }
+
+    public display(): any {
+        return _.get(this.directive("Display.RenderTemplate"), "template");
+    }
+
+    /**
+     * Returns the primary text for a display template
+     * If token is specified, grabs a list value for a list template
+     * @param {string} token
+     * @returns {string | undefined}
+     */
+    public primaryText(listItemToken?: any): string | undefined {
+        return this.displayText("primaryText", listItemToken);
+    }
+
+    /**
+     * Returns the secondary text for a display template
+     * If token is specified, grabs a list value for a list template
+     * @param {string} token
+     * @returns {string | undefined}
+     */
+    public secondaryText(listItemToken?: any): string | undefined {
+        return this.displayText("secondaryText", listItemToken);
+    }
+
+    /**
+     * Returns the tertiary text for a display template
+     * If token is specified, grabs a list value for a list template
+     * @param {string} token
+     * @returns {string | undefined}
+     */
+    public tertiaryText(listItemToken?: any): string | undefined {
+        return this.displayText("tertiaryText", listItemToken);
+    }
+
     public prompt(): string | undefined {
         return _.has(this, "response.outputSpeech.ssml")
             ? _.get(this, "response.outputSpeech.ssml")
@@ -73,5 +120,24 @@ export class SkillResponse {
             const value = rawJSON[key];
             (this as any)[key] = value;
         }
+    }
+
+    private displayText(textElement: string, listItemToken?: string): string | undefined {
+        const displayTemplate = this.display();
+        if (!displayTemplate) {
+            return undefined;
+        }
+
+        if (listItemToken) {
+            for (const listItem of displayTemplate.listItems) {
+                if (listItem.token === listItemToken) {
+                    return _.get(listItem, "textContent." + textElement + ".text");
+                }
+            }
+        } else {
+            const path = "textContent." + textElement + ".text";
+            return _.get(displayTemplate, path);
+        }
+        return undefined;
     }
 }

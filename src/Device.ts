@@ -5,7 +5,8 @@ export class Device {
     /** @internal */
     public constructor(id?: string) {
         this._id = id;
-        this.addSupportedInterface("AudioPlayer");
+        // By default, we support the AudioPlayer
+        this.audioPlayerSupported(true);
     }
 
     public id(): string {
@@ -16,14 +17,31 @@ export class Device {
         this._id = id;
     }
 
-    public addSupportedInterface(name: string, value?: any) {
-        if (!value) {
-            value = {};
-        }
-        this._supportedInterfaces[name] = value;
+    public audioPlayerSupported(value?: boolean): boolean {
+        return this.supportedInterface("AudioPlayer", value);
+    }
+
+    public displaySupported(value?: boolean): boolean {
+        return this.supportedInterface("Display", value);
+    }
+
+    public videoAppSupported(value?: boolean) {
+        return this.supportedInterface("VideoApp", value);
     }
 
     public supportedInterfaces(): any {
         return this._supportedInterfaces;
     }
+
+    private supportedInterface(name: string, value?: boolean): boolean {
+        if (value !== undefined) {
+            if (value === true) {
+                this._supportedInterfaces[name] = {};
+            } else {
+                delete this._supportedInterfaces[name];
+            }
+        }
+        return this._supportedInterfaces[name] !== undefined;
+    }
+
 }
