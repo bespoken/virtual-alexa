@@ -597,6 +597,7 @@ describe("Echo Show Tests", () => {
         virtualAlexa.context().device().displaySupported(true);
 
         await virtualAlexa.filter((request) => {
+            assert.isDefined(request.context.Display);
             assert.equal(request.request.type, "Display.ElementSelected");
             assert.equal(request.request.token, "ListToken1");
         }).selectElement("ListToken1");
