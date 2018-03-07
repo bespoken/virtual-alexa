@@ -2,9 +2,13 @@
 Virtual Alexa supports the display interface for emulating the Echo Show and Spot interactions.
 
 ## Selecting Elements
-The key aspect to Echo Show support is the ability to emulate user clicks on the screen.
-
-This is done by calling `selectElement` on VirtualAlexa with the name of the token.
+Enable Echo Show support by calling the method:
+```
+virtualAlexa.context().device().displaySupported(true);
+```
+This will cause requests to include the Display as a support interface.
+ 
+Emulate user clicks on the screen by calling `selectElement` with the name of the token.
 
 The SkillResponse also includes several useful helper methods, such as:
 - [display()](https://bespoken.github.io/virtual-alexa/api/classes/skillresponse.html#display) - Gets the template returned by the Display.RenderTemplate directive

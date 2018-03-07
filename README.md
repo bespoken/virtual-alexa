@@ -31,9 +31,11 @@
 # Virtual Alexa
 Virtual Alexa allows for interacting with skills programmatically.
 
-The core Virtual Alexa API provides several routines - the two most essential ones:
-    * utter: Generates JSON as if the user said the given phrase
-    * intend: Generates JSON as if the given intent was uttered
+The core Virtual Alexa API provides several routines - the three most essential ones:
+  
+    * launch: Generates JSON for a launch request
+    * utter: Generates JSON as if the user said the given phrase  
+    * intend: Generates JSON as if the given intent was uttered  
 
 ## Why Do I Need This?
 This library allows for easy testing of skills.

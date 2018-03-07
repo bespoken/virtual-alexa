@@ -220,6 +220,11 @@ export class SkillRequest {
         if (this.context.accessToken() !== null) {
             baseRequest.context.System.user.accessToken = this.context.accessToken();
         }
+
+        // If display enabled, we add a display object to context
+        if (this.context.device().displaySupported()) {
+            baseRequest.context.Display = {};
+        }
         return baseRequest;
     }
 
