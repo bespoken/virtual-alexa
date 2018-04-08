@@ -63,7 +63,7 @@ The internal state of the AudioPlayer can be inspected by calling:
     result = await virtualAlexa.utter("ignore");
 
 ```
-This is taken from our own internal unit test - [AudioPlayerTest.js](https://github.com/bespoken/virtual-alexa/blob/master/test/resources/AudioPlayerTest.js).
+This is taken from our own internal unit test - [AudioPlayerTest.js](https://github.com/bespoken/virtual-alexa/blob/master/test/AudioPlayerTest.ts).
 
 It is written with Mocha and Chai, but you can use any unit-testing framework that you like.
 
