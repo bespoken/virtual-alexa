@@ -126,6 +126,16 @@ https://github.com/bespoken/GuessThePrice/blob/master/test/index-test.js
 
 And read all the docs here:  
 https://bespoken.github.io/virtual-alexa/api/
+## Using The Request Filter
+The [filter](https://bespoken.github.io/virtual-alexa/api/classes/virtualalexa.html#filter) is a powerful tool for manipulating the request payloads that are made to your Alexa skill.
+```
+alexa.filter((requestJSON) => {
+  // Do something with the request
+  requestJSON.request.locale = "en-US" // Arbitrary example of changing the request payload
+});
+```
+
+More info on using it [here](docs/Filters.md).
 
 ## AudioPlayer Interface
 We also support the AudioPlayer! [Read more here](https://github.com/bespoken/virtual-alexa/blob/master/docs/AudioPlayer.md).
