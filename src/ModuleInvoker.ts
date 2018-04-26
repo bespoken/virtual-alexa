@@ -11,7 +11,7 @@ export class ModuleInvoker {
         return ModuleInvoker.invokeFunction(handlerModule[functionName], event);
     }
 
-    public static invokeFunction(lambdaFunction: (...args: any[]) => void, event: any): Promise<any> {
+    public static invokeFunction(lambdaFunction: (...args: any[]) => any, event: any): Promise<any> {
         return new Promise<any>((resolve, reject) => {
             const callback = (error: Error, result: any) => {
                 if (error) {
@@ -22,7 +22,15 @@ export class ModuleInvoker {
             };
 
             const context = new LambdaContext(callback);
-            lambdaFunction(event, context, callback);
+            const promise = lambdaFunction(event, context, callback);
+            // For Node8, lambdas can return a promise - if they do, we call the context object with results
+            if (promise) {
+                promise.then((result: any) => {
+                    context.done(null, result);
+                }).catch((error: any) => {
+                    context.done(error, null);
+                });
+            }
         });
     }
 }

@@ -566,6 +566,51 @@ describe("VirtualAlexa Tests Using Custom Function", function() {
     });
 });
 
+describe("VirtualAlexa Tests Using Node8-style lambda", function() {
+    it("Handles a promise being returned", async () => {
+        const myFunction = function(event: any, context: any) {
+            return new Promise((resolve) => {
+                resolve({ custom: true });
+            });
+        };
+
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler(myFunction)
+            .sampleUtterancesFile("./test/resources/SampleUtterances.txt")
+            .intentSchemaFile("./test/resources/IntentSchema.json")
+            .create();
+
+        const reply = await virtualAlexa.filter((request) => {
+            request.session.sessionId = "Filtered";
+        }).launch() as any;
+
+        assert.isTrue(reply.custom);
+    });
+
+    it("Handles a promise being returned with error", async () => {
+        const myFunction = function(event: any, context: any) {
+            return new Promise((resolve, reject) => {
+                reject("Error");
+            });
+        };
+
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler(myFunction)
+            .sampleUtterancesFile("./test/resources/SampleUtterances.txt")
+            .intentSchemaFile("./test/resources/IntentSchema.json")
+            .create();
+
+        try {
+            await virtualAlexa.filter((request) => {
+                request.session.sessionId = "Filtered";
+            }).launch();
+            assert.fail("This should not be reached");
+        } catch (e) {
+            assert.equal(e, "Error");
+        }
+    });
+});
+
 describe("Echo Show Tests", () => {
     it("Gets echo display stuff from response", async () => {
         const virtualAlexa = VirtualAlexa.Builder()
