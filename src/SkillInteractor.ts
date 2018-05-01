@@ -63,7 +63,7 @@ export abstract class SkillInteractor {
     }
 
     public sessionEnded(sessionEndedReason: SessionEndedReason,
-                        errorData?: any): Promise<any> {
+                        errorData?: any): void {
         if (sessionEndedReason === SessionEndedReason.ERROR) {
             console.error("SessionEndedRequest:\n" + JSON.stringify(errorData, null, 2));
         }
@@ -71,9 +71,8 @@ export abstract class SkillInteractor {
         const serviceRequest = new SkillRequest(this.skillContext);
         // Convert to enum value and send request
         serviceRequest.sessionEndedRequest(sessionEndedReason, errorData);
-        return this.callSkill(serviceRequest).then(() => {
-            this.context().endSession();
-        });
+        this.callSkill(serviceRequest);
+        this.context().endSession();
     }
 
     /**

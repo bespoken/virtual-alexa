@@ -33,10 +33,11 @@ export class VirtualAlexa {
 
     /**
      * Sends a SessionEndedRequest to the skill
+     * Does not wait for a reply, as there should be none
      * @returns {Promise<any>}
      */
-    public endSession(): Promise<any> {
-        return this.interactor.sessionEnded(SessionEndedReason.USER_INITIATED, undefined);
+    public endSession(): void {
+        this.interactor.sessionEnded(SessionEndedReason.USER_INITIATED, undefined);
     }
 
     /**

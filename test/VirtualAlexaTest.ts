@@ -505,9 +505,8 @@ describe("VirtualAlexa Tests Using JSON", function() {
                 .create();
 
             virtualAlexa.launch().then(() => {
-                virtualAlexa.endSession().then(() => {
-                    done();
-                });
+                virtualAlexa.endSession();
+                done();
             });
         });
 
