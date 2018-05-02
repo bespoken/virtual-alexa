@@ -1,6 +1,7 @@
 import {Utterance} from "virtual-core";
 import {AudioPlayer} from "./AudioPlayer";
 import {InteractionModel} from "./InteractionModel";
+import {IResponse} from "./IResponse";
 import {SkillContext} from "./SkillContext";
 import {SessionEndedReason, SkillRequest} from "./SkillRequest";
 import {SkillResponse} from "./SkillResponse";
@@ -32,7 +33,7 @@ export abstract class SkillInteractor {
      * Hits the callback with the JSON payload from the response
      * @param utteranceString
      */
-    public spoken(utteranceString: string): Promise<SkillResponse> {
+    public spoken(utteranceString: string): Promise<IResponse> {
         let utterance = new Utterance(this.interactionModel(), utteranceString);
 
         // If we don't match anything, we use the default utterance - simple algorithm for this
@@ -43,7 +44,7 @@ export abstract class SkillInteractor {
                 + ". Using fallback utterance: " + defaultPhrase.phrase);
         }
 
-        return this.callSkillWithIntent(utterance.intent(), utterance.toJSON());
+        return this.handleIntent(utterance.intent(), utterance.toJSON());
     }
 
     /**
@@ -80,8 +81,8 @@ export abstract class SkillInteractor {
      * @param intentName
      * @param slots
      */
-    public async intended(intentName: string, slots?: any): Promise<SkillResponse> {
-        return this.callSkillWithIntent(intentName, slots);
+    public async intended(intentName: string, slots?: any): Promise<IResponse> {
+        return this.handleIntent(intentName, slots);
     }
 
     public filter(requestFilter: RequestFilter): void {
@@ -115,6 +116,7 @@ export abstract class SkillInteractor {
 
         if (result.response !== undefined && result.response.directives !== undefined) {
             this.context().audioPlayer().directivesReceived(result.response.directives);
+            this.context().dialogManager().handleDirective(result);
         }
 
         return new SkillResponse(result);
@@ -122,7 +124,13 @@ export abstract class SkillInteractor {
 
     protected abstract invoke(requestJSON: any): Promise<any>;
 
-    private async callSkillWithIntent(intentName: string, slots?: any): Promise<SkillResponse> {
+    private async handleIntent(intentName: string, slots?: any): Promise<IResponse> {
+        // First give the dialog manager a shot at it
+        const dialogResponse = this.context().dialogManager().handleUtterance(intentName, slots);
+        if (dialogResponse) {
+            return Promise.resolve(dialogResponse);
+        }
+
         // When the user utters an intent, we suspend for it
         // We do this first to make sure everything is in the right state for what comes next
         if (this.skillContext.device().audioPlayerSupported() && this.skillContext.audioPlayer().isPlaying()) {

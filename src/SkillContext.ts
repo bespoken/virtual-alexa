@@ -4,6 +4,7 @@ import {Device} from "./Device";
 import {InteractionModel} from "./InteractionModel";
 import {SkillSession} from "./SkillSession";
 import {User} from "./User";
+import {DialogManager} from "./DialogManager";
 
 /**
  * Manages state of the Alexa device interaction across sessions.
@@ -18,6 +19,8 @@ export class SkillContext {
     private _accessToken: string = null;
     private _device: Device;
     /** @internal */
+    private _dialogManager: DialogManager;
+    /** @internal */
     private _interactionModel: InteractionModel;
     private _user: User;
     private _session: SkillSession;
@@ -30,6 +33,7 @@ export class SkillContext {
     ) {
         this._audioPlayer = audioPlayer;
         this._interactionModel = interactionModel;
+        this._dialogManager = new DialogManager(interactionModel);
         this._device = new Device();
         this._user = new User();
     }
@@ -65,6 +69,11 @@ export class SkillContext {
 
     public locale(): string {
         return this._locale ? this._locale : "en-US";
+    }
+
+    /** @internal */
+    public dialogManager(): DialogManager {
+        return this._dialogManager;
     }
 
     public audioPlayer(): AudioPlayer {

@@ -2,9 +2,17 @@ import * as path from "path";
 
 export class ModuleInvoker {
     public static invokeHandler(handler: string, event: any): Promise<any> {
-        const handlerParts = handler.split(".");
-        const functionName = handlerParts[handlerParts.length - 1];
-        const fileName = handlerParts.slice(0, handlerParts.length - 1).join("/") + ".js";
+        let functionName = "handler";
+        let fileName = handler;
+        // By default, we use handler as the name of the function in the lamba
+        // If the filename does not end with .js, we assume the last part is the function name (e.g., index.handler)
+        if (!handler.endsWith(".js")) {
+            const functionSeparatorIndex = handler.lastIndexOf(".");
+            functionName = handler.substr(functionSeparatorIndex + 1);
+            fileName = handler.substr(0, functionSeparatorIndex);
+            // Replace dots with slashes
+            fileName += ".js";
+        }
         const fullPath = path.join(process.cwd(), fileName);
         const handlerModule = require(fullPath);
 

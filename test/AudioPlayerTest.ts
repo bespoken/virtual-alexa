@@ -1,4 +1,5 @@
 import {assert} from "chai";
+import {SkillResponse} from "../src/SkillResponse";
 import {VirtualAlexa} from "../src/VirtualAlexa";
 
 const interactionModel = {
@@ -30,7 +31,7 @@ const interactionModel = {
 describe("AudioPlayer launches and plays a track", function() {
     it("Plays a track", async () => {
         const virtualAlexa = VirtualAlexa.Builder()
-            .handler("test.resources.SimpleAudioPlayer.handler")
+            .handler("test/resources/SimpleAudioPlayer.handler")
             .interactionModel(interactionModel)
             .create();
 
@@ -43,7 +44,7 @@ describe("AudioPlayer launches and plays a track", function() {
             });
 
             await virtualAlexa.launch();
-            const reply = await virtualAlexa.utter("play");
+            const reply = await virtualAlexa.utter("play") as SkillResponse;
             assert.include(reply.response.directives[0].audioItem.stream.url, "episode-013");
             assert.isTrue(virtualAlexa.audioPlayer().isPlaying());
         } catch (e) {
@@ -54,7 +55,7 @@ describe("AudioPlayer launches and plays a track", function() {
 
     it("Plays a track, next then previous", async () => {
         const virtualAlexa = VirtualAlexa.Builder()
-            .handler("test.resources.SimpleAudioPlayer.handler")
+            .handler("test/resources/SimpleAudioPlayer.handler")
             .interactionModel(interactionModel)
             .create();
 
@@ -66,20 +67,20 @@ describe("AudioPlayer launches and plays a track", function() {
                 requests.push(json.request);
             });
 
-            let result = await virtualAlexa.launch();
+            let result = await virtualAlexa.launch() as SkillResponse;
             assert.include(result.response.outputSpeech.ssml, "Welcome to the Simple Audio Player");
 
-            result = await virtualAlexa.utter("play");
+            result = await virtualAlexa.utter("play") as SkillResponse;
             assert.include(result.response.directives[0].audioItem.stream.url, "episode-013");
 
-            result = await virtualAlexa.utter("next");
+            result = await virtualAlexa.utter("next") as SkillResponse;
             assert.include(result.response.directives[0].audioItem.stream.url, "episode-012");
 
-            result = await virtualAlexa.utter("previous");
+            result = await virtualAlexa.utter("previous") as SkillResponse;
             assert.include(result.response.directives[0].audioItem.stream.url, "episode-013");
 
             // Make sure that audio stops and starts on an "ignored" intent
-            result = await virtualAlexa.utter("ignore");
+            result = await virtualAlexa.utter("ignore") as SkillResponse;
 
             assert.equal(requests[0].type, "LaunchRequest");
             assert.equal(requests[1].type, "IntentRequest");

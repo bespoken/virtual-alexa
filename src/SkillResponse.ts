@@ -1,11 +1,12 @@
 import * as _ from "lodash";
+import {IResponse} from "./IResponse";
 
 /**
  * Wrapper object for the Alexa Response.
  *
  * Provides a number of convenience methods for accessing it.
  */
-export class SkillResponse {
+export class SkillResponse implements IResponse {
     public response: any;
     public sessionAttributes?: any;
     public version: string;

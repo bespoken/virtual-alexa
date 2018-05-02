@@ -2,8 +2,11 @@ import * as fs from "fs";
 import {IModel, SampleUtterances, SlotTypes} from "virtual-core";
 import {BuiltinSlotTypes} from "./BuiltinSlotTypes";
 import {BuiltinUtterances} from "./BuiltinUtterances";
+import {DialogIntent} from "./DialogIntent";
 import {IntentSchema} from "./IntentSchema";
 import {SampleUtterancesBuilder} from "./SampleUtterancesBuilder";
+import {SlotPrompt} from "./SlotPrompt";
+
 /**
  * Parses and interprets an interaction model
  * Takes in intentName schema and sample utterances from files
@@ -56,7 +59,23 @@ export class InteractionModel implements IModel {
         const schema = new IntentSchema(schemaJSON);
         const samples = SampleUtterancesBuilder.fromJSON(sampleJSON);
 
-        return new InteractionModel(schema, samples, slotTypes);
+        let prompts;
+        if (interactionModel.prompts) {
+            prompts = [];
+            for (const prompt of interactionModel.prompts) {
+                prompts.push(SlotPrompt.fromJSON(prompt));
+            }
+        }
+
+        let dialogIntents;
+        if (interactionModel.dialog) {
+            dialogIntents = [];
+            for (const dialogIntent of interactionModel.dialog.intents) {
+                dialogIntents.push(DialogIntent.fromJSON(interactionModel, dialogIntent));
+            }
+        }
+
+        return new InteractionModel(schema, samples, slotTypes, prompts, dialogIntents);
     }
 
     public static fromLocale(locale: string): InteractionModel {
@@ -70,12 +89,21 @@ export class InteractionModel implements IModel {
 
     public constructor(public intentSchema: IntentSchema,
                        public sampleUtterances: SampleUtterances,
-                       public slotTypes?: SlotTypes) {
+                       public slotTypes?: SlotTypes,
+                       public prompts?: SlotPrompt[],
+                       public dialogIntents?: DialogIntent[]) {
         if (!this.slotTypes) {
             this.slotTypes = new SlotTypes([]);
         }
 
+        // In bootstrapping the interaction model, we pass it to its children
         this.sampleUtterances.setInteractionModel(this);
+
+        if (this.dialogIntents) {
+            for (const dialogIntent of this.dialogIntents) {
+                dialogIntent.interactionModel = this;
+            }
+        }
 
         const builtinValues = BuiltinUtterances.values();
         // We add each phrase one-by-one
@@ -93,5 +121,34 @@ export class InteractionModel implements IModel {
 
     public hasIntent(intent: string): boolean {
         return this.intentSchema.hasIntent(intent);
+    }
+
+    public dialogIntent(intentName: string): DialogIntent | undefined {
+        if (!this.dialogIntents) {
+            return undefined;
+        }
+
+        for (const dialogIntent of this.dialogIntents) {
+            // If our intent matches a dialog intent, then we flip into dialog mode
+            if (dialogIntent.name === intentName) {
+                return dialogIntent;
+            }
+        }
+
+        return undefined;
+    }
+
+    public prompt(id: string): SlotPrompt | undefined {
+        if (!this.prompts) {
+            return undefined;
+        }
+
+        for (const prompt of this.prompts) {
+            if (prompt.id === id) {
+                return prompt;
+            }
+        }
+
+        return undefined;
     }
 }
