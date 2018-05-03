@@ -5,7 +5,7 @@ export class SlotValue {
         if (!json) {
             return {};
         }
-        
+
         const slots: any = {};
         for (const slotName of Object.keys(json)) {
             const slotValue = json[slotName];

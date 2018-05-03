@@ -1,8 +1,8 @@
 Code
 - [X] Add handling of confirmation for overall intent
 - [X] Do confirmation tests
-- [ ] Add explicit slot handling
-- [ ] Add explicit confirmations
-- [ ] Make sure slots set on response are set
+- [X] Add elicit slot handling
+- [X] Make sure slots set on response are set
+- [ ] Add elicit confirmation test
 - [ ] Add docs, make sure right stuff is genned for typedoc
 - [ ] Add entity resolution

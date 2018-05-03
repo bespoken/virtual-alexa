@@ -13,6 +13,7 @@ export enum DialogState {
 }
 
 export class DialogManager {
+    private _delegated: boolean = false;
     private _confirmingSlot: SlotValue = undefined;
     private _confirmationStatus: ConfirmationStatus;
     private _dialogIntent: DialogIntent = undefined;
@@ -35,14 +36,26 @@ export class DialogManager {
                     throw new Error("No match for dialog name: " + intentName);
                 }
 
-                this._dialogState = DialogState.STARTED;
-                this._confirmationStatus = ConfirmationStatus.NONE;
+                if (directive.type === "Dialog.Delegate") {
+                    this._delegated = true;
+                    this._dialogState = DialogState.STARTED;
+                    this._confirmationStatus = ConfirmationStatus.NONE;
 
-                // We immediately want to get the next response when the dialog directive comes down
-                const dialogResponse = this.updateDialog(directive.updatedIntent.slots);
-                if (dialogResponse) {
-                    return dialogResponse;
+                    // We immediately want to get the next response when the dialog directive comes down
+                    const dialogResponse = this.updateDialog(directive.updatedIntent.slots);
+                    if (dialogResponse) {
+                        return dialogResponse;
+                    }
+                } else if (directive.type === "Dialog.ElicitSlot") {
+                    // Start the dialog if not started, otherwise mark as in progress
+                    this._dialogState = this._dialogState ? DialogState.IN_PROGRESS : DialogState.STARTED;
+                    return this.elicitSlot(directive.slotToElicit);
+                } else if (directive.type === "Dialog.ConfirmSlot") {
+                    // Start the dialog if not started, otherwise mark as in progress
+                    this._dialogState = this._dialogState ? DialogState.IN_PROGRESS : DialogState.STARTED;
+                    return this.confirmSlot(directive.slotToConfirm);
                 }
+
             }
         }
         return undefined;
@@ -65,12 +78,16 @@ export class DialogManager {
     }
 
     public handleUtterance(intentName: string, slots: {[id: string]: SlotValue}): IResponse | void {
-        if (this.isDialog()) {
+        if (this.isDialog() && this.isDelegated()) {
             return this.updateDialog(intentName, slots);
         } else if (this.interactionModel.dialogIntent(intentName)) {
             // If we have not started a dialog yet, if this intent ties off to a dialog, save the slot state
             this.updateSlotStates(slots);
         }
+    }
+
+    public isDelegated() {
+        return this._delegated;
     }
 
     public isDialog() {
@@ -87,6 +104,18 @@ export class DialogManager {
 
     private confirmationPrompt(slots: {[id: string]: SlotValue}): string {
         return this.interactionModel.prompt(this._dialogIntent.prompts.confirmation).variation(slots);
+    }
+
+    private confirmSlot(slotName: string): DialogResponse {
+        const slot = this._dialogIntent.slot(slotName);
+        const prompt = slot.confirmationPrompt().variation(this.slots());
+        return new DialogResponse(prompt);
+    }
+
+    private elicitSlot(slotName: string): DialogResponse {
+        const slot = this._dialogIntent.slot(slotName);
+        const prompt = slot.elicitationPrompt().variation(this.slots());
+        return new DialogResponse(prompt);
     }
 
     private updateSlotStates(slots: {[id: string]: SlotValue}): void {

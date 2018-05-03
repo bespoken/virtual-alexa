@@ -18,6 +18,16 @@ export class DialogIntent {
     public prompts: any;
     public slots: DialogSlot[];
 
+    public slot(slotName: string): DialogSlot | undefined {
+        for (const slot of this.slots) {
+            if (slot.name === slotName) {
+                return slot;
+            }
+        }
+
+        return undefined;
+    }
+
     public addSlot(slot: DialogSlot) {
         this.slots.push(slot);
     }
