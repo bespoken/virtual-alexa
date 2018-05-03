@@ -46,14 +46,19 @@ export class DialogManager {
                     if (dialogResponse) {
                         return dialogResponse;
                     }
-                } else if (directive.type === "Dialog.ElicitSlot") {
+                } else if (directive.type === "Dialog.ElicitSlot"
+                    || directive.type === "Dialog.ConfirmSlot"
+                    || directive.type === "Dialog.ConfirmIntent") {
                     // Start the dialog if not started, otherwise mark as in progress
                     this._dialogState = this._dialogState ? DialogState.IN_PROGRESS : DialogState.STARTED;
-                    return this.elicitSlot(directive.slotToElicit);
-                } else if (directive.type === "Dialog.ConfirmSlot") {
-                    // Start the dialog if not started, otherwise mark as in progress
-                    this._dialogState = this._dialogState ? DialogState.IN_PROGRESS : DialogState.STARTED;
-                    return this.confirmSlot(directive.slotToConfirm);
+                    this.updateSlotStates(directive.updatedIntent.slots);
+
+                    if (directive.type === "Dialog.ConfirmSlot") {
+                        const slotToConfirm = directive.slotToConfirm;
+                        this._confirmingSlot = this.slots()[slotToConfirm];
+                    }
+                    // For explicit slot handling, the output speech from the skill response is used
+                    return undefined;
                 }
 
             }
@@ -106,19 +111,11 @@ export class DialogManager {
         return this.interactionModel.prompt(this._dialogIntent.prompts.confirmation).variation(slots);
     }
 
-    private confirmSlot(slotName: string): DialogResponse {
-        const slot = this._dialogIntent.slot(slotName);
-        const prompt = slot.confirmationPrompt().variation(this.slots());
-        return new DialogResponse(prompt);
-    }
-
-    private elicitSlot(slotName: string): DialogResponse {
-        const slot = this._dialogIntent.slot(slotName);
-        const prompt = slot.elicitationPrompt().variation(this.slots());
-        return new DialogResponse(prompt);
-    }
-
     private updateSlotStates(slots: {[id: string]: SlotValue}): void {
+        if (!slots) {
+            return;
+        }
+
         for (const slotName of Object.keys(slots)) {
             this._slots[slotName] = slots[slotName];
         }

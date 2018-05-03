@@ -2,6 +2,7 @@ import * as uuid from "uuid";
 import {AudioPlayerActivity} from "./AudioPlayer";
 import {SkillContext} from "./SkillContext";
 import {RequestFilter} from "./VirtualAlexa";
+import {SlotValue} from "./SlotValue";
 
 export class RequestType {
     public static DISPLAY_ELEMENT_SELECTED_REQUEST = "Display.ElementSelected";
@@ -76,10 +77,17 @@ export class SkillRequest {
         if (this.context.dialogManager().isDialog()) {
             this.requestJSON.request.dialogState = this.context.dialogManager().dialogState();
             this.requestJSON.request.intent.confirmationStatus = this.context.dialogManager().confirmationStatus();
-            this.requestJSON.request.intent.slots = this.context.dialogManager().slots();
+            // Since the dialog manager has an incomplete slot view, we merge it in with the complete list
+            this.mergeSlots(this.requestJSON.request.intent.slots, this.context.dialogManager().slots());
         }
 
         return this;
+    }
+
+    private mergeSlots(slotsTarget: {[id: string]: SlotValue}, slotsSource: {[id: string]: SlotValue}) {
+        for (const sourceSlot of Object.keys(slotsSource)) {
+            slotsTarget[sourceSlot] = slotsSource[sourceSlot];
+        }
     }
 
     public audioPlayerRequest(requestType: string, token: string, offsetInMilliseconds: number): SkillRequest {

@@ -65,18 +65,18 @@ describe("DialogManager tests", function() {
         });
     });
 
-    it("Interacts with dialog with explicit handling", (done) => {
+    it("Interacts with dialog with explicit slot handling", (done) => {
         const virtualAlexa = VirtualAlexa.Builder()
             .handler("test/resources/dialogModel/dialog-manual-index.handler")
             .interactionModelFile("test/resources/dialogModel/dialog-model.json")
             .create();
 
-        virtualAlexa.intend("PetMatchIntent", { size: "big"}).then((response: DialogResponse) => {
-            assert.equal(response.skillResponse.directive("Dialog.ElicitSlot").type, "Dialog.ElicitSlot");
-            assert.equal(response.prompt, "Are you looking for more of a family dog or a guard dog?");
+        virtualAlexa.intend("PetMatchIntent", { size: "big"}).then((skillResponse: SkillResponse) => {
+            assert.equal(skillResponse.directive("Dialog.ElicitSlot").type, "Dialog.ElicitSlot");
+            assert.include(skillResponse.prompt(), "Are you looking for a family dog?");
             return virtualAlexa.intend("PetMatchIntent", { temperament: "watch"});
-        }).then((dialogResponse: DialogResponse) => {
-            assert.equal(dialogResponse.prompt, "Do you prefer high energy or low energy dogs?");
+        }).then((skillResponse: SkillResponse) => {
+            assert.equal(skillResponse.prompt(), "Do you prefer high energy dogs?");
             return virtualAlexa.intend("PetMatchIntent", { energy: "high"});
         }).then((skillResponse: SkillResponse) => {
             assert.equal(skillResponse.prompt(), "Done with dialog");

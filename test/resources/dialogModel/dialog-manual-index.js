@@ -6,12 +6,19 @@ exports.handler = function (event, context) {
     }
 
     var nextSlot = "size";
+    var ssml = "what size do you want";
     if (event.request.intent.slots.size.value) {
         nextSlot = "temperament";
+        ssml = "Are you looking for a family dog?";
     }
 
     if (event.request.intent.slots.temperament.value) {
         nextSlot = "energy";
+        ssml = "Do you prefer high energy dogs?";
+    }
+
+    if (event.request.intent.slots.energy.value) {
+        event.request.dialogState = "COMPLETED";
     }
 
     if (event.request.dialogState === "COMPLETED") {
@@ -61,7 +68,7 @@ exports.handler = function (event, context) {
                     }
                 ],
                 outputSpeech: {
-                    ssml: "SSML"
+                    ssml: ssml
                 },
                 reprompt: {
                     outputSpeech: {
