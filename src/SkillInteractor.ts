@@ -5,6 +5,7 @@ import {IResponse} from "./IResponse";
 import {SkillContext} from "./SkillContext";
 import {SessionEndedReason, SkillRequest} from "./SkillRequest";
 import {SkillResponse} from "./SkillResponse";
+import {SlotValue} from "./SlotValue";
 import {RequestFilter} from "./VirtualAlexa";
 
 /**
@@ -50,7 +51,7 @@ export abstract class SkillInteractor {
                 + ". Using fallback utterance: " + defaultPhrase.phrase);
         }
 
-        return this.handleIntent(utterance.intent(), utterance.toJSON());
+        return this.handleIntent(utterance.intent(), SlotValue.fromJSON(utterance.toJSON()));
     }
 
     /**
@@ -87,8 +88,8 @@ export abstract class SkillInteractor {
      * @param intentName
      * @param slots
      */
-    public async intended(intentName: string, slots?: any): Promise<IResponse> {
-        return this.handleIntent(intentName, slots);
+    public async intended(intentName: string, slots?: {[id: string]: string}): Promise<IResponse> {
+        return this.handleIntent(intentName, SlotValue.fromJSON(slots));
     }
 
     public filter(requestFilter: RequestFilter): void {
@@ -135,7 +136,7 @@ export abstract class SkillInteractor {
 
     protected abstract invoke(requestJSON: any): Promise<any>;
 
-    private async handleIntent(intentName: string, slots?: any): Promise<IResponse> {
+    private async handleIntent(intentName: string, slots?: {[id: string]: SlotValue}): Promise<IResponse> {
         // First give the dialog manager a shot at it
         const dialogResponse = this.context().dialogManager().handleUtterance(intentName, slots);
         if (dialogResponse) {
@@ -153,7 +154,8 @@ export abstract class SkillInteractor {
         const serviceRequest = new SkillRequest(this.skillContext).intentRequest(intentName);
         if (slots !== undefined && slots !== null) {
             for (const slotName of Object.keys(slots)) {
-                serviceRequest.withSlot(slotName, slots[slotName]);
+                const slotValue = slots[slotName];
+                serviceRequest.withSlot(slotName, slotValue.value, slotValue.confirmationStatus);
             }
         }
 

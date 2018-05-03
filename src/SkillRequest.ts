@@ -115,7 +115,7 @@ export class SkillRequest {
      * @param slotValue
      * @returns {SkillRequest}
      */
-    public withSlot(slotName: string, slotValue: string): SkillRequest {
+    public withSlot(slotName: string, slotValue: string, confirmationStatus: string = "NONE"): SkillRequest {
         if (this.requestJSON.request.type !== "IntentRequest") {
             throw Error("Trying to add slot to non-intent request");
         }
@@ -128,7 +128,11 @@ export class SkillRequest {
             throw Error("Trying to add undefined slot to intent: " + slotName);
         }
 
-        this.requestJSON.request.intent.slots[slotName] = { name: slotName, value: slotValue };
+        this.requestJSON.request.intent.slots[slotName] = {
+            confirmationStatus,
+            name: slotName,
+            value: slotValue,
+        };
         return this;
     }
 

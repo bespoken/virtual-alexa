@@ -1,4 +1,4 @@
-import {ISlotState} from "./DialogManager";
+import {SlotValue} from "./SlotValue";
 
 export class SlotPrompt {
     public static fromJSON(json: any): SlotPrompt {
@@ -10,7 +10,7 @@ export class SlotPrompt {
     public id: string;
     public variations: SlotVariation[];
 
-    public variation(slots: {[id: string]: ISlotState}) {
+    public variation(slots: {[id: string]: SlotValue}) {
         let value = this.variations[0].value;
         // Replace slot values in the variation, if they exist
         // They will look like this "Are you sure you want {size} dog?"

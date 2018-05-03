@@ -1,22 +1,23 @@
+import {BuiltinUtterances} from "./BuiltinUtterances";
 import {DialogIntent} from "./DialogIntent";
 import {DialogResponse} from "./DialogResponse";
 import {InteractionModel} from "./InteractionModel";
 import {IResponse} from "./IResponse";
 import {SkillResponse} from "./SkillResponse";
-import {Utterance} from "virtual-core";
-import {BuiltinUtterances} from "./BuiltinUtterances";
+import {SlotValue} from "./SlotValue";
 
 export enum DialogState {
     COMPLETED = "COMPLETED",
     IN_PROGRESS = "IN_PROGRESS",
     STARTED = "STARTED",
 }
+
 export class DialogManager {
-    private _confirmingSlot: ISlotState = undefined;
+    private _confirmingSlot: SlotValue = undefined;
     private _confirmationStatus: ConfirmationStatus;
     private _dialogIntent: DialogIntent = undefined;
     private _dialogState: DialogState = undefined;
-    private _slots: {[id: string]: ISlotState} = {};
+    private _slots: {[id: string]: SlotValue} = {};
     public constructor(public interactionModel: InteractionModel) {}
 
     public handleDirective(response: SkillResponse): DialogResponse | undefined {
@@ -38,7 +39,7 @@ export class DialogManager {
                 this._confirmationStatus = ConfirmationStatus.NONE;
 
                 // We immediately want to get the next response when the dialog directive comes down
-                const dialogResponse = this.updateDialog();
+                const dialogResponse = this.updateDialog(directive.updatedIntent.slots);
                 if (dialogResponse) {
                     return dialogResponse;
                 }
@@ -48,7 +49,7 @@ export class DialogManager {
     }
 
     public confirmationStatus() {
-        this._confirmationStatus;
+        return this._confirmationStatus;
     }
 
     public matchConfirmationUtterance(utterance: string): string | undefined {
@@ -63,7 +64,7 @@ export class DialogManager {
         return undefined;
     }
 
-    public handleUtterance(intentName: string, slots: {[id: string]: string}): IResponse | void {
+    public handleUtterance(intentName: string, slots: {[id: string]: SlotValue}): IResponse | void {
         if (this.isDialog()) {
             return this.updateDialog(intentName, slots);
         } else if (this.interactionModel.dialogIntent(intentName)) {
@@ -84,22 +85,17 @@ export class DialogManager {
         return this._slots;
     }
 
-    private confirmationPrompt(slots: {[id: string]: ISlotState}): string {
+    private confirmationPrompt(slots: {[id: string]: SlotValue}): string {
         return this.interactionModel.prompt(this._dialogIntent.prompts.confirmation).variation(slots);
     }
 
-    private updateSlotStates(slots: {[id: string]: string}): void {
+    private updateSlotStates(slots: {[id: string]: SlotValue}): void {
         for (const slotName of Object.keys(slots)) {
-            const slotValue = slots[slotName];
-            this._slots[slotName] = {
-                confirmationStatus: ConfirmationStatus.NONE,
-                name: slotName,
-                value: slotValue,
-            };
+            this._slots[slotName] = slots[slotName];
         }
     }
 
-    private updateDialog(intentName?: string, slots?: {[id: string]: string}): DialogResponse | undefined {
+    private updateDialog(intentName?: string, slots?: {[id: string]: SlotValue}): DialogResponse | undefined {
         // Check if we are confirming the intent as a whole
         if (this._dialogState === DialogState.COMPLETED
             && this._dialogIntent.confirmationRequired
@@ -146,12 +142,6 @@ export class DialogManager {
         }
         return undefined;
     }
-}
-
-export interface ISlotState {
-    confirmationStatus: ConfirmationStatus;
-    name: string;
-    value: string;
 }
 
 export enum ConfirmationStatus {
