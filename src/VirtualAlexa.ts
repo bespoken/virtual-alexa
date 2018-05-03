@@ -66,7 +66,7 @@ export class VirtualAlexa {
      * @param {string} token
      * @returns {Promise<SkillResponse>}
      */
-    public selectElement(token: any): Promise<SkillResponse> {
+    public selectElement(token: any): Promise<IResponse> {
         return this.interactor.elementSelected(token);
     }
 
