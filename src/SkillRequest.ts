@@ -73,8 +73,9 @@ export class SkillRequest {
         }
 
         // Add in the dialog info
-        this.requestJSON.request.dialogState = this.context.dialogManager().dialogState();
         if (this.context.dialogManager().isDialog()) {
+            this.requestJSON.request.dialogState = this.context.dialogManager().dialogState();
+            this.requestJSON.request.intent.confirmationStatus = this.context.dialogManager().confirmationStatus();
             this.requestJSON.request.intent.slots = this.context.dialogManager().slots();
         }
 

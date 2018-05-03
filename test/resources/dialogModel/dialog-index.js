@@ -17,15 +17,6 @@ exports.handler = function (event, context) {
                     text: "text",
                     title: "title"
                 },
-                directives: [
-                    {
-                        updatedIntent: {
-                            name: "PetMatchIntent",
-                            confirmationStatus: "NONE",
-                        },
-                        type: "Dialog.Delegate"
-                    }
-                ],
                 outputSpeech: {
                     ssml: "Done with dialog"
                 },

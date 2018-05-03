@@ -34,8 +34,14 @@ export abstract class SkillInteractor {
      * @param utteranceString
      */
     public spoken(utteranceString: string): Promise<IResponse> {
-        let utterance = new Utterance(this.interactionModel(), utteranceString);
+        // Give the dialog manager first shot at an utterance
+        // This in the case where it is confirming a slot value with yes or no
+        const confirmationIntent = this.context().dialogManager().matchConfirmationUtterance(utteranceString);
+        if (confirmationIntent) {
+            return this.handleIntent(confirmationIntent);
+        }
 
+        let utterance = new Utterance(this.interactionModel(), utteranceString);
         // If we don't match anything, we use the default utterance - simple algorithm for this
         if (!utterance.matched()) {
             const defaultPhrase = this.interactionModel().sampleUtterances.defaultUtterance();
@@ -51,7 +57,7 @@ export abstract class SkillInteractor {
      * Passes in an Display.ElementSelected request with the specified token
      * @param token
      */
-    public async elementSelected(token: any): Promise<SkillResponse> {
+    public async elementSelected(token: any): Promise<IResponse> {
         const serviceRequest = new SkillRequest(this.skillContext);
         serviceRequest.elementSelectedRequest(token);
         return this.callSkill(serviceRequest);
@@ -89,7 +95,7 @@ export abstract class SkillInteractor {
         this.requestFilter = requestFilter;
     }
 
-    public async callSkill(serviceRequest: SkillRequest): Promise<SkillResponse> {
+    public async callSkill(serviceRequest: SkillRequest): Promise<IResponse> {
         // Call this at the last possible minute, because of state issues
         //  What can happen is this gets queued, and then another request ends the session
         //  So we want to wait until just before we send this to create the session
@@ -116,7 +122,12 @@ export abstract class SkillInteractor {
 
         if (result.response !== undefined && result.response.directives !== undefined) {
             this.context().audioPlayer().directivesReceived(result.response.directives);
-            this.context().dialogManager().handleDirective(result);
+            // If we have a dialog response return that instead with a reference to the skill response
+            const dialogResponse = this.context().dialogManager().handleDirective(result);
+            if (dialogResponse) {
+                dialogResponse.skillResponse = new SkillResponse(result);
+                return dialogResponse;
+            }
         }
 
         return new SkillResponse(result);

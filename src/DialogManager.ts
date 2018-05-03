@@ -3,6 +3,8 @@ import {DialogResponse} from "./DialogResponse";
 import {InteractionModel} from "./InteractionModel";
 import {IResponse} from "./IResponse";
 import {SkillResponse} from "./SkillResponse";
+import {Utterance} from "virtual-core";
+import {BuiltinUtterances} from "./BuiltinUtterances";
 
 export enum DialogState {
     COMPLETED = "COMPLETED",
@@ -11,12 +13,13 @@ export enum DialogState {
 }
 export class DialogManager {
     private _confirmingSlot: ISlotState = undefined;
+    private _confirmationStatus: ConfirmationStatus;
     private _dialogIntent: DialogIntent = undefined;
     private _dialogState: DialogState = undefined;
     private _slots: {[id: string]: ISlotState} = {};
     public constructor(public interactionModel: InteractionModel) {}
 
-    public handleDirective(response: SkillResponse): void {
+    public handleDirective(response: SkillResponse): DialogResponse | undefined {
         // Look for a dialog directive - trigger dialog mode if so
         for (const directive of response.response.directives) {
             if (directive.type.startsWith("Dialog")) {
@@ -32,8 +35,32 @@ export class DialogManager {
                 }
 
                 this._dialogState = DialogState.STARTED;
+                this._confirmationStatus = ConfirmationStatus.NONE;
+
+                // We immediately want to get the next response when the dialog directive comes down
+                const dialogResponse = this.updateDialog();
+                if (dialogResponse) {
+                    return dialogResponse;
+                }
             }
         }
+        return undefined;
+    }
+
+    public confirmationStatus() {
+        this._confirmationStatus;
+    }
+
+    public matchConfirmationUtterance(utterance: string): string | undefined {
+        // If we are in confirmation mode, check if this is yes or no
+        if (this._confirmingSlot) {
+            if (BuiltinUtterances.values()["AMAZON.YesIntent"].indexOf(utterance) !== -1) {
+                return "AMAZON.YesIntent";
+            } else if (BuiltinUtterances.values()["AMAZON.NoIntent"].indexOf(utterance) !== -1) {
+                return "AMAZON.NoIntent";
+            }
+        }
+        return undefined;
     }
 
     public handleUtterance(intentName: string, slots: {[id: string]: string}): IResponse | void {
@@ -57,6 +84,10 @@ export class DialogManager {
         return this._slots;
     }
 
+    private confirmationPrompt(slots: {[id: string]: ISlotState}): string {
+        return this.interactionModel.prompt(this._dialogIntent.prompts.confirmation).variation(slots);
+    }
+
     private updateSlotStates(slots: {[id: string]: string}): void {
         for (const slotName of Object.keys(slots)) {
             const slotValue = slots[slotName];
@@ -68,13 +99,25 @@ export class DialogManager {
         }
     }
 
-    private updateDialog(intentName: string, slots: {[id: string]: string}): DialogResponse | undefined {
+    private updateDialog(intentName?: string, slots?: {[id: string]: string}): DialogResponse | undefined {
+        // Check if we are confirming the intent as a whole
+        if (this._dialogState === DialogState.COMPLETED
+            && this._dialogIntent.confirmationRequired
+            && this._confirmationStatus === ConfirmationStatus.NONE
+        ) {
+            this._confirmationStatus = (intentName === "AMAZON.YesIntent")
+                ? ConfirmationStatus.CONFIRMED
+                : ConfirmationStatus.DENIED;
+            return undefined;
+        }
+
         // If we are confirming a slot, then answer should be yes or no
         if (this._confirmingSlot) {
             this._confirmingSlot.confirmationStatus = (intentName === "AMAZON.YesIntent")
                 ? ConfirmationStatus.CONFIRMED
                 : ConfirmationStatus.DENIED;
-        } else {
+            this._confirmingSlot = undefined;
+        } else if (slots) {
             this.updateSlotStates(slots);
         }
 
@@ -84,19 +127,23 @@ export class DialogManager {
             if (slotState) {
                 if (slot.confirmationRequired) {
                     if (slotState.confirmationStatus === ConfirmationStatus.NONE) {
-                        return new DialogResponse(slot.confirmationPrompt().variation().value);
+                        this._confirmingSlot = slotState;
+                        return new DialogResponse(slot.confirmationPrompt().variation(this.slots()));
                     } else if (slotState.confirmationStatus === ConfirmationStatus.DENIED) {
-                        return new DialogResponse(slot.elicitationPrompt().variation().value);
+                        return new DialogResponse(slot.elicitationPrompt().variation(this.slots()));
                     }
                 }
             } else if (slot.elicitationRequired) { // If no slot state, and elicitation required, do this next
                 const prompt = slot.elicitationPrompt();
-                return new DialogResponse(prompt.variation().value);
+                return new DialogResponse(prompt.variation(this.slots()));
             }
         }
 
         // dialog state is done if we get here - we do not need to return anything
         this._dialogState = DialogState.COMPLETED;
+        if (this._dialogIntent.confirmationRequired) {
+            return new DialogResponse(this.confirmationPrompt(this.slots()));
+        }
         return undefined;
     }
 }
