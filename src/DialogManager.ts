@@ -1,8 +1,8 @@
 import {BuiltinUtterances} from "./BuiltinUtterances";
 import {DialogIntent} from "./DialogIntent";
-import {DialogResponse} from "./DialogResponse";
+import {DelegatedDialogResponse, DialogResponse, ExplicitDialogResponse} from "./DialogResponse";
 import {InteractionModel} from "./InteractionModel";
-import {IResponse} from "./IResponse";
+import {SkillIntent} from "./SkillIntent";
 import {SkillResponse} from "./SkillResponse";
 import {SlotValue} from "./SlotValue";
 
@@ -14,6 +14,7 @@ export enum DialogState {
 
 export class DialogManager {
     private _delegated: boolean = false;
+    private _confirmingIntent: boolean = false;
     private _confirmingSlot: SlotValue = undefined;
     private _confirmationStatus: ConfirmationStatus;
     private _dialogIntent: DialogIntent = undefined;
@@ -42,7 +43,8 @@ export class DialogManager {
                     this._confirmationStatus = ConfirmationStatus.NONE;
 
                     // We immediately want to get the next response when the dialog directive comes down
-                    const dialogResponse = this.updateDialog(directive.updatedIntent.slots);
+                    const dialogResponse = this.processDialog(directive.updatedIntent.name,
+                        directive.updatedIntent.slots);
                     if (dialogResponse) {
                         return dialogResponse;
                     }
@@ -56,6 +58,9 @@ export class DialogManager {
                     if (directive.type === "Dialog.ConfirmSlot") {
                         const slotToConfirm = directive.slotToConfirm;
                         this._confirmingSlot = this.slots()[slotToConfirm];
+                    } else if (directive.type === "Dialog.ConfirmIntent") {
+                        this._confirmingIntent = true;
+                        this._dialogState = DialogState.COMPLETED;
                     }
                     // For explicit slot handling, the output speech from the skill response is used
                     return undefined;
@@ -70,24 +75,24 @@ export class DialogManager {
         return this._confirmationStatus;
     }
 
-    public matchConfirmationUtterance(utterance: string): string | undefined {
+    public handleUtterance(utterance: string): SkillIntent {
         // If we are in confirmation mode, check if this is yes or no
-        if (this._confirmingSlot) {
-            if (BuiltinUtterances.values()["AMAZON.YesIntent"].indexOf(utterance) !== -1) {
-                return "AMAZON.YesIntent";
-            } else if (BuiltinUtterances.values()["AMAZON.NoIntent"].indexOf(utterance) !== -1) {
-                return "AMAZON.NoIntent";
-            }
+        if (this._confirmingSlot || this._dialogState === DialogState.COMPLETED) {
+            const intent = BuiltinUtterances.values()["AMAZON.YesIntent"].indexOf(utterance) !== -1 ?
+                "AMAZON.YesIntent" :
+                "AMAZON.NoIntent";
+
+            return new SkillIntent(this.interactionModel, intent);
         }
         return undefined;
     }
 
-    public handleUtterance(intentName: string, slots: {[id: string]: SlotValue}): IResponse | void {
-        if (this.isDialog() && this.isDelegated()) {
-            return this.updateDialog(intentName, slots);
-        } else if (this.interactionModel.dialogIntent(intentName)) {
+    public handleIntent(intent: SkillIntent): DialogResponse | void {
+        if (this.isDialog()) {
+            return this.processDialog(intent.name, intent.slots());
+        } else if (this.interactionModel.dialogIntent(intent.name)) {
             // If we have not started a dialog yet, if this intent ties off to a dialog, save the slot state
-            this.updateSlotStates(slots);
+            this.updateSlotStates(intent.slots());
         }
     }
 
@@ -117,20 +122,30 @@ export class DialogManager {
         }
 
         for (const slotName of Object.keys(slots)) {
-            this._slots[slotName] = slots[slotName];
+            const slot = this._slots[slotName];
+            if (slot) {
+                slot.update(slots[slotName]);
+            } else {
+                this._slots[slotName] = slots[slotName];
+            }
         }
     }
 
-    private updateDialog(intentName?: string, slots?: {[id: string]: SlotValue}): DialogResponse | undefined {
+    private processDialog(intentName: string, slots: {[id: string]: SlotValue}): DialogResponse | undefined {
         // Check if we are confirming the intent as a whole
+        // We are confirming the intent when the dialog is completed and either:
+        //  The confirm is required for the dialog if it is delegated and the dialog is set to confirmation required
+        //  OR an explicit confirmIntent directive has been sent
+        const confirmationRequired = (this.isDelegated() && this._dialogIntent.confirmationRequired)
+            || this._confirmingIntent;
         if (this._dialogState === DialogState.COMPLETED
-            && this._dialogIntent.confirmationRequired
+            && confirmationRequired
             && this._confirmationStatus === ConfirmationStatus.NONE
         ) {
             this._confirmationStatus = (intentName === "AMAZON.YesIntent")
                 ? ConfirmationStatus.CONFIRMED
                 : ConfirmationStatus.DENIED;
-            return undefined;
+            return new ExplicitDialogResponse(new SkillIntent(this.interactionModel, this._dialogIntent.name));
         }
 
         // If we are confirming a slot, then answer should be yes or no
@@ -138,33 +153,41 @@ export class DialogManager {
             this._confirmingSlot.confirmationStatus = (intentName === "AMAZON.YesIntent")
                 ? ConfirmationStatus.CONFIRMED
                 : ConfirmationStatus.DENIED;
-            this._confirmingSlot = undefined;
-        } else if (slots) {
+            // If this confirmed, exit slot confirming mode
+            if (this._confirmingSlot.confirmationStatus === ConfirmationStatus.CONFIRMED) {
+                this._confirmingSlot = undefined;
+            }
+        } else {
             this.updateSlotStates(slots);
+        }
+
+        // Stop processing here if this is not a delegated dialog
+        if (!this.isDelegated()) {
+            return new ExplicitDialogResponse(new SkillIntent(this.interactionModel, this._dialogIntent.name));
         }
 
         // Now figure out the next slot
         for (const slot of this._dialogIntent.slots) {
             const slotState = this._slots[slot.name];
-            if (slotState) {
+            if (slotState && slotState.value) {
                 if (slot.confirmationRequired) {
                     if (slotState.confirmationStatus === ConfirmationStatus.NONE) {
                         this._confirmingSlot = slotState;
-                        return new DialogResponse(slot.confirmationPrompt().variation(this.slots()));
+                        return new DelegatedDialogResponse(slot.confirmationPrompt().variation(this.slots()));
                     } else if (slotState.confirmationStatus === ConfirmationStatus.DENIED) {
-                        return new DialogResponse(slot.elicitationPrompt().variation(this.slots()));
+                        return new DelegatedDialogResponse(slot.elicitationPrompt().variation(this.slots()));
                     }
                 }
             } else if (slot.elicitationRequired) { // If no slot state, and elicitation required, do this next
                 const prompt = slot.elicitationPrompt();
-                return new DialogResponse(prompt.variation(this.slots()));
+                return new DelegatedDialogResponse(prompt.variation(this.slots()));
             }
         }
 
         // dialog state is done if we get here - we do not need to return anything
         this._dialogState = DialogState.COMPLETED;
         if (this._dialogIntent.confirmationRequired) {
-            return new DialogResponse(this.confirmationPrompt(this.slots()));
+            return new DelegatedDialogResponse(this.confirmationPrompt(this.slots()));
         }
         return undefined;
     }

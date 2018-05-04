@@ -3,10 +3,11 @@ import {AudioPlayer} from "./AudioPlayer";
 import {InteractionModel} from "./InteractionModel";
 import {IResponse} from "./IResponse";
 import {SkillContext} from "./SkillContext";
+import {SkillIntent} from "./SkillIntent";
 import {SessionEndedReason, SkillRequest} from "./SkillRequest";
 import {SkillResponse} from "./SkillResponse";
-import {SlotValue} from "./SlotValue";
 import {RequestFilter} from "./VirtualAlexa";
+import {DelegatedDialogResponse, ExplicitDialogResponse} from "./DialogResponse";
 
 /**
  * SkillInteractor comes in two flavors:
@@ -35,11 +36,10 @@ export abstract class SkillInteractor {
      * @param utteranceString
      */
     public spoken(utteranceString: string): Promise<IResponse> {
-        // Give the dialog manager first shot at an utterance
-        // This in the case where it is confirming a slot value with yes or no
-        const confirmationIntent = this.context().dialogManager().matchConfirmationUtterance(utteranceString);
-        if (confirmationIntent) {
-            return this.handleIntent(confirmationIntent);
+        // First give the dialog manager a shot at it
+        const intent = this.context().dialogManager().handleUtterance(utteranceString);
+        if (intent) {
+            return this.handleIntent(intent);
         }
 
         let utterance = new Utterance(this.interactionModel(), utteranceString);
@@ -51,7 +51,7 @@ export abstract class SkillInteractor {
                 + ". Using fallback utterance: " + defaultPhrase.phrase);
         }
 
-        return this.handleIntent(utterance.intent(), SlotValue.fromJSON(utterance.toJSON()));
+        return this.handleIntent(new SkillIntent(this.interactionModel(), utterance.intent(), utterance.toJSON()));
     }
 
     /**
@@ -89,7 +89,7 @@ export abstract class SkillInteractor {
      * @param slots
      */
     public async intended(intentName: string, slots?: {[id: string]: string}): Promise<IResponse> {
-        return this.handleIntent(intentName, SlotValue.fromJSON(slots));
+        return this.handleIntent(new SkillIntent(this.interactionModel(), intentName, slots));
     }
 
     public filter(requestFilter: RequestFilter): void {
@@ -125,8 +125,8 @@ export abstract class SkillInteractor {
             this.context().audioPlayer().directivesReceived(result.response.directives);
             // If we have a dialog response return that instead with a reference to the skill response
             const dialogResponse = this.context().dialogManager().handleDirective(result);
-            if (dialogResponse) {
-                dialogResponse.skillResponse = new SkillResponse(result);
+            if (dialogResponse && dialogResponse.isDelegated()) {
+                (dialogResponse as DelegatedDialogResponse).skillResponse = new SkillResponse(result);
                 return dialogResponse;
             }
         }
@@ -136,11 +136,15 @@ export abstract class SkillInteractor {
 
     protected abstract invoke(requestJSON: any): Promise<any>;
 
-    private async handleIntent(intentName: string, slots?: {[id: string]: SlotValue}): Promise<IResponse> {
+    private async handleIntent(intent: SkillIntent): Promise<IResponse> {
         // First give the dialog manager a shot at it
-        const dialogResponse = this.context().dialogManager().handleUtterance(intentName, slots);
+        const dialogResponse = this.context().dialogManager().handleIntent(intent);
         if (dialogResponse) {
-            return Promise.resolve(dialogResponse);
+            if (dialogResponse.isDelegated()) {
+                return Promise.resolve(dialogResponse);
+            } else {
+                intent = (dialogResponse as ExplicitDialogResponse).transformedIntent;
+            }
         }
 
         // When the user utters an intent, we suspend for it
@@ -151,13 +155,7 @@ export abstract class SkillInteractor {
 
         // Now we generate the service request
         //  The request is built based on the state from the previous step, so important that it is suspended first
-        const serviceRequest = new SkillRequest(this.skillContext).intentRequest(intentName);
-        if (slots !== undefined && slots !== null) {
-            for (const slotName of Object.keys(slots)) {
-                const slotValue = slots[slotName];
-                serviceRequest.withSlot(slotName, slotValue.value, slotValue.confirmationStatus);
-            }
-        }
+        const serviceRequest = new SkillRequest(this.skillContext).intentRequest(intent);
 
         const result = await this.callSkill(serviceRequest);
         if (this.skillContext.device().audioPlayerSupported() && this.skillContext.audioPlayer().suspended()) {

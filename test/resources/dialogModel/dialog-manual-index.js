@@ -5,15 +5,28 @@ exports.handler = function (event, context) {
         slot = event.request.intent.slots[slotName];
     }
 
-    var nextSlot = "size";
+    var confirm = false;
+    var directiveType = "Dialog.ElicitSlot";
+    if (event.request.intent.slots.size.value === "small") {
+        confirm = true;
+    }
+
+    var elicitSlot = "size";
+    var confirmSlot = undefined;
     var ssml = "what size do you want";
     if (event.request.intent.slots.size.value) {
         nextSlot = "temperament";
         ssml = "Are you looking for a family dog?";
+        if (confirm && event.request.intent.slots.size.confirmationStatus == "NONE") {
+            ssml = "small?";
+            directiveType = "Dialog.ConfirmSlot";
+            elicitSlot = undefined;
+            confirmSlot = "size";
+        }
     }
 
     if (event.request.intent.slots.temperament.value) {
-        nextSlot = "energy";
+        elicitSlot = "energy";
         ssml = "Do you prefer high energy dogs?";
     }
 
@@ -21,7 +34,7 @@ exports.handler = function (event, context) {
         event.request.dialogState = "COMPLETED";
     }
 
-    if (event.request.dialogState === "COMPLETED") {
+    if (confirm && event.request.dialogState === "COMPLETED") {
         var response = {
             response: {
                 card: {
@@ -33,6 +46,39 @@ exports.handler = function (event, context) {
                     text: "text",
                     title: "title"
                 },
+                outputSpeech: {
+                    ssml: "Done with dialog"
+                },
+                reprompt: {
+                    outputSpeech: {
+                        text: "TEXT"
+                    }
+                }
+            },
+            success: true,
+            slot: slot
+        };
+    } else if (event.request.dialogState === "COMPLETED") {
+        var response = {
+            response: {
+                card: {
+                    content: "content",
+                    image: {
+                        largeImageUrl: "largeImageUrl",
+                        smallImageUrl: "smallImageUrl"
+                    },
+                    text: "text",
+                    title: "title"
+                },
+                directives: [
+                    {
+                        updatedIntent: {
+                            name: "PetMatchIntent",
+                            confirmationStatus: "NONE",
+                        },
+                        type: "Dialog.ConfirmIntent"
+                    }
+                ],
                 outputSpeech: {
                     ssml: "Done with dialog"
                 },
@@ -63,8 +109,9 @@ exports.handler = function (event, context) {
                             name: "PetMatchIntent",
                             confirmationStatus: "NONE",
                         },
-                        slotToElicit: nextSlot,
-                        type: "Dialog.ElicitSlot"
+                        slotToElicit: elicitSlot,
+                        slotToConfirm: confirmSlot,
+                        type: directiveType
                     }
                 ],
                 outputSpeech: {
