@@ -14,19 +14,9 @@ export class DialogIntent {
 
     public name: string;
     public confirmationRequired: boolean;
-    public interactionModel: InteractionModel
+    public interactionModel: InteractionModel;
     public prompts: any;
     public slots: DialogSlot[];
-
-    public slot(slotName: string): DialogSlot | undefined {
-        for (const slot of this.slots) {
-            if (slot.name === slotName) {
-                return slot;
-            }
-        }
-
-        return undefined;
-    }
 
     public addSlot(slot: DialogSlot) {
         this.slots.push(slot);
