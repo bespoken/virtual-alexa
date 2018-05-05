@@ -1,5 +1,5 @@
 import {IResponse} from "./IResponse";
-import {SkillIntent} from "./SkillIntent";
+import {UserIntent} from "./UserIntent";
 import {SkillResponse} from "./SkillResponse";
 
 export class DialogResponse implements IResponse {
@@ -19,7 +19,7 @@ export class DelegatedDialogResponse extends DialogResponse {
 }
 
 export class ExplicitDialogResponse extends DialogResponse {
-    public constructor(public transformedIntent: SkillIntent) {
+    public constructor(public transformedIntent: UserIntent) {
         super();
     }
 }

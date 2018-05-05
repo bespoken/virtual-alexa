@@ -1,10 +1,10 @@
 import {BuiltinUtterances} from "./BuiltinUtterances";
 import {DialogIntent} from "./DialogIntent";
 import {DelegatedDialogResponse, DialogResponse, ExplicitDialogResponse} from "./DialogResponse";
-import {InteractionModel} from "./InteractionModel";
-import {SkillIntent} from "./SkillIntent";
+import {SkillContext} from "./SkillContext";
 import {SkillResponse} from "./SkillResponse";
 import {SlotValue} from "./SlotValue";
+import {UserIntent} from "./UserIntent";
 
 export enum DialogState {
     COMPLETED = "COMPLETED",
@@ -20,7 +20,7 @@ export class DialogManager {
     private _dialogIntent: DialogIntent = undefined;
     private _dialogState: DialogState = undefined;
     private _slots: {[id: string]: SlotValue} = {};
-    public constructor(public interactionModel: InteractionModel) {}
+    public constructor(public context: SkillContext) {}
 
     public handleDirective(response: SkillResponse): DialogResponse | undefined {
         // Look for a dialog directive - trigger dialog mode if so
@@ -32,7 +32,7 @@ export class DialogManager {
                         + " New dialog: " + intentName + " Old Dialog: " + this._dialogIntent.name);
                 }
 
-                this._dialogIntent = this.interactionModel.dialogIntent(intentName);
+                this._dialogIntent = this.context.interactionModel().dialogIntent(intentName);
                 if (!this._dialogIntent) {
                     throw new Error("No match for dialog name: " + intentName);
                 }
@@ -75,22 +75,22 @@ export class DialogManager {
         return this._confirmationStatus;
     }
 
-    public handleUtterance(utterance: string): SkillIntent {
+    public handleUtterance(utterance: string): UserIntent {
         // If we are in confirmation mode, check if this is yes or no
         if (this._confirmingSlot || this._dialogState === DialogState.COMPLETED) {
             const intent = BuiltinUtterances.values()["AMAZON.YesIntent"].indexOf(utterance) !== -1 ?
                 "AMAZON.YesIntent" :
                 "AMAZON.NoIntent";
 
-            return new SkillIntent(this.interactionModel, intent);
+            return new UserIntent(this.context, intent);
         }
         return undefined;
     }
 
-    public handleIntent(intent: SkillIntent): DialogResponse | void {
+    public handleIntent(intent: UserIntent): DialogResponse | void {
         if (this.isDialog()) {
             return this.processDialog(intent.name, intent.slots());
-        } else if (this.interactionModel.dialogIntent(intent.name)) {
+        } else if (this.context.interactionModel().dialogIntent(intent.name)) {
             // If we have not started a dialog yet, if this intent ties off to a dialog, save the slot state
             this.updateSlotStates(intent.slots());
         }
@@ -113,7 +113,7 @@ export class DialogManager {
     }
 
     private confirmationPrompt(slots: {[id: string]: SlotValue}): string {
-        return this.interactionModel.prompt(this._dialogIntent.prompts.confirmation).variation(slots);
+        return this.context.interactionModel().prompt(this._dialogIntent.prompts.confirmation).variation(slots);
     }
 
     private updateSlotStates(slots: {[id: string]: SlotValue}): void {
@@ -145,7 +145,7 @@ export class DialogManager {
             this._confirmationStatus = (intentName === "AMAZON.YesIntent")
                 ? ConfirmationStatus.CONFIRMED
                 : ConfirmationStatus.DENIED;
-            return new ExplicitDialogResponse(new SkillIntent(this.interactionModel, this._dialogIntent.name));
+            return new ExplicitDialogResponse(new UserIntent(this.context, this._dialogIntent.name));
         }
 
         // If we are confirming a slot, then answer should be yes or no
@@ -163,7 +163,7 @@ export class DialogManager {
 
         // Stop processing here if this is not a delegated dialog
         if (!this.isDelegated()) {
-            return new ExplicitDialogResponse(new SkillIntent(this.interactionModel, this._dialogIntent.name));
+            return new ExplicitDialogResponse(new UserIntent(this.context, this._dialogIntent.name));
         }
 
         // Now figure out the next slot

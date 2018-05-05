@@ -5,6 +5,8 @@ Code
 - [X] Make sure slots set on response are set
 - [X] Add elicit confirmation test
 - [X] Need one consolidated requestintent objects that manages slots correctly with entity resolutiona and dialog manager
-- [ ] Add entity resolution
+- [X] Add builtin flag to slotvalue virtual-core
+- [X] Add entity resolution
 - [ ] Add docs, make sure right stuff is genned for typedoc
 - [ ] What to do about "Confirmation gives up after two attempts"
+- [ ] For entity resolution, handle user adding synonym to builtin slot type value

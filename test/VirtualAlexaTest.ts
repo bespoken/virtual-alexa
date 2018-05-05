@@ -195,6 +195,20 @@ describe("VirtualAlexa Tests Using Unified Interaction Model", function() {
                     {name: "customSlot", type: "COUNTRY_CODE"},
                 ],
             },
+            {
+                name: "CityIntent",
+                samples: ["city {citySlot}"],
+                slots: [
+                    {name: "citySlot", type: "AMAZON.Cities"},
+                ],
+            },
+            {
+                name: "StateIntent",
+                samples: ["state {stateSlot}"],
+                slots: [
+                    {name: "stateSlot", type: "AMAZON.States"},
+                ],
+            },
         ],
         types: [
             {
@@ -210,31 +224,44 @@ describe("VirtualAlexa Tests Using Unified Interaction Model", function() {
                 ],
             },
             {
-            name: "COUNTRY_CODE",
-            values: [
-                {
-                    id: "US",
-                    name: {
-                        synonyms: ["USA", "America", "US"],
-                        value: "US",
+                name: "COUNTRY_CODE",
+                values: [
+                    {
+                        id: "US",
+                        name: {
+                            synonyms: ["USA", "America", "US", "English Speakers"],
+                            value: "US",
+                        },
                     },
-                },
-                {
-                    id: "DE",
-                    name: {
-                        synonyms: ["Germany", "DE"],
-                        value: "DE",
+                    {
+                        id: "DE",
+                        name: {
+                            synonyms: ["Germany", "DE"],
+                            value: "DE",
+                        },
                     },
-                },
-                {
-                    id: "UK",
-                    name: {
-                        synonyms: ["United Kingdom", "England"],
-                        value: "UK",
+                    {
+                        id: "UK",
+                        name: {
+                            synonyms: ["United Kingdom", "England", "English Speakers"],
+                            value: "UK",
+                        },
                     },
-                },
-            ],
-        }],
+                ],
+            },
+            {
+                name: "AMAZON.Cities",
+                values: [
+                    {
+                        id: "Lima",
+                        name: {
+                            synonyms: ["Lima"],
+                            value: "Lima, Peru",
+                        },
+                    },
+                ],
+            },
+        ],
     };
 
     it("Parses the JSON and does a simple utterance", async () => {
@@ -276,7 +303,7 @@ describe("VirtualAlexa Tests Using Unified Interaction Model", function() {
 
         await virtualAlexa.filter((request) => {
             assert.equal(request.request.intent.name, "SlottedIntentEmptySynonymArray");
-            assert.equal(request.request.intent.slots.SlotEmptySynonymArray.value, "VALUE1");
+            assert.equal(request.request.intent.slots.SlotEmptySynonymArray.value, "value1");
         }).utter("slotEmptySynonymArray value1");
     });
 
@@ -289,7 +316,107 @@ describe("VirtualAlexa Tests Using Unified Interaction Model", function() {
         await virtualAlexa.filter((request) => {
             assert.equal(request.request.intent.name, "CustomSlot");
             assert.equal(request.request.intent.slots.customSlot.value, "UK");
+            // Verify entity resolution
+            const resolution = request.request.intent.slots.customSlot.resolutions.resolutionsPerAuthority[0];
+            assert.equal(request.request.intent.slots.customSlot.resolutions.resolutionsPerAuthority.length, 1);
+            assert.equal(resolution.status.code, "ER_SUCCESS_MATCH");
+            assert.equal(resolution.values.length, 1);
+            assert.equal(resolution.values[0].value.id, "UK");
+            assert.equal(resolution.values[0].value.name, "UK");
         }).utter("custom UK");
+    });
+
+    it("Utters slotted phrase with synonym value", async () => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test/resources/index.handler")
+            .interactionModel(interactionModel)
+            .create();
+
+        await virtualAlexa.filter((request) => {
+            assert.equal(request.request.intent.name, "CustomSlot");
+            assert.equal(request.request.intent.slots.customSlot.value, "england");
+            // Verify entity resolution
+            const resolution = request.request.intent.slots.customSlot.resolutions.resolutionsPerAuthority[0];
+            assert.equal(request.request.intent.slots.customSlot.resolutions.resolutionsPerAuthority.length, 1);
+            assert.equal(resolution.status.code, "ER_SUCCESS_MATCH");
+            assert.equal(resolution.values.length, 1);
+            assert.equal(resolution.values[0].value.id, "UK");
+            assert.equal(resolution.values[0].value.name, "UK");
+        }).utter("custom england");
+    });
+
+    it("Utters slotted phrase with multiple synonym matches", async () => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test/resources/index.handler")
+            .interactionModel(interactionModel)
+            .create();
+
+        await virtualAlexa.filter((request) => {
+            assert.equal(request.request.intent.name, "CustomSlot");
+            assert.equal(request.request.intent.slots.customSlot.value, "English Speakers");
+            // Verify entity resolution
+            const resolution1 = request.request.intent.slots.customSlot.resolutions.resolutionsPerAuthority[0];
+            const resolution2 = request.request.intent.slots.customSlot.resolutions.resolutionsPerAuthority[1];
+            assert.equal(request.request.intent.slots.customSlot.resolutions.resolutionsPerAuthority.length, 2);
+            assert.equal(resolution1.status.code, "ER_SUCCESS_MATCH");
+            assert.equal(resolution1.values.length, 1);
+            assert.equal(resolution1.values[0].value.id, "US");
+            assert.equal(resolution1.values[0].value.name, "US");
+            assert.equal(resolution2.status.code, "ER_SUCCESS_MATCH");
+            assert.equal(resolution2.values.length, 1);
+            assert.equal(resolution2.values[0].value.id, "UK");
+            assert.equal(resolution2.values[0].value.name, "UK");
+        }).utter("custom English Speakers");
+    });
+
+    it("Utters slotted phrase which matches extended builtin value", async () => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test/resources/index.handler")
+            .interactionModel(interactionModel)
+            .create();
+
+        await virtualAlexa.filter((request) => {
+            assert.equal(request.request.intent.name, "CityIntent");
+            assert.equal(request.request.intent.slots.citySlot.value, "Lima");
+            // Verify entity resolution
+            const resolution = request.request.intent.slots.citySlot.resolutions.resolutionsPerAuthority[0];
+            assert.equal(request.request.intent.slots.citySlot.resolutions.resolutionsPerAuthority.length, 1);
+            assert.equal(resolution.status.code, "ER_SUCCESS_MATCH");
+            assert.equal(resolution.values.length, 1);
+            assert.equal(resolution.values[0].value.id, "Lima");
+            assert.equal(resolution.values[0].value.name, "Lima, Peru");
+        }).utter("city Lima");
+    });
+
+    it("Utters slotted phrase which matches builtin value", async () => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test/resources/index.handler")
+            .interactionModel(interactionModel)
+            .create();
+
+        await virtualAlexa.filter((request) => {
+            assert.equal(request.request.intent.name, "CityIntent");
+            assert.equal(request.request.intent.slots.citySlot.value, "Chicago");
+            // Verify entity resolution
+            const resolution = request.request.intent.slots.citySlot.resolutions.resolutionsPerAuthority[0];
+            assert.equal(request.request.intent.slots.citySlot.resolutions.resolutionsPerAuthority.length, 1);
+            assert.equal(resolution.status.code, "ER_SUCCESS_NO_MATCH");
+            assert.equal(resolution.values.length, 0);
+        }).utter("city Chicago");
+    });
+
+    it("Utters slotted phrase which matches builtin value, no extensions", async () => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test/resources/index.handler")
+            .interactionModel(interactionModel)
+            .create();
+
+        await virtualAlexa.filter((request) => {
+            assert.equal(request.request.intent.name, "StateIntent");
+            assert.equal(request.request.intent.slots.stateSlot.value, "Connecticut");
+            // Verify no entity resolution
+            assert.isUndefined(request.request.intent.slots.stateSlot.resolutions);
+        }).utter("state Connecticut");
     });
 });
 

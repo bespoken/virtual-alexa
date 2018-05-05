@@ -1,7 +1,7 @@
 import * as uuid from "uuid";
 import {AudioPlayerActivity} from "./AudioPlayer";
 import {SkillContext} from "./SkillContext";
-import {SkillIntent} from "./SkillIntent";
+import {UserIntent} from "./UserIntent";
 import {SlotValue} from "./SlotValue";
 
 export class RequestType {
@@ -46,7 +46,7 @@ export class SkillRequest {
      * @param intentName
      * @returns {SkillRequest}
      */
-    public intentRequest(intent: SkillIntent): SkillRequest {
+    public intentRequest(intent: UserIntent): SkillRequest {
         const intentName = intent.name;
         const isBuiltin = intentName.startsWith("AMAZON");
         if (!isBuiltin) {

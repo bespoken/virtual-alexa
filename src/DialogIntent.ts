@@ -40,13 +40,11 @@ export class DialogSlot {
 
     public elicitationPrompt(): SlotPrompt {
         const id = this.prompts.elicitation;
-        const prompt = this.dialogIntent.interactionModel.prompt(id);
-        return prompt;
+        return this.dialogIntent.interactionModel.prompt(id);
     }
 
     public confirmationPrompt(): SlotPrompt {
         const id = this.prompts.confirmation;
-        const prompt = this.dialogIntent.interactionModel.prompt(id);
-        return prompt;
+        return this.dialogIntent.interactionModel.prompt(id);
     }
 }

@@ -33,7 +33,7 @@ export class SkillContext {
     ) {
         this._audioPlayer = audioPlayer;
         this._interactionModel = interactionModel;
-        this._dialogManager = new DialogManager(interactionModel);
+        this._dialogManager = new DialogManager(this);
         this._device = new Device();
         this._user = new User();
     }

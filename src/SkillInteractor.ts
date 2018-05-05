@@ -1,13 +1,13 @@
 import {Utterance} from "virtual-core";
 import {AudioPlayer} from "./AudioPlayer";
+import {DelegatedDialogResponse, ExplicitDialogResponse} from "./DialogResponse";
 import {InteractionModel} from "./InteractionModel";
 import {IResponse} from "./IResponse";
 import {SkillContext} from "./SkillContext";
-import {SkillIntent} from "./SkillIntent";
 import {SessionEndedReason, SkillRequest} from "./SkillRequest";
 import {SkillResponse} from "./SkillResponse";
+import {UserIntent} from "./UserIntent";
 import {RequestFilter} from "./VirtualAlexa";
-import {DelegatedDialogResponse, ExplicitDialogResponse} from "./DialogResponse";
 
 /**
  * SkillInteractor comes in two flavors:
@@ -51,7 +51,7 @@ export abstract class SkillInteractor {
                 + ". Using fallback utterance: " + defaultPhrase.phrase);
         }
 
-        return this.handleIntent(new SkillIntent(this.interactionModel(), utterance.intent(), utterance.toJSON()));
+        return this.handleIntent(new UserIntent(this.context(), utterance.intent(), utterance.toJSON()));
     }
 
     /**
@@ -89,7 +89,7 @@ export abstract class SkillInteractor {
      * @param slots
      */
     public async intended(intentName: string, slots?: {[id: string]: string}): Promise<IResponse> {
-        return this.handleIntent(new SkillIntent(this.interactionModel(), intentName, slots));
+        return this.handleIntent(new UserIntent(this.context(), intentName, slots));
     }
 
     public filter(requestFilter: RequestFilter): void {
@@ -136,7 +136,7 @@ export abstract class SkillInteractor {
 
     protected abstract invoke(requestJSON: any): Promise<any>;
 
-    private async handleIntent(intent: SkillIntent): Promise<IResponse> {
+    private async handleIntent(intent: UserIntent): Promise<IResponse> {
         // First give the dialog manager a shot at it
         const dialogResponse = this.context().dialogManager().handleIntent(intent);
         if (dialogResponse) {
