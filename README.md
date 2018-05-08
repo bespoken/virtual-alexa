@@ -56,8 +56,7 @@ Easy! Just add a line of code like so:
 const va = require("virtual-alexa");
 const alexa = va.VirtualAlexa.Builder()
     .handler("index.handler") // Lambda function file and name
-    .intentSchemaFile("./speechAssets/IntentSchema.json") // Path to IntentSchema.json
-    .sampleUtterancesFile("./speechAssets/SampleUtterances.txt") // Path to SampleUtterances
+    .interactionModelFile("./models/en-US.json") // Path to IntentSchema.json
     .create();
 
 alexa.utter("play").then((payload) => {
@@ -98,7 +97,7 @@ And here is one that uses async/await (which makes it even more readable):
 it("Accepts responses without dollars", async function () {
     const alexa = bvd.VirtualAlexa.Builder()
         .handler("index.handler") // Lambda function file and name
-        .intentSchemaFile("./speechAssets/IntentSchema.json")
+        .intentSchemaFile("./speechAssets/IntentSchema.json") // Uses old-style intent schema
         .sampleUtterancesFile("./speechAssets/SampleUtterances.txt")
         .create();
 
