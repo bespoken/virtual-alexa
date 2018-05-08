@@ -5,7 +5,7 @@ Virtual Alexa supports the dialog interface, both for delegated and explicit slo
 Virtual Alexa internally manages the Dialog interactions.
 
 If the skill delegates the Dialog handling to Alexa, 
-Virtual Alexa will interact with the "user" as if they are 
+Virtual Alexa will interact with the "user" as if they were talking Alexa (even if the skill is not involved).
 
 ## Delegated Dialogs
 ```javascript

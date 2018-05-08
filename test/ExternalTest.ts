@@ -30,7 +30,7 @@ describe("Test address API mocks", function() {
             stateOrRegion: "state",
         });
 
-        virtualAlexa.launch().then();
+        virtualAlexa.launch();
     });
 
     it("Calls address API for country code", (done) => {
@@ -55,7 +55,7 @@ describe("Test address API mocks", function() {
             postalCode: "postal",
         });
 
-        virtualAlexa.launch().then();
+        virtualAlexa.launch();
     });
 
     it("Calls with two different virtual alexas", (done) => {
@@ -98,7 +98,7 @@ describe("Test address API mocks", function() {
             postalCode: "postal",
         });
 
-        virtualAlexa.launch().then();
+        virtualAlexa.launch();
     });
 
     it("Calls address API without permissions", (done) => {
@@ -119,14 +119,14 @@ describe("Test address API mocks", function() {
 
         virtualAlexa.addressAPI().insufficientPermissions();
 
-        virtualAlexa.launch().then();
+        virtualAlexa.launch();
     });
 });
 
 function callAddressAPI(apiAccessToken: string, deviceID: string) {
     const authorization = "Bearer " + apiAccessToken;
     let payload: any;
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         const request = https.request({
             headers: {
                 authorization,

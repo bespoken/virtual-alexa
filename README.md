@@ -56,7 +56,7 @@ Easy! Just add a line of code like so:
 const va = require("virtual-alexa");
 const alexa = va.VirtualAlexa.Builder()
     .handler("index.handler") // Lambda function file and name
-    .interactionModelFile("./models/en-US.json") // Path to IntentSchema.json
+    .interactionModelFile("./models/en-US.json") // Path to interaction model file
     .create();
 
 alexa.utter("play").then((payload) => {
