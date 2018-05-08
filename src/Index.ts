@@ -1,7 +1,7 @@
-export {AudioItem} from "./AudioItem";
-export {AudioPlayer} from "./AudioPlayer";
-export {Device} from "./Device";
-export {SkillContext} from "./SkillContext";
-export {SkillResponse} from "./SkillResponse";
-export {SkillSession} from "./SkillSession";
-export {RequestFilter, VirtualAlexa, VirtualAlexaBuilder} from "./VirtualAlexa";
+export {AudioItem} from "./audioPlayer/AudioItem";
+export {AudioPlayer} from "./audioPlayer/AudioPlayer";
+export {Device} from "./core/Device";
+export {SkillContext} from "./core/SkillContext";
+export {SkillResponse} from "./core/SkillResponse";
+export {SkillSession} from "./core/SkillSession";
+export {RequestFilter, VirtualAlexa, VirtualAlexaBuilder} from "./core/VirtualAlexa";

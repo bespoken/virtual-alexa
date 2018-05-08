@@ -9,16 +9,16 @@
     "node": "> 6.0.0"
   },
   "files": [
-    "lib/src/*.js",
-    "lib/src/AudioItem.d.ts",
-    "lib/src/AudioPlayer.d.ts",
-    "lib/src/Device.d.ts",
-    "lib/src/Index.d.ts",
-    "lib/src/SkillContext.d.ts",
-    "lib/src/SkillResponse.d.ts",
-    "lib/src/SkillSession.d.ts",
-    "lib/src/User.d.ts",
-    "lib/src/VirtualAlexa.d.ts"
+    "lib/src/**/*.js",
+    "lib/src/audioPlayer/AudioItem.d.ts",
+    "lib/src/audioPlayer/AudioPlayer.d.ts",
+    "lib/src/core/Device.d.ts",
+    "lib/src/core/Index.d.ts",
+    "lib/src/core/SkillContext.d.ts",
+    "lib/src/core/SkillResponse.d.ts",
+    "lib/src/core/SkillSession.d.ts",
+    "lib/src/core/User.d.ts",
+    "lib/src/core/VirtualAlexa.d.ts"
   ],
   "nyc": {
     "exclude": [

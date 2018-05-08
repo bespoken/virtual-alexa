@@ -1,9 +1,9 @@
 import {SampleUtterances, SlotTypes, Utterance} from "virtual-core";
 
 import {assert} from "chai";
-import {IntentSchema} from "../src/IntentSchema";
-import {InteractionModel} from "../src/InteractionModel";
-import {SampleUtterancesBuilder} from "../src/SampleUtterancesBuilder";
+import {IntentSchema} from "../src/model/IntentSchema";
+import {InteractionModel} from "../src/model/InteractionModel";
+import {SampleUtterancesBuilder} from "../src/model/SampleUtterancesBuilder";
 
 describe("UtteranceTest", function() {
     this.timeout(10000);

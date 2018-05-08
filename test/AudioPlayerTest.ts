@@ -1,6 +1,6 @@
 import {assert} from "chai";
-import {SkillResponse} from "../src/SkillResponse";
-import {VirtualAlexa} from "../src/VirtualAlexa";
+import {SkillResponse} from "../src/core/SkillResponse";
+import {VirtualAlexa} from "../src/core/VirtualAlexa";
 
 const interactionModel = {
     intents: [

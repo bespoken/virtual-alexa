@@ -1,7 +1,7 @@
 import {assert} from "chai";
-import {DelegatedDialogResponse, DialogResponse} from "../src/DialogResponse";
-import {SkillResponse} from "../src/SkillResponse";
-import {VirtualAlexa} from "../src/VirtualAlexa";
+import {DelegatedDialogResponse, DialogResponse} from "../src/dialog/DialogResponse";
+import {SkillResponse} from "../src/core/SkillResponse";
+import {VirtualAlexa} from "../src/core/VirtualAlexa";
 
 process.on("unhandledRejection", (e: any) => {
     console.error(e);

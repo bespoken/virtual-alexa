@@ -1,8 +1,8 @@
 import * as uuid from "uuid";
-import {AudioPlayerActivity} from "./AudioPlayer";
+import {AudioPlayerActivity} from "../audioPlayer/AudioPlayer";
 import {SkillContext} from "./SkillContext";
-import {UserIntent} from "./UserIntent";
-import {SlotValue} from "./SlotValue";
+import {UserIntent} from "../impl/UserIntent";
+import {SlotValue} from "../impl/SlotValue";
 
 export class RequestType {
     public static DISPLAY_ELEMENT_SELECTED_REQUEST = "Display.ElementSelected";

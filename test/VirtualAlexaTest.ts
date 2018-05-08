@@ -1,6 +1,6 @@
 import {assert} from "chai";
-import {SkillResponse} from "../src/SkillResponse";
-import {VirtualAlexa} from "../src/VirtualAlexa";
+import {SkillResponse} from "../src/core/SkillResponse";
+import {VirtualAlexa} from "../src/core/VirtualAlexa";
 
 describe("VirtualAlexa Tests Using Files", function() {
     it("Parses the files and does a simple utterance", async () => {

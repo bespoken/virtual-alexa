@@ -1,7 +1,7 @@
 import * as http from "http";
 import * as https from "https";
 import * as URL from "url";
-import {InteractionModel} from "./InteractionModel";
+import {InteractionModel} from "../model/InteractionModel";
 import {SkillInteractor} from "./SkillInteractor";
 
 export class RemoteSkillInteractor extends SkillInteractor {

@@ -5,14 +5,14 @@ gulp.task("default", ["typedoc"]);
 
 gulp.task("typedoc", function () {
     gulp.src([
-        "src/AudioItem.ts",
-        "src/AudioPlayer.ts",
-        "src/Device.ts",
-        "src/SkillContext.ts",
-        "src/SkillResponse.ts",
-        "src/SkillSession.ts",
-        "src/User.ts",
-        "src/VirtualAlexa.ts",
+        "src/audioPlayer/AudioItem.ts",
+        "src/audioPlayer/AudioPlayer.ts",
+        "src/core/Device.ts",
+        "src/core/SkillContext.ts",
+        "src/core/SkillResponse.ts",
+        "src/core/SkillSession.ts",
+        "src/core/User.ts",
+        "src/core/VirtualAlexa.ts",
     ]).pipe(typedoc({
             // TypeScript options (see typescript docs)
             excludePrivate: true,
