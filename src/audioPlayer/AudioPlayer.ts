@@ -1,6 +1,6 @@
 import {AudioItem} from "./AudioItem";
-import {SkillInteractor} from "./SkillInteractor";
-import {RequestType, SessionEndedReason, SkillRequest} from "./SkillRequest";
+import {SkillInteractor} from "../impl/SkillInteractor";
+import {RequestType, SessionEndedReason, SkillRequest} from "../core/SkillRequest";
 
 export enum AudioPlayerActivity {
     BUFFER_UNDERRUN,

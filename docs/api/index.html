@@ -90,9 +90,10 @@
 				</p>
 				<h1 id="virtual-alexa">Virtual Alexa</h1>
 				<p>Virtual Alexa allows for interacting with skills programmatically.</p>
-				<p>The core Virtual Alexa API provides several routines - the two most essential ones:</p>
-				<pre><code>* utter: Generates JSON as <span class="hljs-keyword">if</span> the<span class="hljs-built_in"> user </span>said the given phrase
-* intend: Generates JSON as <span class="hljs-keyword">if</span> the given intent was uttered
+				<p>The core Virtual Alexa API provides several routines - the three most essential ones:</p>
+				<pre><code>* launch: Generates JSON <span class="hljs-keyword">for</span> a launch request
+* utter: Generates JSON as <span class="hljs-keyword">if</span> the<span class="hljs-built_in"> user </span>said the given phrase  
+* intend: Generates JSON as <span class="hljs-keyword">if</span> the given intent was uttered  
 </code></pre><h2 id="why-do-i-need-this-">Why Do I Need This?</h2>
 				<p>This library allows for easy testing of skills.</p>
 				<p>You can use it for:</p>
@@ -104,15 +105,15 @@
 				<pre><code><span class="hljs-keyword">const</span> va = <span class="hljs-built_in">require</span>(<span class="hljs-string">"virtual-alexa"</span>);
 <span class="hljs-keyword">const</span> alexa = va.VirtualAlexa.Builder()
     .handler(<span class="hljs-string">"index.handler"</span>) <span class="hljs-comment">// Lambda function file and name</span>
-    .intentSchemaFile(<span class="hljs-string">"./speechAssets/IntentSchema.json"</span>) <span class="hljs-comment">// Path to IntentSchema.json</span>
-    .sampleUtterancesFile(<span class="hljs-string">"./speechAssets/SampleUtterances.txt"</span>) <span class="hljs-comment">// Path to SampleUtterances</span>
+    .interactionModelFile(<span class="hljs-string">"./models/en-US.json"</span>) <span class="hljs-comment">// Path to IntentSchema.json</span>
     .create();
 
 alexa.utter(<span class="hljs-string">"play"</span>).then(<span class="hljs-function">(<span class="hljs-params">payload</span>) =&gt;</span> {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"OutputSpeech: "</span> + payload.response.outputSpeech.ssml);
     <span class="hljs-comment">// Prints out returned SSML, e.g., "&lt;speak&gt; Welcome to my Skill &lt;/speak&gt;"</span>
 });
-</code></pre><h3 id="virtual-alexa-with-promises">Virtual Alexa With Promises</h3>
+</code></pre><p>Our &quot;canonical&quot; full example is the <a href="https://github.com/bespoken/super-simple-unit-testing/blob/master/test/index-test.js">Super Simple Unit Testing project</a>.</p>
+				<h3 id="virtual-alexa-with-promises">Virtual Alexa With Promises</h3>
 				<p>Here&#39;s a more in-depth example, in the form of a Jest unit test:</p>
 				<pre><code>test(<span class="hljs-string">"Plays once"</span>, (<span class="hljs-name">done</span>) =&gt; {
     alexa.utter(<span class="hljs-string">"get started"</span>).then((<span class="hljs-name">payload</span>) =&gt; {
@@ -139,7 +140,7 @@ alexa.utter(<span class="hljs-string">"play"</span>).then(<span class="hljs-func
 				<pre><code>it(<span class="hljs-string">"Accepts responses without dollars"</span>, async function () {
     const alexa = bvd.VirtualAlexa.Builder()
         .handler(<span class="hljs-string">"index.handler"</span>) // Lambda function file and name
-        .intentSchemaFile(<span class="hljs-string">"./speechAssets/IntentSchema.json"</span>)
+        .intentSchemaFile(<span class="hljs-string">"./speechAssets/IntentSchema.json"</span>) // Uses old-style intent schema
         .sampleUtterancesFile(<span class="hljs-string">"./speechAssets/SampleUtterances.txt"</span>)
         .create()<span class="hljs-comment">;</span>
 
@@ -163,10 +164,23 @@ alexa.utter(<span class="hljs-string">"play"</span>).then(<span class="hljs-func
 })<span class="hljs-comment">;</span>
 </code></pre><p>This one is using Mocha (and Babel) - you can see the full example here:<br><a href="https://github.com/bespoken/GuessThePrice/blob/master/test/index-test.js">https://github.com/bespoken/GuessThePrice/blob/master/test/index-test.js</a></p>
 				<p>And read all the docs here:<br><a href="https://bespoken.github.io/virtual-alexa/api/">https://bespoken.github.io/virtual-alexa/api/</a></p>
+				<h2 id="using-the-request-filter">Using The Request Filter</h2>
+				<p>The <a href="https://bespoken.github.io/virtual-alexa/api/classes/virtualalexa.html#filter">filter</a> is a powerful tool for manipulating the request payloads that are made to your Alexa skill.</p>
+				<pre><code>alexa.filter(<span class="hljs-function">(<span class="hljs-params">requestJSON</span>) =&gt;</span> {
+  <span class="hljs-comment">// Do something with the request</span>
+  requestJSON.request.locale = <span class="hljs-string">"en-US"</span> <span class="hljs-comment">// Arbitrary example of changing the request payload</span>
+});
+</code></pre><p>More info on using it <a href="docs/Filters.md">here</a>.</p>
 				<h2 id="audioplayer-interface">AudioPlayer Interface</h2>
 				<p>We also support the AudioPlayer! <a href="https://github.com/bespoken/virtual-alexa/blob/master/docs/AudioPlayer.md">Read more here</a>.</p>
 				<h2 id="display-interface">Display Interface</h2>
 				<p>We also support the Display Interface! <a href="https://github.com/bespoken/virtual-alexa/blob/master/docs/Display.md">Read more here</a>.</p>
+				<h2 id="dialog-interface">Dialog Interface</h2>
+				<p><strong>NEW</strong> We also support the Dialog Interface. <a href="https://github.com/bespoken/virtual-alexa/blob/master/docs/Dialog.md">Read more here</a>.</p>
+				<h2 id="external-calls">External Calls</h2>
+				<p><strong>NEW</strong> We also support mocking external calls, such as ones made to the Address API.
+				<a href="https://github.com/bespoken/virtual-alexa/blob/master/docs/Externals.md">Read more here</a>.</p>
+				<p>This allows for testing without relying on the actual calls, which are difficult if not impossible to configure for unit tests.</p>
 				<h2 id="how-do-i-talk-to-you-">How Do I Talk To You?</h2>
 				<p>Easy, you can open <a href="https://github.com/bespoken/virtual-alexa/issues">an issue here</a>, or find us on <a href="https://gitter.im/bespoken/virtual-alexa">our Gitter</a>.</p>
 				<p>We are also on the <a href="http://amazonalexa.slack.com">Alexa Slack channel</a> - @jpkbst, @jperata, @chrisramon and @ankraiza.</p>
@@ -187,6 +201,9 @@ alexa.utter(<span class="hljs-string">"play"</span>).then(<span class="hljs-func
 						<a href="enums/audioplayeractivity.html" class="tsd-kind-icon">Audio<wbr>Player<wbr>Activity</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="classes/addressapi.html" class="tsd-kind-icon">AddressAPI</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="classes/audioitem.html" class="tsd-kind-icon">Audio<wbr>Item</a>
 					</li>
 					<li class=" tsd-kind-class">
@@ -196,7 +213,13 @@ alexa.utter(<span class="hljs-string">"play"</span>).then(<span class="hljs-func
 						<a href="classes/audioplayer.html" class="tsd-kind-icon">Audio<wbr>Player</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="classes/delegateddialogresponse.html" class="tsd-kind-icon">Delegated<wbr>Dialog<wbr>Response</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="classes/device.html" class="tsd-kind-icon">Device</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/dialogresponse.html" class="tsd-kind-icon">Dialog<wbr>Response</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/skillcontext.html" class="tsd-kind-icon">Skill<wbr>Context</a>
@@ -215,6 +238,18 @@ alexa.utter(<span class="hljs-string">"play"</span>).then(<span class="hljs-func
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/virtualalexabuilder.html" class="tsd-kind-icon">Virtual<wbr>Alexa<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/iaddress.html" class="tsd-kind-icon">IAddress</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/icountryandpostalcode.html" class="tsd-kind-icon">ICountry<wbr>And<wbr>Postal<wbr>Code</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/iresponse.html" class="tsd-kind-icon">IResponse</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/istreetaddress.html" class="tsd-kind-icon">IStreet<wbr>Address</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="globals.html#requestfilter" class="tsd-kind-icon">Request<wbr>Filter</a>

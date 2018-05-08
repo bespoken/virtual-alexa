@@ -1,8 +1,8 @@
-import {ConfirmationStatus} from "./DialogManager";
-import {InteractionModel} from "./InteractionModel";
+import {ConfirmationStatus} from "../dialog/DialogManager";
+import {InteractionModel} from "../model/InteractionModel";
 import {EntityResolution, EntityResolutionStatus, EntityResolutionValue, SlotValue} from "./SlotValue";
 import {ISlotValue} from "virtual-core";
-import {SkillContext} from "./SkillContext";
+import {SkillContext} from "../core/SkillContext";
 
 export class UserIntent {
     public constructor(private context: SkillContext,

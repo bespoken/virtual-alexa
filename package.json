@@ -2,23 +2,27 @@
   "name": "virtual-alexa",
   "license": "Apache-2.0",
   "private": false,
-  "version": "0.5.1",
+  "version": "0.5.4-0",
   "main": "./lib/src/Index.js",
   "typings": "./lib/src/Index.d.ts",
   "engines": {
     "node": "> 6.0.0"
   },
   "files": [
-    "lib/src/*.js",
-    "lib/src/AudioItem.d.ts",
-    "lib/src/AudioPlayer.d.ts",
-    "lib/src/Device.d.ts",
-    "lib/src/Index.d.ts",
-    "lib/src/SkillContext.d.ts",
-    "lib/src/SkillResponse.d.ts",
-    "lib/src/SkillSession.d.ts",
-    "lib/src/User.d.ts",
-    "lib/src/VirtualAlexa.d.ts"
+    "lib/src/**/*.js",
+    "lib/src/audioPlayer/AudioItem.d.ts",
+    "lib/src/audioPlayer/AudioPlayer.d.ts",
+    "lib/src/core/Device.d.ts",
+    "lib/src/core/IResponse.d.ts",
+    "lib/src/core/SkillContext.d.ts",
+    "lib/src/core/SkillResponse.d.ts",
+    "lib/src/core/SkillSession.d.ts",
+    "lib/src/core/User.d.ts",
+    "lib/src/core/VirtualAlexa.d.ts",
+    "lib/src/dialog/DialogResponse.d.ts",
+    "lib/src/dialog/DelegatedDialogResponse.d.ts",
+    "lib/src/external/AddressAPI.d.ts",
+    "lib/src/Index.d.ts"
   ],
   "nyc": {
     "exclude": [
@@ -41,6 +45,7 @@
   "dependencies": {
     "@types/uuid": "^3.4.1",
     "lodash": "^4.17.4",
+    "nock": "^9.2.5",
     "uuid": "^3.1.0",
     "virtual-core": "0.0.12-0"
   },
@@ -48,9 +53,10 @@
     "@types/chai": "^4.0.4",
     "@types/lodash": "^4.14.85",
     "@types/mocha": "^2.2.42",
+    "@types/nock": "^9.1.3",
     "@types/node": "^6.0.88",
     "chai": "^4.0.4",
-    "codecov": "^2.3.0",
+    "codecov": "^3.0.0",
     "gulp": "^3.9.1",
     "gulp-typedoc": "^2.0.3",
     "mocha": "^3.5.0",

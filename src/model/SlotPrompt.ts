@@ -1,4 +1,4 @@
-import {SlotValue} from "./SlotValue";
+import {SlotValue} from "../impl/SlotValue";
 
 export class SlotPrompt {
     public static fromJSON(json: any): SlotPrompt {

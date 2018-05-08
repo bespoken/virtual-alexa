@@ -1,4 +1,4 @@
-import {InteractionModel} from "./InteractionModel";
+import {InteractionModel} from "../model/InteractionModel";
 import {ModuleInvoker} from "./ModuleInvoker";
 import {SkillInteractor} from "./SkillInteractor";
 

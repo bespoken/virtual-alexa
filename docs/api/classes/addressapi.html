@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>SkillSession | Bespoken Virtual Alexa</title>
+	<title>AddressAPI | Bespoken Virtual Alexa</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,28 +54,21 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="skillsession.html">SkillSession</a>
+					<a href="addressapi.html">AddressAPI</a>
 				</li>
 			</ul>
-			<h1>Class SkillSession</h1>
+			<h1>Class AddressAPI</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>Information about the current open session on the Alexa emulator</p>
-					</div>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">SkillSession</span>
+						<span class="target">AddressAPI</span>
 					</li>
 				</ul>
 			</section>
@@ -86,18 +79,16 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="skillsession.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="addressapi.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="skillsession.html#attributes" class="tsd-kind-icon">attributes</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="skillsession.html#id" class="tsd-kind-icon">id</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="skillsession.html#isnew" class="tsd-kind-icon">is<wbr>New</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="skillsession.html#setid" class="tsd-kind-icon">setID</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="skillsession.html#updateattributes" class="tsd-kind-icon">update<wbr>Attributes</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="skillsession.html#used" class="tsd-kind-icon">used</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="addressapi.html#insufficientpermissions" class="tsd-kind-icon">insufficient<wbr>Permissions</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="addressapi.html#reset" class="tsd-kind-icon">reset</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="addressapi.html#returnscountryandpostalcode" class="tsd-kind-icon">returns<wbr>Country<wbr>And<wbr>Postal<wbr>Code</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="addressapi.html#returnsfulladdress" class="tsd-kind-icon">returns<wbr>Full<wbr>Address</a></li>
 							</ul>
 						</section>
 					</div>
@@ -109,16 +100,22 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Skill<wbr>Session<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="skillsession.html" class="tsd-signature-type">SkillSession</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>AddressAPI<span class="tsd-signature-symbol">(</span>context<span class="tsd-signature-symbol">: </span><a href="skillcontext.html" class="tsd-signature-type">SkillContext</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="addressapi.html" class="tsd-signature-type">AddressAPI</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/36e385c/src/core/SkillSession.ts#L9">core/SkillSession.ts:9</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/36e385c/src/external/AddressAPI.ts#L7">external/AddressAPI.ts:7</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="skillsession.html" class="tsd-signature-type">SkillSession</a></h4>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>context: <a href="skillcontext.html" class="tsd-signature-type">SkillContext</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="addressapi.html" class="tsd-signature-type">AddressAPI</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -126,78 +123,69 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="attributes" class="tsd-anchor"></a>
-					<h3>attributes</h3>
+					<a name="insufficientpermissions" class="tsd-anchor"></a>
+					<h3>insufficient<wbr>Permissions</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">attributes<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
+						<li class="tsd-signature tsd-kind-icon">insufficient<wbr>Permissions<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/36e385c/src/core/SkillSession.ts#L17">core/SkillSession.ts:17</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/36e385c/src/external/AddressAPI.ts#L32">external/AddressAPI.ts:32</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
-							<ul class="tsd-parameters">
-								<li class="tsd-parameter-index-signature">
-									<h5><span class="tsd-signature-symbol">[</span>id: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">any</span></h5>
-								</li>
-							</ul>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Causes the mock to return a 403 error to HTTP calls to the Address API
+									This simulates a user not granting proper permissions</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="id" class="tsd-anchor"></a>
-					<h3>id</h3>
+					<a name="reset" class="tsd-anchor"></a>
+					<h3>reset</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon">reset<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/36e385c/src/core/SkillSession.ts#L28">core/SkillSession.ts:28</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/36e385c/src/external/AddressAPI.ts#L36">external/AddressAPI.ts:36</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="isnew" class="tsd-anchor"></a>
-					<h3>is<wbr>New</h3>
+					<a name="returnscountryandpostalcode" class="tsd-anchor"></a>
+					<h3>returns<wbr>Country<wbr>And<wbr>Postal<wbr>Code</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>New<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">returns<wbr>Country<wbr>And<wbr>Postal<wbr>Code<span class="tsd-signature-symbol">(</span>address<span class="tsd-signature-symbol">: </span><a href="../interfaces/icountryandpostalcode.html" class="tsd-signature-type">ICountryAndPostalCode</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/36e385c/src/core/SkillSession.ts#L36">core/SkillSession.ts:36</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/36e385c/src/external/AddressAPI.ts#L24">external/AddressAPI.ts:24</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="setid" class="tsd-anchor"></a>
-					<h3>setID</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">setID<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/36e385c/src/core/SkillSession.ts#L32">core/SkillSession.ts:32</a></li>
-								</ul>
-							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Causes the mock to return the specified country and postal code to HTTP calls to the Address API</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>id: <span class="tsd-signature-type">string</span></h5>
+									<h5>address: <a href="../interfaces/icountryandpostalcode.html" class="tsd-signature-type">ICountryAndPostalCode</a></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -205,41 +193,31 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="updateattributes" class="tsd-anchor"></a>
-					<h3>update<wbr>Attributes</h3>
+					<a name="returnsfulladdress" class="tsd-anchor"></a>
+					<h3>returns<wbr>Full<wbr>Address</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">update<wbr>Attributes<span class="tsd-signature-symbol">(</span>sessionAttributes<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">returns<wbr>Full<wbr>Address<span class="tsd-signature-symbol">(</span>address<span class="tsd-signature-symbol">: </span><a href="../interfaces/istreetaddress.html" class="tsd-signature-type">IStreetAddress</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/36e385c/src/core/SkillSession.ts#L21">core/SkillSession.ts:21</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/36e385c/src/external/AddressAPI.ts#L16">external/AddressAPI.ts:16</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Causes the mock to return the specified full address to HTTP calls to the Address API</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>sessionAttributes: <span class="tsd-signature-type">any</span></h5>
+									<h5>address: <a href="../interfaces/istreetaddress.html" class="tsd-signature-type">IStreetAddress</a></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="used" class="tsd-anchor"></a>
-					<h3>used</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">used<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/36e385c/src/core/SkillSession.ts#L40">core/SkillSession.ts:40</a></li>
-								</ul>
-							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -259,9 +237,30 @@
 					<li class=" tsd-kind-enum">
 						<a href="../enums/audioplayeractivity.html" class="tsd-kind-icon">Audio<wbr>Player<wbr>Activity</a>
 					</li>
-					<li class=" tsd-kind-class">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class">
 						<a href="addressapi.html" class="tsd-kind-icon">AddressAPI</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class">
+								<a href="addressapi.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="addressapi.html#insufficientpermissions" class="tsd-kind-icon">insufficient<wbr>Permissions</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="addressapi.html#reset" class="tsd-kind-icon">reset</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="addressapi.html#returnscountryandpostalcode" class="tsd-kind-icon">returns<wbr>Country<wbr>And<wbr>Postal<wbr>Code</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="addressapi.html#returnsfulladdress" class="tsd-kind-icon">returns<wbr>Full<wbr>Address</a>
+							</li>
+						</ul>
 					</li>
+				</ul>
+				<ul class="after-current">
 					<li class=" tsd-kind-class">
 						<a href="audioitem.html" class="tsd-kind-icon">Audio<wbr>Item</a>
 					</li>
@@ -286,36 +285,9 @@
 					<li class=" tsd-kind-class">
 						<a href="skillresponse.html" class="tsd-kind-icon">Skill<wbr>Response</a>
 					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-class">
+					<li class=" tsd-kind-class">
 						<a href="skillsession.html" class="tsd-kind-icon">Skill<wbr>Session</a>
-						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="skillsession.html#constructor" class="tsd-kind-icon">constructor</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="skillsession.html#attributes" class="tsd-kind-icon">attributes</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="skillsession.html#id" class="tsd-kind-icon">id</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="skillsession.html#isnew" class="tsd-kind-icon">is<wbr>New</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="skillsession.html#setid" class="tsd-kind-icon">setID</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="skillsession.html#updateattributes" class="tsd-kind-icon">update<wbr>Attributes</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="skillsession.html#used" class="tsd-kind-icon">used</a>
-							</li>
-						</ul>
 					</li>
-				</ul>
-				<ul class="after-current">
 					<li class=" tsd-kind-class">
 						<a href="user.html" class="tsd-kind-icon">User</a>
 					</li>

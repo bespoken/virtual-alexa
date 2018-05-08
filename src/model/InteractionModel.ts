@@ -2,7 +2,7 @@ import * as fs from "fs";
 import {IModel, SampleUtterances, SlotTypes} from "virtual-core";
 import {BuiltinSlotTypes} from "./BuiltinSlotTypes";
 import {BuiltinUtterances} from "./BuiltinUtterances";
-import {DialogIntent} from "./DialogIntent";
+import {DialogIntent} from "../dialog/DialogIntent";
 import {IntentSchema} from "./IntentSchema";
 import {SampleUtterancesBuilder} from "./SampleUtterancesBuilder";
 import {SlotPrompt} from "./SlotPrompt";

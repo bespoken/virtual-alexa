@@ -1,5 +1,5 @@
-import {InteractionModel} from "./InteractionModel";
-import {SlotPrompt} from "./SlotPrompt";
+import {InteractionModel} from "../model/InteractionModel";
+import {SlotPrompt} from "../model/SlotPrompt";
 
 export class DialogIntent {
     public static fromJSON(interactionModel: InteractionModel, json: any): DialogIntent {

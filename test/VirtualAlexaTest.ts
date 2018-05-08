@@ -1,6 +1,6 @@
 import {assert} from "chai";
-import {SkillResponse} from "../src/SkillResponse";
-import {VirtualAlexa} from "../src/VirtualAlexa";
+import {SkillResponse} from "../src/core/SkillResponse";
+import {VirtualAlexa} from "../src/core/VirtualAlexa";
 
 describe("VirtualAlexa Tests Using Files", function() {
     it("Parses the files and does a simple utterance", async () => {
@@ -476,7 +476,7 @@ describe("VirtualAlexa Tests Using JSON", function() {
         it("Utters simple phrase", async () => {
             const response = await virtualAlexa.filter((request) => {
                 assert.isUndefined(request.context.System.device.deviceId);
-                assert.isUndefined(request.context.System.apiEndpoint, "https://api.amazonalexa.com");
+                assert.isUndefined(request.context.System.apiEndpoint, "https://external.amazonalexa.com");
                 assert.isDefined(request.context.System.device.supportedInterfaces.AudioPlayer);
                 assert.isDefined(request.context.System.user.userId);
                 assert.isUndefined(request.context.System.user.permissions);

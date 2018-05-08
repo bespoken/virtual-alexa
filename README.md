@@ -56,8 +56,7 @@ Easy! Just add a line of code like so:
 const va = require("virtual-alexa");
 const alexa = va.VirtualAlexa.Builder()
     .handler("index.handler") // Lambda function file and name
-    .intentSchemaFile("./speechAssets/IntentSchema.json") // Path to IntentSchema.json
-    .sampleUtterancesFile("./speechAssets/SampleUtterances.txt") // Path to SampleUtterances
+    .interactionModelFile("./models/en-US.json") // Path to interaction model file
     .create();
 
 alexa.utter("play").then((payload) => {
@@ -65,6 +64,8 @@ alexa.utter("play").then((payload) => {
     // Prints out returned SSML, e.g., "<speak> Welcome to my Skill </speak>"
 });
 ```
+
+Our "canonical" full example is the [Super Simple Unit Testing project](https://github.com/bespoken/super-simple-unit-testing/blob/master/test/index-test.js).
 
 ### Virtual Alexa With Promises
 Here's a more in-depth example, in the form of a Jest unit test:
@@ -98,7 +99,7 @@ And here is one that uses async/await (which makes it even more readable):
 it("Accepts responses without dollars", async function () {
     const alexa = bvd.VirtualAlexa.Builder()
         .handler("index.handler") // Lambda function file and name
-        .intentSchemaFile("./speechAssets/IntentSchema.json")
+        .intentSchemaFile("./speechAssets/IntentSchema.json") // Uses old-style intent schema
         .sampleUtterancesFile("./speechAssets/SampleUtterances.txt")
         .create();
 
@@ -142,6 +143,15 @@ We also support the AudioPlayer! [Read more here](https://github.com/bespoken/vi
 
 ## Display Interface
 We also support the Display Interface! [Read more here](https://github.com/bespoken/virtual-alexa/blob/master/docs/Display.md).
+
+## Dialog Interface
+**NEW** We also support the Dialog Interface. [Read more here](https://github.com/bespoken/virtual-alexa/blob/master/docs/Dialog.md).
+
+## External Calls
+**NEW** We also support mocking external calls, such as ones made to the Address API. 
+[Read more here](https://github.com/bespoken/virtual-alexa/blob/master/docs/Externals.md).
+
+This allows for testing without relying on the actual calls, which are difficult if not impossible to configure for unit tests.
 
 ## How Do I Talk To You?
 Easy, you can open [an issue here](https://github.com/bespoken/virtual-alexa/issues), or find us on [our Gitter](https://gitter.im/bespoken/virtual-alexa).
