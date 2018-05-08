@@ -85,7 +85,7 @@ describe("Test address API mocks", function() {
             postalCode: "postal",
         });
 
-        virtualAlexa.launch().then();
+        virtualAlexa.launch();
 
         virtualAlexa = VirtualAlexa.Builder()
             .handler(myFunction)
