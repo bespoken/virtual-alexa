@@ -1,3 +1,5 @@
+import * as uuid from "uuid";
+
 export class Device {
     private _id: string;
     private _supportedInterfaces: any = {};
@@ -11,6 +13,14 @@ export class Device {
 
     public id(): string {
         return this._id;
+    }
+
+    public generatedID(): void {
+        if (this._id) {
+            return;
+        }
+
+        this._id = "virtualAlexa.deviceID." + uuid.v4();
     }
 
     public setID(id: string) {

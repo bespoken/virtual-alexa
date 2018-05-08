@@ -17,6 +17,8 @@ export class SkillContext {
     /** @internal */
     private _audioPlayer: AudioPlayer;
     private _accessToken: string = null;
+    private _apiAccessToken: string;
+    private _apiEndpoint: string;
     private _device: Device;
     /** @internal */
     private _dialogManager: DialogManager;
@@ -31,11 +33,21 @@ export class SkillContext {
                        private _locale: string,
                        private _applicationID?: string,
     ) {
+        this._apiAccessToken = "virtualAlexa.accessToken." + uuid.v4();
+        this._apiEndpoint = "https://api.amazonalexa.com";
         this._audioPlayer = audioPlayer;
         this._interactionModel = interactionModel;
         this._dialogManager = new DialogManager(this);
         this._device = new Device();
         this._user = new User();
+    }
+
+    public apiAccessToken(): string {
+        return this._apiAccessToken;
+    }
+
+    public apiEndpoint(): string {
+        return this._apiEndpoint;
     }
 
     public applicationID(): string {

@@ -3,6 +3,7 @@
     "rules": {
         "cyclomatic-complexity": true,
         "max-classes-per-file": 3,
+        "no-empty-interface": false,
         "no-console": false,
         "only-arrow-functions": false,
         "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"]

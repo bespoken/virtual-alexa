@@ -26,7 +26,7 @@ gulp.task("typedoc", function () {
             name: "Bespoken Virtual Alexa",
             readme: "README.md",
             target: "ES6",
-            out: "docs/api",
+            out: "docs/external",
             version: true
         })
     );

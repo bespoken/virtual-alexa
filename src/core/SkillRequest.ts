@@ -34,7 +34,7 @@ export class SkillRequest {
     }
 
     private static requestID() {
-        return "amzn1.echo-api.request." + uuid.v4();
+        return "amzn1.echo-external.request." + uuid.v4();
     }
 
     private requestJSON: any = null;
@@ -197,7 +197,8 @@ export class SkillRequest {
 
         // If the device ID is set, we set the API endpoint and deviceId properties
         if (this.context.device().id()) {
-            baseRequest.context.System.apiEndpoint = "https://api.amazonalexa.com";
+            baseRequest.context.System.apiAccessToken = this.context.apiAccessToken();
+            baseRequest.context.System.apiEndpoint = this.context.apiEndpoint();
             baseRequest.context.System.device.deviceId = this.context.device().id();
         }
 

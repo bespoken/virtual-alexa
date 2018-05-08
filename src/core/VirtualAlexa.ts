@@ -9,6 +9,7 @@ import {SkillInteractor} from "../impl/SkillInteractor";
 import {SessionEndedReason} from "./SkillRequest";
 import {SkillResponse} from "./SkillResponse";
 import {IResponse} from "./IResponse";
+import {AddressAPI} from "../external/AddressAPI";
 
 export class VirtualAlexa {
     public static Builder(): VirtualAlexaBuilder {
@@ -16,20 +17,26 @@ export class VirtualAlexa {
     }
 
     /** @internal */
-    private interactor: SkillInteractor;
+    private _interactor: SkillInteractor;
+    private _addressAPI: AddressAPI;
 
     /** @internal */
     public constructor(interactor: SkillInteractor) {
-        this.interactor = interactor;
+        this._interactor = interactor;
+        this._addressAPI = new AddressAPI(this.context());
+    }
+
+    public addressAPI() {
+        return this._addressAPI;
     }
 
     // Provides access to the AudioPlayer object, for sending audio requests
     public audioPlayer(): AudioPlayer {
-        return this.interactor.context().audioPlayer();
+        return this._interactor.context().audioPlayer();
     }
 
     public context(): SkillContext {
-        return this.interactor.context();
+        return this._interactor.context();
     }
 
     /**
@@ -38,7 +45,7 @@ export class VirtualAlexa {
      * @returns {Promise<any>}
      */
     public endSession(): void {
-        this.interactor.sessionEnded(SessionEndedReason.USER_INITIATED, undefined);
+        this._interactor.sessionEnded(SessionEndedReason.USER_INITIATED, undefined);
     }
 
     /**
@@ -47,7 +54,7 @@ export class VirtualAlexa {
      * @returns {VirtualAlexa}
      */
     public filter(requestFilter: RequestFilter): VirtualAlexa {
-        this.interactor.filter(requestFilter);
+        this._interactor.filter(requestFilter);
         return this;
     }
 
@@ -58,7 +65,7 @@ export class VirtualAlexa {
      * @returns {Promise<SkillResponse>}
      */
     public intend(intentName: string, slots?: {[id: string]: string}): Promise<IResponse> {
-        return this.interactor.intended(intentName, slots);
+        return this._interactor.intended(intentName, slots);
     }
 
     /**
@@ -67,7 +74,7 @@ export class VirtualAlexa {
      * @returns {Promise<SkillResponse>}
      */
     public selectElement(token: any): Promise<IResponse> {
-        return this.interactor.elementSelected(token);
+        return this._interactor.elementSelected(token);
     }
 
     /**
@@ -75,11 +82,11 @@ export class VirtualAlexa {
      * @returns {Promise<SkillResponse>}
      */
     public launch(): Promise<SkillResponse> {
-        return this.interactor.launched();
+        return this._interactor.launched();
     }
 
     public resetFilter(): VirtualAlexa {
-        this.interactor.filter(undefined);
+        this._interactor.filter(undefined);
         return this;
     }
 
@@ -89,7 +96,7 @@ export class VirtualAlexa {
      * @returns {Promise<SkillResponse>}
      */
     public utter(utterance: string): Promise<IResponse> {
-        return this.interactor.spoken(utterance);
+        return this._interactor.spoken(utterance);
     }
 }
 
