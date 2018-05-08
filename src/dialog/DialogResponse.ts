@@ -8,16 +8,7 @@ export class DialogResponse implements IResponse {
     }
 }
 
-export class DelegatedDialogResponse extends DialogResponse {
-    public constructor(public prompt?: string, public skillResponse?: SkillResponse) {
-        super();
-    }
-
-    public isDelegated() {
-        return true;
-    }
-}
-
+/* @internal */
 export class ExplicitDialogResponse extends DialogResponse {
     public constructor(public transformedIntent: UserIntent) {
         super();

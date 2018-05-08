@@ -1,13 +1,14 @@
 import {Utterance} from "virtual-core";
 import {AudioPlayer} from "../audioPlayer/AudioPlayer";
-import {DelegatedDialogResponse, ExplicitDialogResponse} from "../dialog/DialogResponse";
-import {InteractionModel} from "../model/InteractionModel";
 import {IResponse} from "../core/IResponse";
 import {SkillContext} from "../core/SkillContext";
 import {SessionEndedReason, SkillRequest} from "../core/SkillRequest";
 import {SkillResponse} from "../core/SkillResponse";
-import {UserIntent} from "./UserIntent";
 import {RequestFilter} from "../core/VirtualAlexa";
+import {DelegatedDialogResponse} from "../dialog/DelegatedDialogResponse";
+import {ExplicitDialogResponse} from "../dialog/DialogResponse";
+import {InteractionModel} from "../model/InteractionModel";
+import {UserIntent} from "./UserIntent";
 
 /**
  * SkillInteractor comes in two flavors:

@@ -65,6 +65,8 @@ alexa.utter("play").then((payload) => {
 });
 ```
 
+Our "canonical" full example is the [Super Simple Unit Testing project](https://github.com/bespoken/super-simple-unit-testing/blob/master/test/index-test.js).
+
 ### Virtual Alexa With Promises
 Here's a more in-depth example, in the form of a Jest unit test:
 ```
@@ -141,6 +143,9 @@ We also support the AudioPlayer! [Read more here](https://github.com/bespoken/vi
 
 ## Display Interface
 We also support the Display Interface! [Read more here](https://github.com/bespoken/virtual-alexa/blob/master/docs/Display.md).
+
+## Dialog Interface
+**NEW** We also support the Dialog Interface. [Read more here](https://github.com/bespoken/virtual-alexa/blob/master/docs/Dialog.md).
 
 ## How Do I Talk To You?
 Easy, you can open [an issue here](https://github.com/bespoken/virtual-alexa/issues), or find us on [our Gitter](https://gitter.im/bespoken/virtual-alexa).

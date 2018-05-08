@@ -13,6 +13,7 @@ gulp.task("typedoc", function () {
         "src/core/SkillSession.ts",
         "src/core/User.ts",
         "src/core/VirtualAlexa.ts",
+        "src/dialog/DelegatedDialogResponse.ts",
     ]).pipe(typedoc({
             // TypeScript options (see typescript docs)
             excludePrivate: true,
