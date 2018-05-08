@@ -37,7 +37,7 @@ export class AddressAPI {
             this.context.device().generatedID();
         }
 
-        const baseURL = this.context.apiEndpoint() + ":443";
+        const baseURL = this.context.apiEndpoint();
         AddressAPI.activeScope = nock(baseURL)
             .persist()
             .get("/v1/devices/" + this.context.device().id() + "/settings/address")

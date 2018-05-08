@@ -6,7 +6,7 @@ import {SessionEndedReason, SkillRequest} from "../core/SkillRequest";
 import {SkillResponse} from "../core/SkillResponse";
 import {RequestFilter} from "../core/VirtualAlexa";
 import {DelegatedDialogResponse} from "../dialog/DelegatedDialogResponse";
-import {ExplicitDialogResponse} from "../dialog/DialogResponse";
+import {ExplicitDialogResponse} from "../dialog/ExplicitDialogResponse";
 import {InteractionModel} from "../model/InteractionModel";
 import {UserIntent} from "./UserIntent";
 

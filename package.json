@@ -14,11 +14,15 @@
     "lib/src/audioPlayer/AudioPlayer.d.ts",
     "lib/src/core/Device.d.ts",
     "lib/src/core/Index.d.ts",
+    "lib/src/core/IResponse.d.ts",
     "lib/src/core/SkillContext.d.ts",
     "lib/src/core/SkillResponse.d.ts",
     "lib/src/core/SkillSession.d.ts",
     "lib/src/core/User.d.ts",
-    "lib/src/core/VirtualAlexa.d.ts"
+    "lib/src/core/VirtualAlexa.d.ts",
+    "lib/src/dialog/DialogResponse.d.ts",
+    "lib/src/dialog/DelegatedDialogResponse.d.ts",
+    "lib/src/external/AddressAPI.d.ts"
   ],
   "nyc": {
     "exclude": [

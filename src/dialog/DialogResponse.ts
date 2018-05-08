@@ -7,10 +7,3 @@ export class DialogResponse implements IResponse {
         return false;
     }
 }
-
-/* @internal */
-export class ExplicitDialogResponse extends DialogResponse {
-    public constructor(public transformedIntent: UserIntent) {
-        super();
-    }
-}

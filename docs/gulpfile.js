@@ -8,12 +8,15 @@ gulp.task("typedoc", function () {
         "src/audioPlayer/AudioItem.ts",
         "src/audioPlayer/AudioPlayer.ts",
         "src/core/Device.ts",
+        "src/core/IResponse.ts",
         "src/core/SkillContext.ts",
         "src/core/SkillResponse.ts",
         "src/core/SkillSession.ts",
         "src/core/User.ts",
         "src/core/VirtualAlexa.ts",
+        "src/dialog/DialogResponse.ts",
         "src/dialog/DelegatedDialogResponse.ts",
+        "src/external/AddressAPI.ts",
     ]).pipe(typedoc({
             // TypeScript options (see typescript docs)
             excludePrivate: true,
@@ -26,7 +29,7 @@ gulp.task("typedoc", function () {
             name: "Bespoken Virtual Alexa",
             readme: "README.md",
             target: "ES6",
-            out: "docs/external",
+            out: "docs/api",
             version: true
         })
     );
