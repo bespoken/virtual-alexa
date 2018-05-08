@@ -9,14 +9,26 @@ export class AddressAPI {
         this.reset();
     }
 
+    /**
+     * Causes the mock to return the specified full address to HTTP calls to the Address API
+     * @param {IStreetAddress} address
+     */
     public returnsFullAddress(address: IStreetAddress) {
         this.configure(200, address);
     }
 
+    /**
+     * Causes the mock to return the specified country and postal code to HTTP calls to the Address API
+     * @param {IStreetAddress} address
+     */
     public returnsCountryAndPostalCode(address: ICountryAndPostalCode) {
         this.configure(200, address);
     }
 
+    /**
+     * Causes the mock to return a 403 error to HTTP calls to the Address API
+     * This simulates a user not granting proper permissions
+     */
     public insufficientPermissions() {
         this.configure(403, undefined);
     }
