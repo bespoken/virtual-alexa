@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import {IIntentSchema, Intent, IntentSlot} from "virtual-core";
 
-export class IntentSchema implements IIntentSchema{
+export class IntentSchema implements IIntentSchema {
     public static fromFile(file: string): IntentSchema {
         const data = fs.readFileSync(file);
         const json = JSON.parse(data.toString());

@@ -14,6 +14,7 @@ export class BuiltinSlotType extends SlotType {
     }
 
     public match(value: string): SlotMatch {
+        value = value.trim();
         // Some slot types use regex - we use that if specified
         let slotMatch = new SlotMatch(false);
         if (this.regex) {
@@ -59,12 +60,16 @@ export class NumberSlotType extends BuiltinSlotType {
 
         for (const key of Object.keys(NumberSlotType.LONG_FORM_VALUES)) {
             const values = NumberSlotType.LONG_FORM_VALUES[key];
-            slotValues.push({id: key, name: {value: key, synonyms: values}});
+            slotValues.push({id: key, builtin: true, name: {value: key, synonyms: values}});
         }
         return slotValues;
     }
 
     public constructor() {
         super("AMAZON.NUMBER", NumberSlotType.LONG_FORM_SLOT_VALUES(), "^[0-9]*$");
+    }
+
+    public isEnumerated() {
+        return true;
     }
 }

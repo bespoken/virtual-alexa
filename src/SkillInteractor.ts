@@ -1,9 +1,12 @@
 import {Utterance} from "virtual-core";
 import {AudioPlayer} from "./AudioPlayer";
+import {DelegatedDialogResponse, ExplicitDialogResponse} from "./DialogResponse";
 import {InteractionModel} from "./InteractionModel";
+import {IResponse} from "./IResponse";
 import {SkillContext} from "./SkillContext";
 import {SessionEndedReason, SkillRequest} from "./SkillRequest";
 import {SkillResponse} from "./SkillResponse";
+import {UserIntent} from "./UserIntent";
 import {RequestFilter} from "./VirtualAlexa";
 
 /**
@@ -32,9 +35,14 @@ export abstract class SkillInteractor {
      * Hits the callback with the JSON payload from the response
      * @param utteranceString
      */
-    public spoken(utteranceString: string): Promise<SkillResponse> {
-        let utterance = new Utterance(this.interactionModel(), utteranceString);
+    public spoken(utteranceString: string): Promise<IResponse> {
+        // First give the dialog manager a shot at it
+        const intent = this.context().dialogManager().handleUtterance(utteranceString);
+        if (intent) {
+            return this.handleIntent(intent);
+        }
 
+        let utterance = new Utterance(this.interactionModel(), utteranceString);
         // If we don't match anything, we use the default utterance - simple algorithm for this
         if (!utterance.matched()) {
             const defaultPhrase = this.interactionModel().sampleUtterances.defaultUtterance();
@@ -43,14 +51,14 @@ export abstract class SkillInteractor {
                 + ". Using fallback utterance: " + defaultPhrase.phrase);
         }
 
-        return this.callSkillWithIntent(utterance.intent(), utterance.toJSON());
+        return this.handleIntent(new UserIntent(this.context(), utterance.intent(), utterance.toJSON()));
     }
 
     /**
      * Passes in an Display.ElementSelected request with the specified token
      * @param token
      */
-    public async elementSelected(token: any): Promise<SkillResponse> {
+    public async elementSelected(token: any): Promise<IResponse> {
         const serviceRequest = new SkillRequest(this.skillContext);
         serviceRequest.elementSelectedRequest(token);
         return this.callSkill(serviceRequest);
@@ -63,7 +71,7 @@ export abstract class SkillInteractor {
     }
 
     public sessionEnded(sessionEndedReason: SessionEndedReason,
-                        errorData?: any): Promise<any> {
+                        errorData?: any): void {
         if (sessionEndedReason === SessionEndedReason.ERROR) {
             console.error("SessionEndedRequest:\n" + JSON.stringify(errorData, null, 2));
         }
@@ -71,9 +79,8 @@ export abstract class SkillInteractor {
         const serviceRequest = new SkillRequest(this.skillContext);
         // Convert to enum value and send request
         serviceRequest.sessionEndedRequest(sessionEndedReason, errorData);
-        return this.callSkill(serviceRequest).then(() => {
-            this.context().endSession();
-        });
+        this.callSkill(serviceRequest);
+        this.context().endSession();
     }
 
     /**
@@ -81,15 +88,15 @@ export abstract class SkillInteractor {
      * @param intentName
      * @param slots
      */
-    public async intended(intentName: string, slots?: any): Promise<SkillResponse> {
-        return this.callSkillWithIntent(intentName, slots);
+    public async intended(intentName: string, slots?: {[id: string]: string}): Promise<IResponse> {
+        return this.handleIntent(new UserIntent(this.context(), intentName, slots));
     }
 
     public filter(requestFilter: RequestFilter): void {
         this.requestFilter = requestFilter;
     }
 
-    public async callSkill(serviceRequest: SkillRequest): Promise<SkillResponse> {
+    public async callSkill(serviceRequest: SkillRequest): Promise<IResponse> {
         // Call this at the last possible minute, because of state issues
         //  What can happen is this gets queued, and then another request ends the session
         //  So we want to wait until just before we send this to create the session
@@ -116,6 +123,12 @@ export abstract class SkillInteractor {
 
         if (result.response !== undefined && result.response.directives !== undefined) {
             this.context().audioPlayer().directivesReceived(result.response.directives);
+            // If we have a dialog response return that instead with a reference to the skill response
+            const dialogResponse = this.context().dialogManager().handleDirective(result);
+            if (dialogResponse && dialogResponse.isDelegated()) {
+                (dialogResponse as DelegatedDialogResponse).skillResponse = new SkillResponse(result);
+                return dialogResponse;
+            }
         }
 
         return new SkillResponse(result);
@@ -123,7 +136,17 @@ export abstract class SkillInteractor {
 
     protected abstract invoke(requestJSON: any): Promise<any>;
 
-    private async callSkillWithIntent(intentName: string, slots?: any): Promise<SkillResponse> {
+    private async handleIntent(intent: UserIntent): Promise<IResponse> {
+        // First give the dialog manager a shot at it
+        const dialogResponse = this.context().dialogManager().handleIntent(intent);
+        if (dialogResponse) {
+            if (dialogResponse.isDelegated()) {
+                return Promise.resolve(dialogResponse);
+            } else {
+                intent = (dialogResponse as ExplicitDialogResponse).transformedIntent;
+            }
+        }
+
         // When the user utters an intent, we suspend for it
         // We do this first to make sure everything is in the right state for what comes next
         if (this.skillContext.device().audioPlayerSupported() && this.skillContext.audioPlayer().isPlaying()) {
@@ -132,12 +155,7 @@ export abstract class SkillInteractor {
 
         // Now we generate the service request
         //  The request is built based on the state from the previous step, so important that it is suspended first
-        const serviceRequest = new SkillRequest(this.skillContext).intentRequest(intentName);
-        if (slots !== undefined && slots !== null) {
-            for (const slotName of Object.keys(slots)) {
-                serviceRequest.withSlot(slotName, slots[slotName]);
-            }
-        }
+        const serviceRequest = new SkillRequest(this.skillContext).intentRequest(intent);
 
         const result = await this.callSkill(serviceRequest);
         if (this.skillContext.device().audioPlayerSupported() && this.skillContext.audioPlayer().suspended()) {

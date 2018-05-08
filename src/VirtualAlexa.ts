@@ -8,6 +8,7 @@ import {SkillContext} from "./SkillContext";
 import {SkillInteractor} from "./SkillInteractor";
 import {SessionEndedReason} from "./SkillRequest";
 import {SkillResponse} from "./SkillResponse";
+import {IResponse} from "./IResponse";
 
 export class VirtualAlexa {
     public static Builder(): VirtualAlexaBuilder {
@@ -33,10 +34,11 @@ export class VirtualAlexa {
 
     /**
      * Sends a SessionEndedRequest to the skill
+     * Does not wait for a reply, as there should be none
      * @returns {Promise<any>}
      */
-    public endSession(): Promise<any> {
-        return this.interactor.sessionEnded(SessionEndedReason.USER_INITIATED, undefined);
+    public endSession(): void {
+        this.interactor.sessionEnded(SessionEndedReason.USER_INITIATED, undefined);
     }
 
     /**
@@ -55,7 +57,7 @@ export class VirtualAlexa {
      * @param {{[p: string]: string}} slots
      * @returns {Promise<SkillResponse>}
      */
-    public intend(intentName: string, slots?: {[id: string]: string}): Promise<SkillResponse> {
+    public intend(intentName: string, slots?: {[id: string]: string}): Promise<IResponse> {
         return this.interactor.intended(intentName, slots);
     }
 
@@ -64,7 +66,7 @@ export class VirtualAlexa {
      * @param {string} token
      * @returns {Promise<SkillResponse>}
      */
-    public selectElement(token: any): Promise<SkillResponse> {
+    public selectElement(token: any): Promise<IResponse> {
         return this.interactor.elementSelected(token);
     }
 
@@ -86,7 +88,7 @@ export class VirtualAlexa {
      * @param {string} utterance
      * @returns {Promise<SkillResponse>}
      */
-    public utter(utterance: string): Promise<SkillResponse> {
+    public utter(utterance: string): Promise<IResponse> {
         return this.interactor.spoken(utterance);
     }
 }

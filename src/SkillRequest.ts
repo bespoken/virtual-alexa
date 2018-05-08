@@ -1,7 +1,8 @@
 import * as uuid from "uuid";
 import {AudioPlayerActivity} from "./AudioPlayer";
 import {SkillContext} from "./SkillContext";
-import {RequestFilter} from "./VirtualAlexa";
+import {UserIntent} from "./UserIntent";
+import {SlotValue} from "./SlotValue";
 
 export class RequestType {
     public static DISPLAY_ELEMENT_SELECTED_REQUEST = "Display.ElementSelected";
@@ -45,7 +46,8 @@ export class SkillRequest {
      * @param intentName
      * @returns {SkillRequest}
      */
-    public intentRequest(intentName: string): SkillRequest {
+    public intentRequest(intent: UserIntent): SkillRequest {
+        const intentName = intent.name;
         const isBuiltin = intentName.startsWith("AMAZON");
         if (!isBuiltin) {
             if (!this.context.interactionModel().hasIntent(intentName)) {
@@ -58,18 +60,17 @@ export class SkillRequest {
             name: intentName,
         };
 
-        // Always specify slots, even if utterance does not come with them specified
-        //  In that case, they just have a blank value
-        if (!isBuiltin) {
-            const intent = this.context.interactionModel().intentSchema.intent(intentName);
-            if (intent.slots !== null && intent.slots.length > 0) {
-                this.requestJSON.request.intent.slots = {};
-                for (const slot of intent.slots) {
-                    this.requestJSON.request.intent.slots[slot.name] = {
-                        name: slot.name,
-                    };
-                }
-            }
+        const slots = intent.slots();
+        if (Object.keys(slots).length > 0) {
+            this.requestJSON.request.intent.slots = slots;
+        }
+
+        // Add in the dialog info
+        if (this.context.dialogManager().isDialog()) {
+            this.requestJSON.request.dialogState = this.context.dialogManager().dialogState();
+            this.requestJSON.request.intent.confirmationStatus = this.context.dialogManager().confirmationStatus();
+            // Since the dialog manager has an incomplete slot view, we merge it in with the complete list
+            this.mergeSlots(this.requestJSON.request.intent.slots, this.context.dialogManager().slots());
         }
 
         return this;
@@ -99,29 +100,6 @@ export class SkillRequest {
         if (errorData !== undefined && errorData !== null) {
             this.requestJSON.request.error = errorData;
         }
-        return this;
-    }
-
-    /**
-     * Adds a slot to the intentName request (it must be an intentName request)
-     * @param slotName
-     * @param slotValue
-     * @returns {SkillRequest}
-     */
-    public withSlot(slotName: string, slotValue: string): SkillRequest {
-        if (this.requestJSON.request.type !== "IntentRequest") {
-            throw Error("Trying to add slot to non-intent request");
-        }
-
-        if (!this.requestJSON.request.intent.slots) {
-            throw Error("Trying to add slot to intent that does not have any slots defined");
-        }
-
-        if (!(slotName in this.requestJSON.request.intent.slots)) {
-            throw Error("Trying to add undefined slot to intent: " + slotName);
-        }
-
-        this.requestJSON.request.intent.slots[slotName] = { name: slotName, value: slotValue };
         return this;
     }
 
@@ -181,6 +159,12 @@ export class SkillRequest {
         }
 
         return this.requestJSON;
+    }
+
+    private mergeSlots(slotsTarget: {[id: string]: SlotValue}, slotsSource: {[id: string]: SlotValue}) {
+        for (const sourceSlot of Object.keys(slotsSource)) {
+            slotsTarget[sourceSlot] = slotsSource[sourceSlot];
+        }
     }
 
     private baseRequest(requestType: string): any {

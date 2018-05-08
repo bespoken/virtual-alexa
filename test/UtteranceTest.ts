@@ -185,17 +185,17 @@ describe("UtteranceTest", function() {
             let utterance = new Utterance(model, "one");
             assert.isTrue(utterance.matched());
             assert.equal(utterance.intent(), "NumberSlot");
-            assert.equal(utterance.slot(0), "1");
-            assert.equal(utterance.slotByName("number"), "1");
+            assert.equal(utterance.slot(0), "one");
+            assert.equal(utterance.slotByName("number"), "one");
 
             utterance = new Utterance(model, "Thirteen");
-            assert.equal(utterance.slotByName("number"), "13");
+            assert.equal(utterance.slotByName("number"), "Thirteen");
 
             utterance = new Utterance(model, " ten ");
-            assert.equal(utterance.slotByName("number"), "10");
+            assert.equal(utterance.slotByName("number"), "ten");
         });
 
-        it("Does not match a phrase with to a slot of number type", () => {
+        it("Does not match a phrase with numbers and letters to slot of number type", () => {
             const utterance = new Utterance(model, "19801a test");
             assert.equal(utterance.intent(), "MultipleSlots");
         });
