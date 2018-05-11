@@ -1,5 +1,6 @@
 import {AudioPlayer} from "../audioPlayer/AudioPlayer";
 import {AddressAPI} from "../external/AddressAPI";
+import {DynamoDB} from "../external/DynamoDB";
 import {LocalSkillInteractor} from "../impl/LocalSkillInteractor";
 import {RemoteSkillInteractor} from "../impl/RemoteSkillInteractor";
 import {SkillInteractor} from "../impl/SkillInteractor";
@@ -19,11 +20,13 @@ export class VirtualAlexa {
     /** @internal */
     private _interactor: SkillInteractor;
     private _addressAPI: AddressAPI;
+    private _dynamoDB: DynamoDB;
 
     /** @internal */
     public constructor(interactor: SkillInteractor) {
         this._interactor = interactor;
         this._addressAPI = new AddressAPI(this.context());
+        this._dynamoDB = new DynamoDB();
     }
 
     public addressAPI() {
@@ -37,6 +40,10 @@ export class VirtualAlexa {
 
     public context(): SkillContext {
         return this._interactor.context();
+    }
+
+    public dynamoDB() {
+        return this._dynamoDB;
     }
 
     /**

@@ -8,11 +8,14 @@ process.env.AWS_SECRET_ACCESS_KEY = "123456789";
 describe("Test dynamo DB mocks", function() {
     it("Adds a record to mock dynamo", (done) => {
         const mockDynamo = new db.DynamoDB();
-        mockDynamo.activate();
+        mockDynamo.mock();
 
         const dynamodb = new AWS.DynamoDB();
-        const params = {
+        const putParams = {
             Item: {
+                AnArray: {
+                    SS: ["Value1", "Value2", "Value3"],
+                },
                 Artist: {
                     S: "No One You Know",
                 },
@@ -27,12 +30,26 @@ describe("Test dynamo DB mocks", function() {
             TableName: "FakeTable",
         };
 
-        dynamodb.putItem(params, (error: any, data: any) => {
+        const getParams = {
+            Key: {
+                ID: {
+                    S: "IDValue",
+                },
+            },
+            TableName: "FakeTable",
+        };
+
+        dynamodb.putItem(putParams, (error: any, data: any) => {
             assert.isNull(error);
             assert.isDefined(data);
-            const record = mockDynamo.fetch("FakeTable", { ID: "IDValue" });
-            assert.equal(record.Item.Artist.S, "No One You Know");
-            done();
+
+            dynamodb.getItem(getParams, (getError: any, getData: any) => {
+                assert.isNull(error);
+                assert.equal(getData.Item.Artist.S, "No One You Know");
+                // Dynamo seems to strip out the table name
+                assert.isUndefined(getData.TableName);
+                done();
+            });
         });
     });
 });
