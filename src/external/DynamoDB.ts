@@ -9,7 +9,10 @@ export class DynamoDB {
     private static getScope: any; // We keep the nock scope as a singleton - only one can be active at a time
 
     private records: any[] = [];
+    private region = "us-east-1";
+
     public mock() {
+        this.setEnv();
         if (!nock.isActive()) {
             nock.activate();
         }
@@ -19,6 +22,7 @@ export class DynamoDB {
     }
 
     public reset() {
+        this.records = [];
         if (DynamoDB.getScope) {
             DynamoDB.getScope.persist(false);
         }
@@ -26,6 +30,19 @@ export class DynamoDB {
         if (DynamoDB.putScope) {
             DynamoDB.putScope.persist(false);
         }
+    }
+
+    private setEnv() {
+        if (process.env.AWS_REGION) {
+            this.region = process.env.AWS_REGION;
+        }
+        this.setDefault("AWS_REGION", "us-east-1");
+        this.setDefault("AWS_ACCESS_KEY_ID", "123456789");
+        this.setDefault("AWS_SECRET_ACCESS_KEY", "123456789");
+    }
+
+    private setDefault(property: string, value: string) {
+        process.env[property] = process.env[property] ? process.env[property] : value;
     }
 
     private fetchImpl(table: string, key: any): any | undefined {
@@ -59,8 +76,7 @@ export class DynamoDB {
         // const baseURL = new RegExp(".*dynamodb.*");
         // Built this based on this info:
         //  https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_PutItem.html#API_PutItem_Examples
-        const baseURL = "https://dynamodb.us-east-1.amazonaws.com:443";
-        DynamoDB.putScope = nock(baseURL)
+        DynamoDB.putScope = nock(this.baseURL())
             .matchHeader("x-amz-target", (value: string) => {
                 return value.endsWith("PutItem");
             })
@@ -74,11 +90,9 @@ export class DynamoDB {
     }
 
     private mockGet() {
-        // const baseURL = new RegExp(".*dynamodb.*");
         // Built this based on this info:
         //  https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_PutItem.html#API_PutItem_Examples
-        const baseURL = this.baseURL();
-        DynamoDB.getScope = nock(baseURL)
+        DynamoDB.getScope = nock(this.baseURL())
             .matchHeader("x-amz-target", (value: string) => {
                 return value.endsWith("GetItem");
             })
@@ -98,7 +112,7 @@ export class DynamoDB {
     }
 
     private baseURL() {
-        return "https://dynamodb.us-east-1.amazonaws.com:443";
+        return "https://dynamodb." + this.region + ".amazonaws.com:443";
     }
 
     private simplifyRecord(dynamoObject: any) {
