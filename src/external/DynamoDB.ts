@@ -46,7 +46,10 @@ export class DynamoDB {
     }
 
     private fetchImpl(table: string, key: any): any | undefined {
-        for (const record of this.records) {
+        // Go through records in reverse order, as we may have duplicates for a key
+        // We want to get the latest
+        for (let i = this.records.length - 1; i >= 0; i--) {
+            const record = this.records[i];
             if (record.TableName !== table) {
                 continue;
             }

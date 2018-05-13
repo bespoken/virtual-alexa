@@ -47,9 +47,16 @@ describe("Test dynamo DB mocks", function() {
                 // Dynamo seems to strip out the table name
                 assert.isUndefined(getData.TableName);
 
-                mockDynamo.reset();
-                assert.equal(mockDynamo.records.length, 0);
-                done();
+                putParams.Item.SongTitle.S = "Call Me Today Changed";
+                dynamodb.putItem(putParams, () => {
+                    dynamodb.getItem(getParams, (getError2: any, getData2: any) => {
+                        assert.equal(getData2.Item.SongTitle.S, "Call Me Today Changed");
+
+                        mockDynamo.reset();
+                        assert.equal(mockDynamo.records.length, 0);
+                        done();
+                    });
+                });
             });
         });
     });
