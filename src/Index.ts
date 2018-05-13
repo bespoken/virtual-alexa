@@ -9,3 +9,4 @@ export {RequestFilter, VirtualAlexa, VirtualAlexaBuilder} from "./core/VirtualAl
 export {DialogResponse} from "./dialog/DialogResponse";
 export {DelegatedDialogResponse} from "./dialog/DelegatedDialogResponse";
 export {AddressAPI} from "./external/AddressAPI";
+export {DynamoDB} from "./external/DynamoDB";
