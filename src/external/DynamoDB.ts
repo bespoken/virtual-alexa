@@ -109,7 +109,10 @@ export class DynamoDB {
                 const key = requestObject.Key;
                 // Turn this into a regular javascript object - we use this for searching
                 const keySimple = this.simplifyRecord(key);
-                const record = this.fetchImpl(requestObject.TableName, keySimple);
+                let record = this.fetchImpl(requestObject.TableName, keySimple);
+                if (!record) {
+                    record = {};
+                }
                 return record;
             });
     }

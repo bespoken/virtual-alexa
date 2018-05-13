@@ -105,7 +105,13 @@ describe("Test dynamo DB mocks", function() {
                 assert.equal(getData.Item.Artist.S, "No One You Know");
                 // Dynamo seems to strip out the table name
                 assert.isUndefined(getData.TableName);
-                done();
+
+                getParams.Key.ID.S = "IDValueMissing";
+                dynamodb.getItem(getParams, (getError2: any, getDataFails: any) => {
+                    assert.isNull(error);
+                    assert.isUndefined(getDataFails.Item);
+                    done();
+                });
             });
         });
     });
