@@ -59,18 +59,24 @@ export class InteractionModel implements IModel {
         const schema = new IntentSchema(schemaJSON);
         const samples = SampleUtterancesBuilder.fromJSON(sampleJSON);
 
+        const promptsElement = interactionModel.interactionModel.prompts
+            ? interactionModel.interactionModel.prompts
+            : interactionModel.prompts;
         let prompts;
-        if (interactionModel.prompts) {
+        if (promptsElement) {
             prompts = [];
-            for (const prompt of interactionModel.prompts) {
+            for (const prompt of promptsElement) {
                 prompts.push(SlotPrompt.fromJSON(prompt));
             }
         }
 
+        const dialogElement = interactionModel.interactionModel.dialog
+            ? interactionModel.interactionModel.dialog
+            : interactionModel.dialog;
         let dialogIntents;
-        if (interactionModel.dialog) {
+        if (dialogElement) {
             dialogIntents = [];
-            for (const dialogIntent of interactionModel.dialog.intents) {
+            for (const dialogIntent of dialogElement.intents) {
                 dialogIntents.push(DialogIntent.fromJSON(interactionModel, dialogIntent));
             }
         }

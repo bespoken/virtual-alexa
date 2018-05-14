@@ -25,7 +25,25 @@ describe("DialogManager tests", function() {
             assert.equal(skillResponse.prompt(), "Done with dialog");
             done();
         });
+    });
 
+    it("Interacts with delegated dialog with top-level interaction model element", (done) => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test/resources/dialogModel/dialog-index.handler")
+            .interactionModelFile("test/resources/dialogModel/InteractionModelASK.json")
+            .create();
+
+        virtualAlexa.intend("PetMatchIntent", { size: "big"}).then((response: DelegatedDialogResponse) => {
+            assert.equal(response.skillResponse.directive("Dialog.Delegate").type, "Dialog.Delegate");
+            assert.equal(response.prompt, "Are you looking for more of a family dog or a guard dog?");
+            return virtualAlexa.intend("PetMatchIntent", { temperament: "watch"});
+        }).then((dialogResponse: DelegatedDialogResponse) => {
+            assert.equal(dialogResponse.prompt, "Do you prefer high energy or low energy dogs?");
+            return virtualAlexa.intend("PetMatchIntent", { energy: "high"});
+        }).then((skillResponse: SkillResponse) => {
+            assert.equal(skillResponse.prompt(), "Done with dialog");
+            done();
+        });
     });
 
     it("Interacts with delegated dialog with confirmation", (done) => {
