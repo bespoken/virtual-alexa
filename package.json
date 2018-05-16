@@ -39,6 +39,7 @@
     "docs": "gulp --gulpfile docs/gulpfile.js --cwd .",
     "posttest": "nyc report --reporter=json --reporter=html && codecov -f coverage/*.json",
     "pretest": "npm run tsc",
+    "preversion": "npm test",
     "test": "nyc mocha lib/**/*Test.js",
     "tsc": "tsc",
     "typings": "typings install"
