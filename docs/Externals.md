@@ -3,8 +3,8 @@ Virtual Alexa can mock external calls easily.
 
 It handles:  
 * Address API
-* Dynamo (Coming Soon)
-* List API
+* Dynamo
+* List API (Coming Soon)
 
 ## Why Mocks?
 We use mocks because it is either difficult or impossible to write unit tests with the **real** services.
@@ -22,6 +22,43 @@ By using a mock, we can bypass all this complexity - instead:
 For other calls, such as the Address API, it is essentially impossible to do without mocks.
 This is because the Address API relies on a unique security token from Amazon, 
 and the only way to get it is to be running inside Alexa. An emulator like Virtual Alexa just cannot do it.
+
+## DynamoDB
+To mock calls to DynamoDB, simply enable our DynamoDB mock service.
+
+Example:
+
+```javascript
+const virtualAlexa = VirtualAlexa.Builder()
+    .handler("index.handler")
+    .interactionModelFile("models/en-US.json")
+    .create();
+
+virtualAlexa.dynamo().mock();
+```
+
+The Dynamo DB mock will be called automatically for get and put requests to Dynamo, without hitting the service itself.
+
+Records will be stored locally in memory instead of in Dynamo.
+
+Dynamo can be used in the tests by simply calling the Dynamo SDK in the normal way:
+
+```
+const getParams = {
+    Key: {
+        ID: {
+            S: "The Beatles",
+        },
+    },
+    TableName: "Musicians",
+};
+const dynamo = new AWS.DynamoDB();
+dynamo.getItem(getParams, function(error, data) {
+    assert.equal(data.Item.Genre.S, "Rock");
+});
+```
+
+Complete information on [AWS SDK for Node.js is here](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html).
 
 ## Address API
 To mock the Address API with Virtual Alexa, simply supply the a desired return value to the [AddressAPI object](https://bespoken.github.io/virtual-alexa/api/classes/addressapi.html).
