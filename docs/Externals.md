@@ -2,8 +2,8 @@
 Virtual Alexa can mock external calls easily.
 
 It handles:  
-* Address API
-* Dynamo
+* [Dynamo DB](#dynamodb)
+* [Address API](#address-api)
 * List API (Coming Soon)
 
 ## Why Mocks?
