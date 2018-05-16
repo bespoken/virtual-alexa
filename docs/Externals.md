@@ -60,6 +60,8 @@ dynamo.getItem(getParams, function(error, data) {
 
 Complete information on [AWS SDK for Node.js is here](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html).
 
+Reference docs for [Mock Dynamo service are here](https://bespoken.github.io/virtual-alexa/api/classes/dynamodb.html).
+
 ## Address API
 To mock the Address API with Virtual Alexa, simply supply the a desired return value to the [AddressAPI object](https://bespoken.github.io/virtual-alexa/api/classes/addressapi.html).
 
