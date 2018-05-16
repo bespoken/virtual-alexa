@@ -105,7 +105,7 @@
 				<pre><code><span class="hljs-keyword">const</span> va = <span class="hljs-built_in">require</span>(<span class="hljs-string">"virtual-alexa"</span>);
 <span class="hljs-keyword">const</span> alexa = va.VirtualAlexa.Builder()
     .handler(<span class="hljs-string">"index.handler"</span>) <span class="hljs-comment">// Lambda function file and name</span>
-    .interactionModelFile(<span class="hljs-string">"./models/en-US.json"</span>) <span class="hljs-comment">// Path to IntentSchema.json</span>
+    .interactionModelFile(<span class="hljs-string">"./models/en-US.json"</span>) <span class="hljs-comment">// Path to interaction model file</span>
     .create();
 
 alexa.utter(<span class="hljs-string">"play"</span>).then(<span class="hljs-function">(<span class="hljs-params">payload</span>) =&gt;</span> {
@@ -177,10 +177,13 @@ alexa.utter(<span class="hljs-string">"play"</span>).then(<span class="hljs-func
 				<p>We also support the Display Interface! <a href="https://github.com/bespoken/virtual-alexa/blob/master/docs/Display.md">Read more here</a>.</p>
 				<h2 id="dialog-interface">Dialog Interface</h2>
 				<p><strong>NEW</strong> We also support the Dialog Interface. <a href="https://github.com/bespoken/virtual-alexa/blob/master/docs/Dialog.md">Read more here</a>.</p>
-				<h2 id="external-calls">External Calls</h2>
-				<p><strong>NEW</strong> We also support mocking external calls, such as ones made to the Address API.
+				<h2 id="mocking-external-calls-dynamo-and-address-api-">Mocking External Calls (Dynamo and Address API)</h2>
+				<p><strong>NEW</strong> We also support mocking external calls, such as ones made to the Address API and Dynamo.
 				<a href="https://github.com/bespoken/virtual-alexa/blob/master/docs/Externals.md">Read more here</a>.</p>
 				<p>This allows for testing without relying on the actual calls, which are difficult if not impossible to configure for unit tests.</p>
+				<h2 id="entity-resolution">Entity Resolution</h2>
+				<p><strong>NEW</strong> We support the entity resolution request payloads.
+				<a href="https://github.com/bespoken/virtual-alexa/blob/master/docs/EntityResolution.md">Read more here</a>.</p>
 				<h2 id="how-do-i-talk-to-you-">How Do I Talk To You?</h2>
 				<p>Easy, you can open <a href="https://github.com/bespoken/virtual-alexa/issues">an issue here</a>, or find us on <a href="https://gitter.im/bespoken/virtual-alexa">our Gitter</a>.</p>
 				<p>We are also on the <a href="http://amazonalexa.slack.com">Alexa Slack channel</a> - @jpkbst, @jperata, @chrisramon and @ankraiza.</p>
@@ -222,6 +225,9 @@ alexa.utter(<span class="hljs-string">"play"</span>).then(<span class="hljs-func
 						<a href="classes/dialogresponse.html" class="tsd-kind-icon">Dialog<wbr>Response</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="classes/dynamodb.html" class="tsd-kind-icon">DynamoDB</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="classes/skillcontext.html" class="tsd-kind-icon">Skill<wbr>Context</a>
 					</li>
 					<li class=" tsd-kind-class">
@@ -253,6 +259,12 @@ alexa.utter(<span class="hljs-string">"play"</span>).then(<span class="hljs-func
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="globals.html#requestfilter" class="tsd-kind-icon">Request<wbr>Filter</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#aws" class="tsd-kind-icon">AWS</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#nock" class="tsd-kind-icon">nock</a>
 					</li>
 				</ul>
 			</nav>
