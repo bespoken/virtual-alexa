@@ -37,6 +37,13 @@ export abstract class SkillInteractor {
      * @param utteranceString
      */
     public spoken(utteranceString: string): Promise<IResponse> {
+        // Special handling for exit
+        // Per this page:
+        // https://developer.amazon.com/docs/custom-skills/request-types-reference.html#sessionendedrequest
+        if (utteranceString === "exit") {
+            return this.sessionEnded(SessionEndedReason.USER_INITIATED);
+        }
+
         // First give the dialog manager a shot at it
         const intent = this.context().dialogManager().handleUtterance(utteranceString);
         if (intent) {
@@ -72,7 +79,7 @@ export abstract class SkillInteractor {
     }
 
     public sessionEnded(sessionEndedReason: SessionEndedReason,
-                        errorData?: any): void {
+                        errorData?: any): Promise<IResponse> {
         if (sessionEndedReason === SessionEndedReason.ERROR) {
             console.error("SessionEndedRequest:\n" + JSON.stringify(errorData, null, 2));
         }
@@ -82,6 +89,7 @@ export abstract class SkillInteractor {
         serviceRequest.sessionEndedRequest(sessionEndedReason, errorData);
         this.callSkill(serviceRequest);
         this.context().endSession();
+        return Promise.resolve({});
     }
 
     /**
