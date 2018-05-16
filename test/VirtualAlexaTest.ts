@@ -295,6 +295,17 @@ describe("VirtualAlexa Tests Using Unified Interaction Model", function() {
         }).utter("custom DE");
     });
 
+    it("Utters exit", async () => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test/resources/index.handler")
+            .interactionModel(interactionModel)
+            .create();
+
+        await virtualAlexa.filter((request) => {
+            assert.equal(request.request.type, "SessionEndedRequest");
+        }).utter("exit");
+    });
+
     it("Utters slotted phrase with empty synonym array", async () => {
         const virtualAlexa = VirtualAlexa.Builder()
             .handler("test/resources/index.handler")
