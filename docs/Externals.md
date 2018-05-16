@@ -58,7 +58,7 @@ dynamo.getItem(getParams, function(error, data) {
 });
 ```
 
-Complete information on [AWS SDK for Node.js is here](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html).
+Complete information on [AWS SDK for Node.js and Dynamo is here](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html).
 
 Reference docs for [Mock Dynamo service are here](https://bespoken.github.io/virtual-alexa/api/classes/dynamodb.html).
 
