@@ -17,6 +17,7 @@ gulp.task("typedoc", function () {
         "src/dialog/DialogResponse.ts",
         "src/dialog/DelegatedDialogResponse.ts",
         "src/external/AddressAPI.ts",
+        "src/external/DynamoDB.ts",
     ]).pipe(typedoc({
             // TypeScript options (see typescript docs)
             excludePrivate: true,

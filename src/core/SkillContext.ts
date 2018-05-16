@@ -1,10 +1,10 @@
 import * as uuid from "uuid";
 import {AudioPlayer} from "../audioPlayer/AudioPlayer";
-import {Device} from "./Device";
+import {DialogManager} from "../dialog/DialogManager";
 import {InteractionModel} from "../model/InteractionModel";
+import {Device} from "./Device";
 import {SkillSession} from "./SkillSession";
 import {User} from "./User";
-import {DialogManager} from "../dialog/DialogManager";
 
 /**
  * Manages state of the Alexa device interaction across sessions.

@@ -1,15 +1,16 @@
 import {AudioPlayer} from "../audioPlayer/AudioPlayer";
-import {IntentSchema} from "../model/IntentSchema";
-import {InteractionModel} from "../model/InteractionModel";
+import {AddressAPI} from "../external/AddressAPI";
+import {DynamoDB} from "../external/DynamoDB";
 import {LocalSkillInteractor} from "../impl/LocalSkillInteractor";
 import {RemoteSkillInteractor} from "../impl/RemoteSkillInteractor";
-import {SampleUtterancesBuilder} from "../model/SampleUtterancesBuilder";
-import {SkillContext} from "./SkillContext";
 import {SkillInteractor} from "../impl/SkillInteractor";
+import {IntentSchema} from "../model/IntentSchema";
+import {InteractionModel} from "../model/InteractionModel";
+import {SampleUtterancesBuilder} from "../model/SampleUtterancesBuilder";
+import {IResponse} from "./IResponse";
+import {SkillContext} from "./SkillContext";
 import {SessionEndedReason} from "./SkillRequest";
 import {SkillResponse} from "./SkillResponse";
-import {IResponse} from "./IResponse";
-import {AddressAPI} from "../external/AddressAPI";
 
 export class VirtualAlexa {
     public static Builder(): VirtualAlexaBuilder {
@@ -19,11 +20,13 @@ export class VirtualAlexa {
     /** @internal */
     private _interactor: SkillInteractor;
     private _addressAPI: AddressAPI;
+    private _dynamoDB: DynamoDB;
 
     /** @internal */
     public constructor(interactor: SkillInteractor) {
         this._interactor = interactor;
         this._addressAPI = new AddressAPI(this.context());
+        this._dynamoDB = new DynamoDB();
     }
 
     public addressAPI() {
@@ -37,6 +40,10 @@ export class VirtualAlexa {
 
     public context(): SkillContext {
         return this._interactor.context();
+    }
+
+    public dynamoDB() {
+        return this._dynamoDB;
     }
 
     /**

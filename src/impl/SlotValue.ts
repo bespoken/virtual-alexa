@@ -1,5 +1,5 @@
-import {ConfirmationStatus} from "../dialog/DialogManager";
 import {SkillContext} from "../core/SkillContext";
+import {ConfirmationStatus} from "../dialog/DialogManager";
 
 export class SlotValue {
     public resolutions: { resolutionsPerAuthority: EntityResolution[] };

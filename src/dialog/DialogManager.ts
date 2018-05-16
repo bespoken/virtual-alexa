@@ -1,12 +1,12 @@
+import {SkillContext} from "../core/SkillContext";
+import {SkillResponse} from "../core/SkillResponse";
+import {SlotValue} from "../impl/SlotValue";
+import {UserIntent} from "../impl/UserIntent";
 import {BuiltinUtterances} from "../model/BuiltinUtterances";
 import {DelegatedDialogResponse} from "./DelegatedDialogResponse";
 import {DialogIntent} from "./DialogIntent";
 import {DialogResponse} from "./DialogResponse";
 import {ExplicitDialogResponse} from "./ExplicitDialogResponse";
-import {SkillContext} from "../core/SkillContext";
-import {SkillResponse} from "../core/SkillResponse";
-import {SlotValue} from "../impl/SlotValue";
-import {UserIntent} from "../impl/UserIntent";
 
 export enum DialogState {
     COMPLETED = "COMPLETED",

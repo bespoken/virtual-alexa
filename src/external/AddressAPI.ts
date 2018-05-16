@@ -1,10 +1,9 @@
 import * as nock from "nock";
-import {Scope} from "nock";
 import {SkillContext} from "../core/SkillContext";
 
 export class AddressAPI {
     /** @internal */
-    private static activeScope: Scope; // We keep the nock scope as a singleton - only one can be active at a time
+    private static activeScope: nock.Scope; // We keep the nock scope as a singleton - only one can be active at a time
     public constructor(private context: SkillContext) {
         this.reset();
     }

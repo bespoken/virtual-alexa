@@ -1,8 +1,8 @@
 import * as fs from "fs";
 import {IModel, SampleUtterances, SlotTypes} from "virtual-core";
+import {DialogIntent} from "../dialog/DialogIntent";
 import {BuiltinSlotTypes} from "./BuiltinSlotTypes";
 import {BuiltinUtterances} from "./BuiltinUtterances";
-import {DialogIntent} from "../dialog/DialogIntent";
 import {IntentSchema} from "./IntentSchema";
 import {SampleUtterancesBuilder} from "./SampleUtterancesBuilder";
 import {SlotPrompt} from "./SlotPrompt";
@@ -31,10 +31,14 @@ export class InteractionModel implements IModel {
         const sampleJSON: any = {};
 
         let languageModel = interactionModel;
+        let promptsElement = interactionModel.prompts;
+        let dialogElement = interactionModel.dialog;
         // For the official interaction model that is part of SMAPI,
         //  we pull the data off of the interactionModel.languageModel element
         if ("interactionModel" in interactionModel) {
             languageModel = interactionModel.interactionModel.languageModel;
+            promptsElement = interactionModel.interactionModel.prompts;
+            dialogElement = interactionModel.interactionModel.dialog;
         }
 
         // There is another version of the model from the interaction model builder
@@ -60,17 +64,17 @@ export class InteractionModel implements IModel {
         const samples = SampleUtterancesBuilder.fromJSON(sampleJSON);
 
         let prompts;
-        if (interactionModel.prompts) {
+        if (promptsElement) {
             prompts = [];
-            for (const prompt of interactionModel.prompts) {
+            for (const prompt of promptsElement) {
                 prompts.push(SlotPrompt.fromJSON(prompt));
             }
         }
 
         let dialogIntents;
-        if (interactionModel.dialog) {
+        if (dialogElement) {
             dialogIntents = [];
-            for (const dialogIntent of interactionModel.dialog.intents) {
+            for (const dialogIntent of dialogElement.intents) {
                 dialogIntents.push(DialogIntent.fromJSON(interactionModel, dialogIntent));
             }
         }
