@@ -147,11 +147,15 @@ We also support the Display Interface! [Read more here](https://github.com/bespo
 ## Dialog Interface
 **NEW** We also support the Dialog Interface. [Read more here](https://github.com/bespoken/virtual-alexa/blob/master/docs/Dialog.md).
 
-## External Calls
-**NEW** We also support mocking external calls, such as ones made to the Address API. 
+## Mocking External Calls (Dynamo and Address API)
+**NEW** We also support mocking external calls, such as ones made to the Address API and Dynamo.
 [Read more here](https://github.com/bespoken/virtual-alexa/blob/master/docs/Externals.md).
 
 This allows for testing without relying on the actual calls, which are difficult if not impossible to configure for unit tests.
+
+## Entity Resolution
+**NEW** We support the entity resolution request payloads.
+[Read more here](https://github.com/bespoken/virtual-alexa/blob/master/docs/EntityResolution.md).
 
 ## How Do I Talk To You?
 Easy, you can open [an issue here](https://github.com/bespoken/virtual-alexa/issues), or find us on [our Gitter](https://gitter.im/bespoken/virtual-alexa).
