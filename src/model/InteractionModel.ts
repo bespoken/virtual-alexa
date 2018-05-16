@@ -31,10 +31,14 @@ export class InteractionModel implements IModel {
         const sampleJSON: any = {};
 
         let languageModel = interactionModel;
+        let promptsElement = interactionModel.prompts;
+        let dialogElement = interactionModel.dialog;
         // For the official interaction model that is part of SMAPI,
         //  we pull the data off of the interactionModel.languageModel element
         if ("interactionModel" in interactionModel) {
             languageModel = interactionModel.interactionModel.languageModel;
+            promptsElement = interactionModel.interactionModel.prompts;
+            dialogElement = interactionModel.interactionModel.dialog;
         }
 
         // There is another version of the model from the interaction model builder
@@ -59,9 +63,6 @@ export class InteractionModel implements IModel {
         const schema = new IntentSchema(schemaJSON);
         const samples = SampleUtterancesBuilder.fromJSON(sampleJSON);
 
-        const promptsElement = interactionModel.interactionModel.prompts
-            ? interactionModel.interactionModel.prompts
-            : interactionModel.prompts;
         let prompts;
         if (promptsElement) {
             prompts = [];
@@ -70,9 +71,6 @@ export class InteractionModel implements IModel {
             }
         }
 
-        const dialogElement = interactionModel.interactionModel.dialog
-            ? interactionModel.interactionModel.dialog
-            : interactionModel.dialog;
         let dialogIntents;
         if (dialogElement) {
             dialogIntents = [];
