@@ -19,7 +19,6 @@
     "lib/src/core/SkillSession.d.ts",
     "lib/src/core/User.d.ts",
     "lib/src/core/VirtualAlexa.d.ts",
-    "lib/src/dialog/DialogResponse.d.ts",
     "lib/src/dialog/DelegatedDialogResponse.d.ts",
     "lib/src/external/AddressAPI.d.ts",
     "lib/src/external/DynamoDB.d.ts",

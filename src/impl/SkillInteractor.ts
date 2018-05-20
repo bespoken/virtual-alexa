@@ -6,7 +6,6 @@ import {SessionEndedReason, SkillRequest} from "../core/SkillRequest";
 import {SkillResponse} from "../core/SkillResponse";
 import {RequestFilter} from "../core/VirtualAlexa";
 import {DelegatedDialogResponse} from "../dialog/DelegatedDialogResponse";
-import {ExplicitDialogResponse} from "../dialog/ExplicitDialogResponse";
 import {InteractionModel} from "../model/InteractionModel";
 import {UserIntent} from "./UserIntent";
 
@@ -133,10 +132,10 @@ export abstract class SkillInteractor {
         if (result.response !== undefined && result.response.directives !== undefined) {
             this.context().audioPlayer().directivesReceived(result.response.directives);
             // If we have a dialog response return that instead with a reference to the skill response
-            const dialogResponse = this.context().dialogManager().handleDirective(result);
-            if (dialogResponse && dialogResponse.isDelegated()) {
-                (dialogResponse as DelegatedDialogResponse).skillResponse = new SkillResponse(result);
-                return dialogResponse;
+            const dialogOutput = this.context().dialogManager().handleDirective(result);
+            if (dialogOutput.delegated()) {
+                dialogOutput.delegatedDialogResponse.skillResponse = new SkillResponse(result);
+                return dialogOutput.delegatedDialogResponse;
             }
         }
 
@@ -147,13 +146,11 @@ export abstract class SkillInteractor {
 
     private async handleIntent(intent: UserIntent): Promise<IResponse> {
         // First give the dialog manager a shot at it
-        const dialogResponse = this.context().dialogManager().handleIntent(intent);
-        if (dialogResponse) {
-            if (dialogResponse.isDelegated()) {
-                return Promise.resolve(dialogResponse);
-            } else {
-                intent = (dialogResponse as ExplicitDialogResponse).transformedIntent;
-            }
+        const dialogOutput = this.context().dialogManager().handleIntent(intent);
+        if (dialogOutput.delegated()) {
+            return Promise.resolve(dialogOutput.delegatedDialogResponse);
+        } else if (dialogOutput.transformed()) {
+            intent = dialogOutput.transformedIntent;
         }
 
         // When the user utters an intent, we suspend for it
