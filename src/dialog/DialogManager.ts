@@ -79,11 +79,11 @@ export class DialogManager {
     public handleUtterance(utterance: string): UserIntent {
         // If we are in confirmation mode, check if this is yes or no
         if (this._confirmingSlot || this._dialogState === DialogState.COMPLETED) {
-            const intent = BuiltinUtterances.values()["AMAZON.YesIntent"].indexOf(utterance) !== -1 ?
-                "AMAZON.YesIntent" :
-                "AMAZON.NoIntent";
-
-            return new UserIntent(this.context, intent);
+            if (BuiltinUtterances.values()["AMAZON.YesIntent"].indexOf(utterance) !== -1) {
+                return new UserIntent(this.context, "AMAZON.YesIntent");
+            } else if (BuiltinUtterances.values()["AMAZON.NoIntent"].indexOf(utterance) !== -1) {
+                return new UserIntent(this.context, "AMAZON.NoIntent");
+            }
         }
         return undefined;
     }
@@ -133,6 +133,14 @@ export class DialogManager {
         }
     }
 
+    private dialogExited(): DialogOutput {
+        this._confirmationStatus = undefined;
+        this._confirmingIntent = false;
+        this._delegated = false;
+        this._dialogState = undefined;
+        return DialogOutput.noop();
+    }
+
     private processDialog(intentName: string, slots: {[id: string]: SlotValue}): DialogOutput {
         // Check if we are confirming the intent as a whole
         // We are confirming the intent when the dialog is completed and either:
@@ -152,12 +160,15 @@ export class DialogManager {
 
         // If we are confirming a slot, then answer should be yes or no
         if (this._confirmingSlot) {
-            this._confirmingSlot.confirmationStatus = (intentName === "AMAZON.YesIntent")
-                ? ConfirmationStatus.CONFIRMED
-                : ConfirmationStatus.DENIED;
-            // If this confirmed, exit slot confirming mode
-            if (this._confirmingSlot.confirmationStatus === ConfirmationStatus.CONFIRMED) {
+            // If not a yes or no, must be some other intent and we exit dialog handling
+            if (intentName === "AMAZON.YesIntent") {
+                this._confirmingSlot.confirmationStatus = ConfirmationStatus.CONFIRMED;
                 this._confirmingSlot = undefined;
+            } else if (intentName === "AMAZON.NoIntent") {
+                this._slots[this._confirmingSlot.name].value = undefined;
+                this._confirmingSlot = undefined;
+            } else {
+                return this.dialogExited();
             }
         } else {
             this.updateSlotStates(slots);

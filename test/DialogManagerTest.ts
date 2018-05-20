@@ -65,7 +65,7 @@ describe("DialogManager tests", function() {
             assert.equal(dialogResponse.prompt, "Are you looking for more of a family dog or a guard dog?");
             return virtualAlexa.intend("PetMatchIntent", { temperament: "family"});
         }).then((dialogResponse: DelegatedDialogResponse) => {
-            assert.equal(dialogResponse.prompt, "Are you looking for more of a family dog or a guard dog?");
+            assert.equal(dialogResponse.prompt, "Are you sure you want a family dog?");
             return virtualAlexa.utter("yes");
         }).then((dialogResponse: DelegatedDialogResponse) => {
             assert.equal(dialogResponse.prompt, "Do you prefer high energy or low energy dogs?");
@@ -80,6 +80,21 @@ describe("DialogManager tests", function() {
             return virtualAlexa.utter("yes");
         }).then((skillResponse: SkillResponse) => {
             assert.equal(skillResponse.prompt(), "Done with dialog");
+            done();
+        });
+    });
+
+    it("Send random intent on confirmation for delegated dialog", (done) => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test/resources/dialogModel/dialog-index.handler")
+            .interactionModelFile("test/resources/dialogModel/dialog-model-confirmation.json")
+            .create();
+
+        virtualAlexa.intend("PetMatchIntent", { size: "big"}).then((dialogResponse: DelegatedDialogResponse) => {
+            assert.equal(dialogResponse.prompt, "Are you sure you want a big dog?");
+            return virtualAlexa.utter("stop");
+        }).then((skillResponse: SkillResponse) => {
+            assert.equal(skillResponse.response.shouldEndSession, true);
             done();
         });
     });
