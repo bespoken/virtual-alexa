@@ -119,6 +119,24 @@ describe("DialogManager tests", function() {
         });
     });
 
+    it("Send utterance slot for delegated dialog", (done) => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test/resources/dialogModel/dialog-index.handler")
+            .interactionModelFile("test/resources/dialogModel/dialog-model-confirmation.json")
+            .create();
+
+        virtualAlexa.intend("PetMatchIntent", { size: "big"}).then((dialogResponse: DelegatedDialogResponse) => {
+            assert.equal(dialogResponse.prompt, "Are you sure you want a big dog?");
+            return virtualAlexa.utter("yes");
+        }).then((dialogResponse: DelegatedDialogResponse) => {
+            assert.equal(dialogResponse.prompt, "Are you looking for more of a family dog or a guard dog?");
+            return virtualAlexa.utter("family");
+        }).then((dialogResponse: DelegatedDialogResponse) => {
+            assert.equal(dialogResponse.prompt, "Are you sure you want a family dog?");
+            done();
+        });
+    });
+
     it("Interacts with dialog with explicit slot handling", (done) => {
         const virtualAlexa = VirtualAlexa.Builder()
             .handler("test/resources/dialogModel/dialog-manual-index.handler")

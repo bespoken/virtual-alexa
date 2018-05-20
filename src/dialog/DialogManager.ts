@@ -84,6 +84,22 @@ export class DialogManager {
             } else if (BuiltinUtterances.values()["AMAZON.NoIntent"].indexOf(utterance) !== -1) {
                 return new UserIntent(this.context, "AMAZON.NoIntent");
             }
+        } else if (this.isDialog()) {
+            const providedSlots: any = {};
+            let matched = false;
+            // Loop through slot values looking for a match
+            for (const slot of this._dialogIntent.slots) {
+                const slotType = this.context.interactionModel().slotTypes.slotType(slot.type);
+                const match = slotType.match(utterance);
+                if (match.matches) {
+                    matched = true;
+                    providedSlots[slot.name] = match.value;
+                }
+            }
+
+            if (matched) {
+                return new UserIntent(this.context, this._dialogIntent.name, providedSlots);
+            }
         }
         return undefined;
     }
