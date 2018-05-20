@@ -90,7 +90,15 @@ export class DialogManager {
 
     public handleIntent(intent: UserIntent): DialogOutput {
         if (this.isDialog()) {
-            return this.processDialog(intent.name, intent.slots());
+            // Check to make sure this intent applies to the dialog
+            if (intent.name === this._dialogIntent.name ||
+                intent.name === "AMAZON.YesIntent" ||
+                intent.name === "AMAZON.NoIntent"
+            ) {
+                return this.processDialog(intent.name, intent.slots());
+            } else {
+                return this.dialogExited();
+            }
         } else if (this.context.interactionModel().dialogIntent(intent.name)) {
             // If we have not started a dialog yet, if this intent ties off to a dialog, save the slot state
             this.updateSlotStates(intent.slots());
@@ -138,6 +146,8 @@ export class DialogManager {
         this._confirmingIntent = false;
         this._delegated = false;
         this._dialogState = undefined;
+        this._dialogIntent = undefined;
+        this._slots = {};
         return DialogOutput.noop();
     }
 

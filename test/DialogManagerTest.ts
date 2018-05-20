@@ -99,6 +99,26 @@ describe("DialogManager tests", function() {
         });
     });
 
+    it("Send random intent on slot for delegated dialog", (done) => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test/resources/dialogModel/dialog-index.handler")
+            .interactionModelFile("test/resources/dialogModel/dialog-model-confirmation.json")
+            .create();
+
+        virtualAlexa.intend("PetMatchIntent", { size: "big"}).then((dialogResponse: DelegatedDialogResponse) => {
+            assert.equal(dialogResponse.prompt, "Are you sure you want a big dog?");
+            return virtualAlexa.utter("yes");
+        }).then((dialogResponse: DelegatedDialogResponse) => {
+            assert.equal(dialogResponse.prompt, "Are you looking for more of a family dog or a guard dog?");
+            return virtualAlexa.utter("help");
+        }).then((dialogResponse: DelegatedDialogResponse) => {
+            // Restarts the dialog - after sending the intent to the skill
+            assert.isDefined(dialogResponse.skillResponse);
+            assert.equal((dialogResponse.skillResponse as any).intent, "AMAZON.HelpIntent");
+            done();
+        });
+    });
+
     it("Interacts with dialog with explicit slot handling", (done) => {
         const virtualAlexa = VirtualAlexa.Builder()
             .handler("test/resources/dialogModel/dialog-manual-index.handler")
