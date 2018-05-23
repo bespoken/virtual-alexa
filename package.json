@@ -2,7 +2,7 @@
   "name": "virtual-alexa",
   "license": "Apache-2.0",
   "private": false,
-  "version": "0.6.0-1",
+  "version": "0.6.2",
   "main": "./lib/src/Index.js",
   "typings": "./lib/src/Index.d.ts",
   "engines": {
@@ -19,7 +19,6 @@
     "lib/src/core/SkillSession.d.ts",
     "lib/src/core/User.d.ts",
     "lib/src/core/VirtualAlexa.d.ts",
-    "lib/src/dialog/DialogResponse.d.ts",
     "lib/src/dialog/DelegatedDialogResponse.d.ts",
     "lib/src/external/AddressAPI.d.ts",
     "lib/src/external/DynamoDB.d.ts",

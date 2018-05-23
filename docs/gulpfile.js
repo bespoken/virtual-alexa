@@ -14,7 +14,6 @@ gulp.task("typedoc", function () {
         "src/core/SkillSession.ts",
         "src/core/User.ts",
         "src/core/VirtualAlexa.ts",
-        "src/dialog/DialogResponse.ts",
         "src/dialog/DelegatedDialogResponse.ts",
         "src/external/AddressAPI.ts",
         "src/external/DynamoDB.ts",
