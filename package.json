@@ -6,7 +6,7 @@
   "main": "./lib/src/Index.js",
   "typings": "./lib/src/Index.d.ts",
   "engines": {
-    "node": "> 6.0.0"
+    "node": "> 4.9.0"
   },
   "files": [
     "lib/src/**/*.js",
@@ -48,7 +48,7 @@
     "lodash": "^4.17.4",
     "nock": "^9.2.5",
     "uuid": "^3.1.0",
-    "virtual-core": "0.0.12-0"
+    "virtual-core": "0.0.12"
   },
   "devDependencies": {
     "@types/aws-sdk": "^2.7.0",
