@@ -49,13 +49,11 @@ export abstract class SkillInteractor {
             return this.handleIntent(intent);
         }
 
-        let utterance = new Utterance(this.interactionModel(), utteranceString);
+        const utterance = new Utterance(this.interactionModel(), utteranceString);
         // If we don't match anything, we use the default utterance - simple algorithm for this
         if (!utterance.matched()) {
-            const defaultPhrase = this.interactionModel().sampleUtterances.defaultUtterance();
-            utterance = new Utterance(this.interactionModel(), defaultPhrase.phrase);
-            console.warn("No intentName matches utterance: " + utteranceString
-                + ". Using fallback utterance: " + defaultPhrase.phrase);
+            throw new Error("Unable to match utterance: " + utteranceString
+                + " to an intent. Try a different utterance, or explicitly set the intent");
         }
 
         return this.handleIntent(new UserIntent(this.context(), utterance.intent(), utterance.toJSON()));

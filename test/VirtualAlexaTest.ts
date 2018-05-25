@@ -526,11 +526,15 @@ describe("VirtualAlexa Tests Using JSON", function() {
             }).utter("Slot my slot");
         });
 
-        it("Utters slotted phrase with no space", async () => {
+        it("Utters slotted phrase with no space", (done) => {
             // Make sure our regular expression expects a space for between sample phrase and slot
-            await virtualAlexa.filter((request) => {
-                assert.equal(request.request.intent.name, "AFirstIntent");
-            }).utter("Slotmy slot");
+            try {
+                virtualAlexa.utter("Slotmy slot");
+            } catch (e) {
+                assert.equal(e.message, "Unable to match utterance: Slotmy slot to an intent. " +
+                    "Try a different utterance, or explicitly set the intent");
+                done();
+            }
         });
 
         it("Utters builtin intent", async () => {
@@ -545,16 +549,14 @@ describe("VirtualAlexa Tests Using JSON", function() {
             }).utter("cancel it now");
         });
 
-        it("Utters builtin intent not in schema", async () => {
-            await virtualAlexa.filter((request) => {
-                assert.equal(request.request.intent.name, "AFirstIntent");
-            }).utter("page up");
-        });
-
-        it("Defaults to first phrase", async () => {
-            await virtualAlexa.filter((request) => {
-                assert.equal(request.request.intent.name, "AFirstIntent");
-            }).utter("nonexistent phrase");
+        it("Utters builtin intent not in schema", (done) => {
+            try {
+                virtualAlexa.utter("page up");
+            } catch (e) {
+                assert.equal(e.message, "Unable to match utterance: page up to an intent. " +
+                    "Try a different utterance, or explicitly set the intent");
+                done();
+            }
         });
 
         it("Utters phrases and maintains session", async () => {
