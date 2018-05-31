@@ -196,9 +196,9 @@ export class AudioPlayer {
         return audioItem;
     }
 
-    private playNext(): Promise<any | undefined> {
+    private async playNext() {
         if (this._queue.length === 0) {
-            return Promise.resolve();
+            return;
         }
 
         this._playing = this.dequeue();
