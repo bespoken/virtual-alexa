@@ -115,19 +115,19 @@ export class AudioPlayer {
     /**
      * Emulates the device begin playback again after finishing handling an utterance
      */
-    public resume() {
+    public async resume() {
         this._suspended = false;
         if (!this.isPlaying()) {
-            this.playbackStarted();
+            await this.playbackStarted();
         }
     }
 
     /**
      * Emulates the device stopping playback while handling an utterance
      */
-    public suspend() {
+    public async suspend() {
         this._suspended = true;
-        this.playbackStopped();
+        await this.playbackStopped();
     }
 
     /**
@@ -139,9 +139,9 @@ export class AudioPlayer {
     }
 
     /** @internal */
-    public directivesReceived(directives: any[]): void {
+    public async directivesReceived(directives: any[]) {
         for (const directive of directives) {
-            this.handleDirective(directive);
+            await this.handleDirective(directive);
         }
     }
 
@@ -152,13 +152,13 @@ export class AudioPlayer {
         return this._interactor.callSkill(serviceRequest);
     }
 
-    private enqueue(audioItem: AudioItem, playBehavior: string) {
+    private async enqueue(audioItem: AudioItem, playBehavior: string): Promise<void> {
         if (playBehavior === AudioPlayer.PLAY_BEHAVIOR_ENQUEUE) {
             this._queue.push(audioItem);
 
         } else if (playBehavior === AudioPlayer.PLAY_BEHAVIOR_REPLACE_ALL) {
             if (this.isPlaying()) {
-                this.playbackStopped();
+                await this.playbackStopped();
             }
 
             this._queue = [];
@@ -170,22 +170,22 @@ export class AudioPlayer {
         }
 
         if (!this.isPlaying()) {
-            this.playNext();
+            await this.playNext();
         }
     }
 
-    private handleDirective(directive: any) {
+    private async handleDirective(directive: any) {
         // Handle AudioPlayer.Play
         if (directive.type === AudioPlayer.DIRECTIVE_PLAY) {
             const audioItem = new AudioItem(directive.audioItem);
             const playBehavior: string = directive.playBehavior;
-            this.enqueue(audioItem, playBehavior);
+            await this.enqueue(audioItem, playBehavior);
 
         } else if (directive.type === AudioPlayer.DIRECTIVE_STOP) {
             if (this.suspended()) {
                 this._suspended = false;
             } else if (this.playing()) {
-                this.playbackStopped();
+                await this.playbackStopped();
             }
         }
     }
@@ -196,20 +196,20 @@ export class AudioPlayer {
         return audioItem;
     }
 
-    private playNext() {
+    private playNext(): Promise<any | undefined> {
         if (this._queue.length === 0) {
-            return;
+            return Promise.resolve();
         }
 
         this._playing = this.dequeue();
         // If the URL for AudioItem is http, we throw an error
         if (this._playing.stream.url.startsWith("http:")) {
-            this._interactor.sessionEnded(SessionEndedReason.ERROR, {
+            return this._interactor.sessionEnded(SessionEndedReason.ERROR, {
                 message: "The URL specified in the Play directive must be HTTPS",
                 type: "INVALID_RESPONSE",
             });
         } else {
-            this.playbackStarted();
+            return this.playbackStarted();
 
         }
     }

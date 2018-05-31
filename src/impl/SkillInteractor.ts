@@ -75,7 +75,7 @@ export abstract class SkillInteractor {
         return this.callSkill(serviceRequest);
     }
 
-    public sessionEnded(sessionEndedReason: SessionEndedReason,
+    public async sessionEnded(sessionEndedReason: SessionEndedReason,
                         errorData?: any): Promise<IResponse> {
         if (sessionEndedReason === SessionEndedReason.ERROR) {
             console.error("SessionEndedRequest:\n" + JSON.stringify(errorData, null, 2));
@@ -84,9 +84,9 @@ export abstract class SkillInteractor {
         const serviceRequest = new SkillRequest(this.skillContext);
         // Convert to enum value and send request
         serviceRequest.sessionEndedRequest(sessionEndedReason, errorData);
-        this.callSkill(serviceRequest);
+        const response = await this.callSkill(serviceRequest);
         this.context().endSession();
-        return Promise.resolve({});
+        return Promise.resolve(response);
     }
 
     /**
@@ -128,7 +128,7 @@ export abstract class SkillInteractor {
         }
 
         if (result.response !== undefined && result.response.directives !== undefined) {
-            this.context().audioPlayer().directivesReceived(result.response.directives);
+            await this.context().audioPlayer().directivesReceived(result.response.directives);
             // If we have a dialog response return that instead with a reference to the skill response
             const dialogOutput = this.context().dialogManager().handleDirective(result);
             if (dialogOutput.delegated()) {
@@ -154,7 +154,7 @@ export abstract class SkillInteractor {
         // When the user utters an intent, we suspend for it
         // We do this first to make sure everything is in the right state for what comes next
         if (this.skillContext.device().audioPlayerSupported() && this.skillContext.audioPlayer().isPlaying()) {
-            this.skillContext.audioPlayer().suspend();
+            await this.skillContext.audioPlayer().suspend();
         }
 
         // Now we generate the service request
@@ -163,7 +163,7 @@ export abstract class SkillInteractor {
 
         const result = await this.callSkill(serviceRequest);
         if (this.skillContext.device().audioPlayerSupported() && this.skillContext.audioPlayer().suspended()) {
-            this.skillContext.audioPlayer().resume();
+            await this.skillContext.audioPlayer().resume();
         }
         return result;
     }
