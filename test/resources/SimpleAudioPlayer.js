@@ -10,6 +10,8 @@ var podcastFeed = [
     "https://feeds.soundcloud.com/stream/309340878-user-652822799-episode-010-building-an-alexa-skill-with-flask-ask-with-john-wheeler.mp3"
 ];
 
+var started = false;
+var stopped = false;
 // Entry-point for the Lambda
 exports.handler = function(event, context) {
     var player = new SimplePlayer(event, context);
@@ -47,12 +49,24 @@ SimplePlayer.prototype.handle = function () {
             this.say("Ignoring", "You can say Play");
 
         } else if (intent.name === "AMAZON.NextIntent") {
+            if (!started) {
+                throw new Error("This should not happen - started flag not set");
+            }
+            started = false;
+
+            if (!stopped) {
+                throw new Error("This should not happen - stopped flag not set");
+            }
             // If we have reached the end of the feed, start back at the beginning
             podcastIndex >= podcastFeed.length - 1 ? podcastIndex = 0 : podcastIndex++;
 
             this.play(podcastFeed[podcastIndex], 0, "REPLACE_ALL", podcastIndex);
 
         } else if (intent.name === "AMAZON.PreviousIntent") {
+            if (!started) {
+                throw new Error("This should not happen - started flag not set");
+            }
+
             // If we have reached the start of the feed, go back to the end
             podcastIndex == 0 ? podcastIndex = podcastFeed.length - 1 : podcastIndex--;
 
@@ -82,15 +96,24 @@ SimplePlayer.prototype.handle = function () {
         this.play(podcastFeed[podcastIndex], 0, "ENQUEUE", podcastIndex, lastIndex);
 
     } else if (requestType === "AudioPlayer.PlaybackStarted") {
-        // We simply respond with true to acknowledge the request
-        this.context.succeed(true);
+        // Dom something async to that we have waited for it to finish
+        const self = this;
+        setTimeout(function () {
+            started = true;
+            // We simply respond with true to acknowledge the request
+            self.context.succeed(true);
+        }, 10);
 
     } else if (requestType === "AudioPlayer.PlaybackStopped") {
         // We save off the PlaybackStopped Intent, so we know what was last playing
         this.saveLastPlayed(userId, this.event);
 
-        // We respond with just true to acknowledge the request
-        this.context.succeed(true);
+        const self = this;
+        setTimeout(function () {
+            stopped = true;
+            // We simply respond with true to acknowledge the request
+            self.context.succeed(true);
+        }, 10);
     } else if (requestType === "SessionEndedRequest") {
         var response = {
             version: "1.0",

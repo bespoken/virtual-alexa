@@ -71,10 +71,14 @@ describe("AudioPlayer launches and plays a track", function() {
             assert.include(result.response.outputSpeech.ssml, "Welcome to the Simple Audio Player");
 
             result = await virtualAlexa.utter("play") as SkillResponse;
+            // Make sure playback started has been sent before the response is received
+            assert.equal(requests.length, 3);
             assert.include(result.response.directives[0].audioItem.stream.url, "episode-013");
 
             result = await virtualAlexa.utter("next") as SkillResponse;
             assert.include(result.response.directives[0].audioItem.stream.url, "episode-012");
+            // Make sure another playback started has been sent before the response is received
+            assert.equal(requests[5].type, "AudioPlayer.PlaybackStarted");
 
             result = await virtualAlexa.utter("previous") as SkillResponse;
             assert.include(result.response.directives[0].audioItem.stream.url, "episode-013");
@@ -91,6 +95,11 @@ describe("AudioPlayer launches and plays a track", function() {
             assert.equal(requests[6].type, "AudioPlayer.PlaybackStopped");
             assert.equal(requests[7].type, "IntentRequest");
             assert.equal(requests[8].type, "AudioPlayer.PlaybackStarted");
+            // The ignored intent generates these requests
+            assert.equal(requests[9].type, "AudioPlayer.PlaybackStopped");
+            assert.equal(requests[10].type, "IntentRequest");
+            assert.equal(requests[11].type, "AudioPlayer.PlaybackStarted");
+            assert.equal(requests.length, 12);
         } catch (e) {
             assert.fail(e);
         }
