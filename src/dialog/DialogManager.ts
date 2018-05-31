@@ -176,7 +176,7 @@ export class DialogManager {
             || this._confirmingIntent;
         if (this._dialogState === DialogState.COMPLETED
             && confirmationRequired
-            && this._confirmationStatus === ConfirmationStatus.NONE
+            && (!this._confirmationStatus || this._confirmationStatus === ConfirmationStatus.NONE)
         ) {
             this._confirmationStatus = (intentName === "AMAZON.YesIntent")
                 ? ConfirmationStatus.CONFIRMED
