@@ -156,6 +156,7 @@ describe("DialogManager tests", function() {
         });
     });
 
+
     it("Interacts with dialog with explicit slot handling and confirmations", (done) => {
         const virtualAlexa = VirtualAlexa.Builder()
             .handler("test/resources/dialogModel/dialog-manual-index.handler")
@@ -179,6 +180,38 @@ describe("DialogManager tests", function() {
             assert.equal(skillResponse.prompt(), "Do you prefer high energy dogs?");
             return virtualAlexa.intend("PetMatchIntent", { temperament: "family"});
         }).then((skillResponse: SkillResponse) => {
+            done();
+        });
+    });
+
+    it("Interacts with non-delegated dialog with confirming intent confirmation", (done) => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test/resources/dialogModel/dialog-intent-confirmation.handler")
+            .interactionModelFile("test/resources/dialogModel/dialog-model.json")
+            .create();
+
+        virtualAlexa.intend("PetMatchIntent").then((skillResponse: SkillResponse) => {
+            assert.equal(skillResponse.directive("Dialog.ConfirmIntent").type, "Dialog.ConfirmIntent");
+            assert.include(skillResponse.prompt(), "Are you sure you want to do this?");
+            return virtualAlexa.utter("yes");
+        }).then((skillResponse: SkillResponse) => {
+            assert.include(skillResponse.prompt(), "Done with dialog. I will do this.");
+            done();
+        });
+    });
+
+    it("Interacts with non-delegated dialog with denying intent confirmation", (done) => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test/resources/dialogModel/dialog-intent-confirmation.handler")
+            .interactionModelFile("test/resources/dialogModel/dialog-model.json")
+            .create();
+
+        virtualAlexa.intend("PetMatchIntent").then((skillResponse: SkillResponse) => {
+            assert.equal(skillResponse.directive("Dialog.ConfirmIntent").type, "Dialog.ConfirmIntent");
+            assert.include(skillResponse.prompt(), "Are you sure you want to do this?");
+            return virtualAlexa.utter("no");
+        }).then((skillResponse: SkillResponse) => {
+            assert.include(skillResponse.prompt(), "Done with dialog. I won't do this.");
             done();
         });
     });
