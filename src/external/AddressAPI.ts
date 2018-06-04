@@ -13,7 +13,12 @@ export class AddressAPI {
      * @param {IStreetAddress} address
      */
     public returnsFullAddress(address: IStreetAddress) {
-        this.configure(200, address);
+        this.configure(200, "/settings/address/countryAndPostalCode", address);
+        const countryAndPostalCode: ICountryAndPostalCode = {
+            countryCode: address.countryCode,
+            postalCode: address.postalCode,
+        };
+        this.configure(200, "/settings/address", countryAndPostalCode);
     }
 
     /**
@@ -21,7 +26,8 @@ export class AddressAPI {
      * @param {IStreetAddress} address
      */
     public returnsCountryAndPostalCode(address: ICountryAndPostalCode) {
-        this.configure(200, address);
+        this.configure(200, "/settings/address/countryAndPostalCode", address);
+        this.configure(403, "/settings/address");
     }
 
     /**
@@ -29,7 +35,8 @@ export class AddressAPI {
      * This simulates a user not granting proper permissions
      */
     public insufficientPermissions() {
-        this.configure(403, undefined);
+        this.configure(403, "/settings/address/countryAndPostalCode");
+        this.configure(403, "/settings/address");
     }
 
     public reset() {
@@ -38,7 +45,7 @@ export class AddressAPI {
         }
     }
 
-    private configure(responseCode: number, payload?: any) {
+    private configure(responseCode: number, pathEnd: string, payload?: any) {
         if (!nock.isActive()) {
             nock.activate();
         }
@@ -51,7 +58,7 @@ export class AddressAPI {
         const baseURL = this.context.apiEndpoint();
         AddressAPI.activeScope = nock(baseURL)
             .persist()
-            .get("/v1/devices/" + this.context.device().id() + "/settings/address")
+            .get("/v1/devices/" + this.context.device().id() + pathEnd)
             .query(true)
             .reply(responseCode, JSON.stringify(payload, null, 2));
     }

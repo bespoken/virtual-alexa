@@ -5,10 +5,25 @@ import {VirtualAlexa} from "../src/core/VirtualAlexa";
 describe("Test address API mocks", function() {
     it("Calls address API for full address", (done) => {
         const myFunction = function(event: any, context: any) {
-            callAddressAPI(event.context.System.apiAccessToken, event.context.System.device.deviceId)
+            const promises = [];
+            promises.push(callAddressAPI(event.context.System.apiAccessToken,
+                event.context.System.device.deviceId,
+                true)
                 .then((response: any) => {
-                assert.equal(response.payload.addressLine1, "address line 1");
-                assert.equal(response.statusCode, 200);
+                    assert.equal(response.payload.addressLine1, "address line 1");
+                    assert.equal(response.payload.countryCode, "country code");
+                    assert.equal(response.statusCode, 200);
+                }));
+
+            promises.push(callAddressAPI(event.context.System.apiAccessToken,
+                event.context.System.device.deviceId,
+                false)
+                .then((response: any) => {
+                    assert.isUndefined(response.payload.addressLine1);
+                    assert.equal(response.payload.countryCode, "country code");
+                    assert.equal(response.statusCode, 200);
+                }));
+            Promise.all(promises).then(() => {
                 done();
             });
         };
@@ -35,13 +50,25 @@ describe("Test address API mocks", function() {
 
     it("Calls address API for country code", (done) => {
         const myFunction = function(event: any, context: any) {
-            callAddressAPI(event.context.System.apiAccessToken, event.context.System.device.deviceId)
+            const promises = [];
+            promises.push(callAddressAPI(event.context.System.apiAccessToken,
+                event.context.System.device.deviceId,
+                true)
                 .then((response: any) => {
                     assert.isUndefined(response.payload.addressLine1);
                     assert.equal(response.payload.countryCode, "country code");
                     assert.equal(response.statusCode, 200);
-                    done();
-                });
+                }));
+
+            promises.push(callAddressAPI(event.context.System.apiAccessToken,
+                event.context.System.device.deviceId,
+                false)
+                .then((response: any) => {
+                    assert.equal(response.statusCode, 403);
+                }));
+            Promise.all(promises).then(() => {
+                done();
+            });
         };
 
         const virtualAlexa = VirtualAlexa.Builder()
@@ -62,7 +89,7 @@ describe("Test address API mocks", function() {
         // Make sure that only one mock for the address API is active at a time
         let count = 0;
         const myFunction = function(event: any, context: any) {
-            callAddressAPI(event.context.System.apiAccessToken, event.context.System.device.deviceId)
+            callAddressAPI(event.context.System.apiAccessToken, event.context.System.device.deviceId, true)
                 .then((response: any) => {
                     count++;
                     assert.isUndefined(response.payload.addressLine1);
@@ -103,7 +130,8 @@ describe("Test address API mocks", function() {
 
     it("Calls address API without permissions", (done) => {
         const myFunction = function(event: any, context: any) {
-            callAddressAPI(event.context.System.apiAccessToken, event.context.System.device.deviceId)
+            callAddressAPI(event.context.System.apiAccessToken,
+                event.context.System.device.deviceId)
                 .then((response: any) => {
                     assert.isUndefined(response.payload);
                     assert.equal(response.statusCode, 403);
@@ -123,7 +151,11 @@ describe("Test address API mocks", function() {
     });
 });
 
-function callAddressAPI(apiAccessToken: string, deviceID: string) {
+function callAddressAPI(apiAccessToken: string, deviceID: string, countryCode: boolean = false) {
+    let path = "/settings/address";
+    if (countryCode) {
+        path += "/countryAndPostalCode";
+    }
     const authorization = "Bearer " + apiAccessToken;
     let payload: any;
     return new Promise((resolve) => {
@@ -133,7 +165,7 @@ function callAddressAPI(apiAccessToken: string, deviceID: string) {
             },
             host: "api.amazonalexa.com",
             method: "GET",
-            path: "/v1/devices/" + deviceID + "/settings/address",
+            path: "/v1/devices/" + deviceID + path,
         }, (response) => {
             const statusCode = response.statusCode;
             response.setEncoding("utf8");
