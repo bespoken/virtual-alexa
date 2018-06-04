@@ -54,7 +54,6 @@ export class DialogManager {
                     || directive.type === "Dialog.ConfirmIntent") {
                     // Start the dialog if not started, otherwise mark as in progress
                     this._dialogState = this._dialogState ? DialogState.IN_PROGRESS : DialogState.STARTED;
-                    // Set the confirmations status to NONE, if it has not already been set
                     if (!this._confirmationStatus) {
                         this._confirmationStatus = ConfirmationStatus.NONE;
                     }
@@ -180,7 +179,8 @@ export class DialogManager {
             || this._confirmingIntent;
         if (this._dialogState === DialogState.COMPLETED
             && confirmationRequired
-            && this._confirmationStatus === ConfirmationStatus.NONE) {
+            && this._confirmationStatus === ConfirmationStatus.NONE
+        ) {
             this._confirmationStatus = (intentName === "AMAZON.YesIntent")
                 ? ConfirmationStatus.CONFIRMED
                 : ConfirmationStatus.DENIED;
