@@ -13,12 +13,12 @@ export class AddressAPI {
      * @param {IStreetAddress} address
      */
     public returnsFullAddress(address: IStreetAddress) {
-        this.configure(200, "/settings/address/countryAndPostalCode", address);
+        this.configure(200, "/settings/address", address);
         const countryAndPostalCode: ICountryAndPostalCode = {
             countryCode: address.countryCode,
             postalCode: address.postalCode,
         };
-        this.configure(200, "/settings/address", countryAndPostalCode);
+        this.configure(200, "/settings/address/countryAndPostalCode", countryAndPostalCode);
     }
 
     /**
