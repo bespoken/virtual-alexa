@@ -10,7 +10,7 @@ describe("Test address API mocks", function() {
                 event.context.System.device.deviceId,
                 true)
                 .then((response: any) => {
-                    assert.equal(response.payload.addressLine1, "address line 1");
+                    assert.isUndefined(response.payload.addressLine1);
                     assert.equal(response.payload.countryCode, "country code");
                     assert.equal(response.statusCode, 200);
                 }));
@@ -19,10 +19,11 @@ describe("Test address API mocks", function() {
                 event.context.System.device.deviceId,
                 false)
                 .then((response: any) => {
-                    assert.isUndefined(response.payload.addressLine1);
+                    assert.equal(response.payload.addressLine1, "address line 1");
                     assert.equal(response.payload.countryCode, "country code");
                     assert.equal(response.statusCode, 200);
                 }));
+
             Promise.all(promises).then(() => {
                 done();
             });
