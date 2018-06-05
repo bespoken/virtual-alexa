@@ -8,6 +8,15 @@ describe("Test address API mocks", function() {
             const promises = [];
             promises.push(callAddressAPI(event.context.System.apiAccessToken,
                 event.context.System.device.deviceId,
+                true)
+                .then((response: any) => {
+                    assert.isUndefined(response.payload.addressLine1);
+                    assert.equal(response.payload.countryCode, "country code");
+                    assert.equal(response.statusCode, 200);
+                }));
+
+            promises.push(callAddressAPI(event.context.System.apiAccessToken,
+                event.context.System.device.deviceId,
                 false)
                 .then((response: any) => {
                     assert.equal(response.payload.addressLine1, "address line 1");
@@ -15,14 +24,6 @@ describe("Test address API mocks", function() {
                     assert.equal(response.statusCode, 200);
                 }));
 
-            promises.push(callAddressAPI(event.context.System.apiAccessToken,
-                event.context.System.device.deviceId,
-                true)
-                .then((response: any) => {
-                    assert.isUndefined(response.payload.addressLine1);
-                    assert.equal(response.payload.countryCode, "country code");
-                    assert.equal(response.statusCode, 200);
-                }));
             Promise.all(promises).then(() => {
                 done();
             });
