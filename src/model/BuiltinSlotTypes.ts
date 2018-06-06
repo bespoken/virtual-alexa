@@ -4,6 +4,7 @@ export class BuiltinSlotTypes {
     public static values(): BuiltinSlotType [] {
         return [
             new NumberSlotType(),
+            new LiteralSlotType()
         ];
     }
 }
@@ -71,5 +72,11 @@ export class NumberSlotType extends BuiltinSlotType {
 
     public isEnumerated() {
         return true;
+    }
+}
+
+export class LiteralSlotType extends BuiltinSlotType {
+    public constructor() {
+        super("AMAZON.LITERAL", []);
     }
 }
