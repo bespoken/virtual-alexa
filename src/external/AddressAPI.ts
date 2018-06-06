@@ -3,7 +3,9 @@ import {SkillContext} from "../core/SkillContext";
 
 export class AddressAPI {
     /** @internal */
-    private static activeScope: nock.Scope; // We keep the nock scope as a singleton - only one can be active at a time
+    private static addressScope: nock.Scope; // We keep the nock scope as a singleton - only one can be active at a time
+    /** @internal */
+    private static postalScope: nock.Scope; // We keep the nock scope as a singleton - only one can be active at a time
     public constructor(private context: SkillContext) {
         this.reset();
     }
@@ -13,12 +15,12 @@ export class AddressAPI {
      * @param {IStreetAddress} address
      */
     public returnsFullAddress(address: IStreetAddress) {
-        this.configure(200, "/settings/address/countryAndPostalCode", address);
+        this.configure(200, "/settings/address", address);
         const countryAndPostalCode: ICountryAndPostalCode = {
             countryCode: address.countryCode,
             postalCode: address.postalCode,
         };
-        this.configure(200, "/settings/address", countryAndPostalCode);
+        this.configure(200, "/settings/address/countryAndPostalCode", countryAndPostalCode);
     }
 
     /**
@@ -40,8 +42,12 @@ export class AddressAPI {
     }
 
     public reset() {
-        if (AddressAPI.activeScope) {
-            AddressAPI.activeScope.persist(false);
+        if (AddressAPI.addressScope) {
+            AddressAPI.addressScope.persist(false);
+        }
+
+        if (AddressAPI.postalScope) {
+            AddressAPI.postalScope.persist(false);
         }
     }
 
@@ -56,11 +62,20 @@ export class AddressAPI {
         }
 
         const baseURL = this.context.apiEndpoint();
-        AddressAPI.activeScope = nock(baseURL)
+        // For some reason, in testing this, the get only works if it is function
+        // Does not work, for certain scenarios, if it is just a string
+        const scope = nock(baseURL)
             .persist()
-            .get("/v1/devices/" + this.context.device().id() + pathEnd)
+            .get((path) => {
+                return path === ("/v1/devices/" + this.context.device().id() + pathEnd);
+            })
             .query(true)
             .reply(responseCode, JSON.stringify(payload, null, 2));
+        if (pathEnd.endsWith("countryAndPostalCode")) {
+            AddressAPI.postalScope = scope;
+        } else {
+            AddressAPI.addressScope = scope;
+        }
     }
 }
 
