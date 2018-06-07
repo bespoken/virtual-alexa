@@ -4,7 +4,8 @@ export class BuiltinSlotTypes {
     public static values(): BuiltinSlotType [] {
         return [
             new NumberSlotType(),
-            new LiteralSlotType()
+            new LiteralSlotType(),
+            new SearchQuerySlotType(),
         ];
     }
 }
@@ -78,5 +79,15 @@ export class NumberSlotType extends BuiltinSlotType {
 export class LiteralSlotType extends BuiltinSlotType {
     public constructor() {
         super("AMAZON.LITERAL", []);
+    }
+}
+
+export class SearchQuerySlotType extends BuiltinSlotType {
+    public constructor() {
+        super("AMAZON.SearchQuery", []);
+    }
+
+    public match(value: string): SlotMatch {
+        return new SlotMatch(true, value);
     }
 }
