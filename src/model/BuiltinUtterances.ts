@@ -6,6 +6,20 @@ export class BuiltinUtterances {
     }
 }
 
+export const AudioPlayerIntents = [
+    "AMAZON.PauseIntent",
+    "AMAZON.ResumeIntent",
+    "AMAZON.CancelIntent",
+    "AMAZON.LoopOffIntent",
+    "AMAZON.LoopOnIntent",
+    "AMAZON.NextIntent",
+    "AMAZON.PreviousIntent",
+    "AMAZON.RepeatIntent",
+    "AMAZON.ShuffleOffIntent",
+    "AMAZON.ShuffleOnIntent",
+    "AMAZON.StartOverIntent",
+];
+
 const values = {
     "AMAZON.CancelIntent": ["cancel", "never mind"],
     "AMAZON.HelpIntent": ["help", "help me"],
