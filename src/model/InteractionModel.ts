@@ -2,7 +2,7 @@ import * as fs from "fs";
 import {IModel, SampleUtterances, SlotTypes} from "virtual-core";
 import {DialogIntent} from "../dialog/DialogIntent";
 import {BuiltinSlotTypes} from "./BuiltinSlotTypes";
-import {BuiltinUtterances} from "./BuiltinUtterances";
+import {AudioPlayerIntents, BuiltinUtterances} from "./BuiltinUtterances";
 import {IntentSchema} from "./IntentSchema";
 import {SampleUtterancesBuilder} from "./SampleUtterancesBuilder";
 import {SlotPrompt} from "./SlotPrompt";
@@ -110,10 +110,14 @@ export class InteractionModel implements IModel {
         }
 
         const builtinValues = BuiltinUtterances.values();
+
+        const isAudioPlayerSupported = this.audioPlayerSupported(intentSchema);
         // We add each phrase one-by-one
         // It is possible the built-ins have additional samples defined
         for (const key of Object.keys(builtinValues)) {
-            if (this.hasIntent(key)) {
+            const isSupportedIntent = this.isSupportedIntent(isAudioPlayerSupported, key);
+            if (isSupportedIntent) {
+                intentSchema.addIntent(key);
                 for (const phrase of builtinValues[key]) {
                     this.sampleUtterances.addSample(key, phrase);
                 }
@@ -121,6 +125,12 @@ export class InteractionModel implements IModel {
         }
 
         this.slotTypes.addTypes(BuiltinSlotTypes.values());
+    }
+    
+    public isSupportedIntent(isAudioPlayerSupported: boolean, intent: string): boolean {
+        const hasIntent = this.hasIntent(intent);
+        const isAudioPlayerIntent = isAudioPlayerSupported && AudioPlayerIntents.indexOf(intent) >= 0;
+        return hasIntent || isAudioPlayerIntent;
     }
 
     public hasIntent(intent: string): boolean {
@@ -154,5 +164,10 @@ export class InteractionModel implements IModel {
         }
 
         return undefined;
+    }
+
+    public audioPlayerSupported(intentSchema: IntentSchema) : boolean {
+        // Audio player must have pause and resume intents in the model
+        return intentSchema.hasIntent("AMAZON.PauseIntent") && intentSchema.hasIntent("AMAZON.ResumeIntent");
     }
 }
