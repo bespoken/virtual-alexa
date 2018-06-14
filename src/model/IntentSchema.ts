@@ -44,4 +44,13 @@ export class IntentSchema implements IIntentSchema {
     public hasIntent(intentString: string): boolean {
         return this.intent(intentString) !== null;
     }
+
+    public addIntent(intent: string): void {
+        const matchIntentByName = function (item: any) {
+            return item.intent === intent;
+        };
+        if (!this.schemaJSON.intents.some(matchIntentByName)){
+            this.schemaJSON.intents.push({intent});
+        }
+    }
 }
