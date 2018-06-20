@@ -53,7 +53,7 @@ export abstract class SkillInteractor {
         const launchRequesOrUtter = this.handleLaunchRequest(utteranceString);
         if (launchRequesOrUtter === true) {
             return this.launched();
-        } else if(launchRequesOrUtter){
+        } else if (launchRequesOrUtter) {
             utter = launchRequesOrUtter;
         }
 
