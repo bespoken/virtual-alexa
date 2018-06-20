@@ -567,6 +567,19 @@ describe("VirtualAlexa Tests Using JSON", function() {
             response  = await virtualAlexa.utter("play now") as SkillResponse;
             assert.equal(response.sessionAttributes.counter, 1);
         });
+
+        it("Utters phrases with launch words", async () => {
+            const virtualAlexa = VirtualAlexa.Builder()
+                .handler("test/resources/index.handler")
+                .sampleUtterances(sampleUtterances)
+                .intentSchema(intentSchema)
+                .create();
+
+            const reply = await virtualAlexa.filter((request) => {
+                assert.equal(request.request.type, "IntentRequest");
+                assert.equal(request.request.intent.name, "Play");
+            }).utter("tell skill to play next");
+        });
     });
 
     describe("#utterWithDeviceInfo", () => {
@@ -699,10 +712,34 @@ describe("VirtualAlexa Tests Using JSON", function() {
                 .create();
 
             const reply = await virtualAlexa.filter((request) => {
-               request.session.sessionId = "Filtered";
+                request.session.sessionId = "Filtered";
             }).launch();
 
             assert.equal(reply.sessionAttributes.sessionId, "Filtered");
+        });
+
+        it("Launches with list of special utters ", async () => {
+            const virtualAlexa = VirtualAlexa.Builder()
+                .handler("test/resources/index.handler")
+                .sampleUtterances(sampleUtterances)
+                .intentSchema(intentSchema)
+                .create();
+
+            await virtualAlexa.filter((request) => {
+                assert.equal(request.request.type, "LaunchRequest");
+            }).utter("open skill");
+
+            await virtualAlexa.filter((request) => {
+                assert.equal(request.request.type, "LaunchRequest");
+            }).utter("ask skill");
+
+            await virtualAlexa.filter((request) => {
+                assert.equal(request.request.type, "LaunchRequest");
+            }).utter("launch skill");
+
+            await virtualAlexa.filter((request) => {
+                assert.equal(request.request.type, "LaunchRequest");
+            }).utter("talk to skill");         
         });
 
     });

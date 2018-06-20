@@ -49,10 +49,18 @@ export abstract class SkillInteractor {
             return this.handleIntent(intent);
         }
 
-        const utterance = new Utterance(this.interactionModel(), utteranceString);
+        let utter = utteranceString;
+        const launchRequesOrUtter = this.handleLaunchRequest(utteranceString);
+        if (launchRequesOrUtter === true) {
+            return this.launched();
+        } else if(launchRequesOrUtter){
+            utter = launchRequesOrUtter;
+        }
+
+        const utterance = new Utterance(this.interactionModel(), utter);
         // If we don't match anything, we use the default utterance - simple algorithm for this
         if (!utterance.matched()) {
-            throw new Error("Unable to match utterance: " + utteranceString
+            throw new Error("Unable to match utterance: " + utter
                 + " to an intent. Try a different utterance, or explicitly set the intent");
         }
 
@@ -171,5 +179,17 @@ export abstract class SkillInteractor {
     // Helper method for getting interaction model
     private interactionModel(): InteractionModel {
         return this.context().interactionModel();
+    }
+
+    private handleLaunchRequest(utter: string): string|boolean {
+        const launchRequestRegex = /(ask|open|launch|talk to|tell).*/i;
+        if (launchRequestRegex.test(utter)) {
+            const launchAndUtterRegex = /^(?:ask|open|launch|talk to|tell) .* to (.*)/i;
+            const result = launchAndUtterRegex.exec(utter);
+            if (result && result.length) return result[1];
+            else return true;
+        }
+
+        return undefined;
     }
 }
