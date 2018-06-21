@@ -366,17 +366,14 @@ describe("VirtualAlexa Tests Using Unified Interaction Model", function() {
             assert.equal(request.request.intent.name, "CustomSlot");
             assert.equal(request.request.intent.slots.customSlot.value, "English Speakers");
             // Verify entity resolution
-            const resolution1 = request.request.intent.slots.customSlot.resolutions.resolutionsPerAuthority[0];
-            const resolution2 = request.request.intent.slots.customSlot.resolutions.resolutionsPerAuthority[1];
-            assert.equal(request.request.intent.slots.customSlot.resolutions.resolutionsPerAuthority.length, 2);
-            assert.equal(resolution1.status.code, "ER_SUCCESS_MATCH");
-            assert.equal(resolution1.values.length, 1);
-            assert.equal(resolution1.values[0].value.id, "US");
-            assert.equal(resolution1.values[0].value.name, "US");
-            assert.equal(resolution2.status.code, "ER_SUCCESS_MATCH");
-            assert.equal(resolution2.values.length, 1);
-            assert.equal(resolution2.values[0].value.id, "UK");
-            assert.equal(resolution2.values[0].value.name, "UK");
+            const resolution = request.request.intent.slots.customSlot.resolutions.resolutionsPerAuthority[0];
+            assert.equal(request.request.intent.slots.customSlot.resolutions.resolutionsPerAuthority.length, 1);
+            assert.equal(resolution.status.code, "ER_SUCCESS_MATCH");
+            assert.equal(resolution.values.length, 2);
+            assert.equal(resolution.values[0].value.id, "US");
+            assert.equal(resolution.values[0].value.name, "US");
+            assert.equal(resolution.values[1].value.id, "UK");
+            assert.equal(resolution.values[1].value.name, "UK");
         }).utter("custom English Speakers");
     });
 
