@@ -8,9 +8,12 @@ export class SlotValue {
                        public value: string,
                        public confirmationStatus?: ConfirmationStatus) {}
 
+    // TODO - probably do not need this block - look into taking this out
     public update(newSlot: SlotValue) {
         if (newSlot.value) {
             this.value = newSlot.value;
+            this.resolutions = newSlot.resolutions;
+            this.confirmationStatus = newSlot.confirmationStatus;
         }
     }
 
@@ -34,15 +37,30 @@ export class SlotValue {
                     const entityResolution = new EntityResolution(authority,
                         EntityResolutionStatus.ER_SUCCESS_MATCH,
                         new EntityResolutionValue(match.enumeratedValue.id, match.enumeratedValue.name.value));
-                    this.resolutions.resolutionsPerAuthority.push(entityResolution);
+                    this.addEntityResolution(entityResolution);
                 }
             }
 
             // Add a ER_SUCCESS_NO_MATCH record if there are no matches on custom values for the slot
             if (!customMatch) {
                 const entityResolution = new EntityResolution(authority, EntityResolutionStatus.ER_SUCCESS_NO_MATCH);
-                this.resolutions.resolutionsPerAuthority.push(entityResolution);
+                this.addEntityResolution(entityResolution);
             }
+        }
+    }
+
+    private addEntityResolution(entityResolution: EntityResolution) {
+        let alreadyResolved = false;
+        for (const existingResolution of this.resolutions.resolutionsPerAuthority) {
+            // If we already have a resolution for this lot, add this value to the list of values
+            if (existingResolution.authority === entityResolution.authority) {
+                existingResolution.values.push(entityResolution.values[0]);
+                alreadyResolved = true;
+            }
+        }
+
+        if (!alreadyResolved) {
+            this.resolutions.resolutionsPerAuthority.push(entityResolution);
         }
     }
 }

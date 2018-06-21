@@ -101,6 +101,7 @@ export class SkillContext {
     }
 
     public endSession(): void {
+        this.dialogManager().reset();
         this._session = undefined;
     }
 
