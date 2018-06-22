@@ -156,7 +156,6 @@ describe("DialogManager tests", function() {
         });
     });
 
-
     it("Interacts with dialog with explicit slot handling and confirmations", (done) => {
         const virtualAlexa = VirtualAlexa.Builder()
             .handler("test/resources/dialogModel/dialog-manual-index.handler")
@@ -212,6 +211,90 @@ describe("DialogManager tests", function() {
             return virtualAlexa.utter("no");
         }).then((skillResponse: SkillResponse) => {
             assert.include(skillResponse.prompt(), "Done with dialog. I won't do this.");
+            done();
+        });
+    });
+
+    it("Cannot match slot type", (done) => {
+        const model = {
+            dialog: {
+                intents: [
+                    {
+                        confirmationRequired: false,
+                        name: "MissingSlotTypeIntent",
+                        prompts: {},
+                        slots: [
+                            {
+                                confirmationRequired: false,
+                                elicitationRequired: true,
+                                name: "missingSlotTypeSlot",
+                                prompts: {},
+                                type: "missingSlotType",
+                            },
+                            {
+                                confirmationRequired: false,
+                                elicitationRequired: true,
+                                name: "goodSlot",
+                                prompts: {},
+                                type: "AMAZON.NUMBER",
+                            },
+                        ],
+                    },
+                ],
+            },
+            languageModel: {
+                intents: [
+                    {
+                        name: "MissingSlotTypeIntent",
+                        samples: [
+                            "missing {missingSlotTypeSlot}", "number {goodSlot}",
+                        ],
+                        slots: [
+                            {
+                                name: "missingSlotTypeSlot",
+                                type: "missingSlotType",
+                            },
+                            {
+                                name: "goodSlot",
+                                type: "AMAZON.NUMBER",
+                            },
+                        ],
+                    },
+                ],
+                invocationName: "pet match",
+                types: [] as any,
+            },
+            prompts: [] as any,
+        };
+
+        const handler = (event: any, context: any) => {
+            const response = {
+                directives: [
+                    {
+                        slotToElicit: "missingSlotTypeSlot",
+                        type: "Dialog.ElicitSlot",
+                        updatedIntent: {
+                            confirmationStatus: "NONE",
+                            name: "MissingSlotTypeIntent",
+                        },
+                    },
+                ],
+                outputSpeech: {
+                    ssml: "SSML",
+                },
+            };
+            context.succeed({ response: response });
+        };
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler(handler)
+            .interactionModel(model)
+            .create();
+
+        virtualAlexa.utter("number one").then((skillResponse: SkillResponse) => {
+            return virtualAlexa.utter("untyped slot value");
+        }).catch((e: Error) => {
+            assert.equal(e.message, "No match in interaction model for slot type: " +
+                "missingSlotType on slot: missingSlotTypeSlot");
             done();
         });
     });
