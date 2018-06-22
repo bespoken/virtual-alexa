@@ -27,15 +27,12 @@ export class DialogManager {
         // Look for a dialog directive - trigger dialog mode if so
         for (const directive of response.response.directives) {
             if (directive.type.startsWith("Dialog")) {
-                const intentName = directive.updatedIntent.name;
-                if (this._dialogIntent && this._dialogIntent.name !== intentName) {
-                    throw new Error("Switching dialogs before previous dialog complete. "
-                        + " New dialog: " + intentName + " Old Dialog: " + this._dialogIntent.name);
-                }
+                if (directive.updatedIntent) {
+                    this._dialogIntent = this.context.interactionModel().dialogIntent(directive.updatedIntent.name);
 
-                this._dialogIntent = this.context.interactionModel().dialogIntent(intentName);
-                if (!this._dialogIntent) {
-                    throw new Error("No match for dialog name: " + intentName);
+                    if (!this._dialogIntent) {
+                        throw new Error("No match for dialog name: " + directive.updatedIntent.name);
+                    }
                 }
 
                 if (directive.type === "Dialog.Delegate") {
@@ -57,7 +54,10 @@ export class DialogManager {
                     if (!this._confirmationStatus) {
                         this._confirmationStatus = ConfirmationStatus.NONE;
                     }
-                    this.updateSlotStates(directive.updatedIntent.slots);
+
+                    if (directive.updatedIntent) {
+                        this.updateSlotStates(directive.updatedIntent.slots);
+                    }
 
                     if (directive.type === "Dialog.ConfirmSlot") {
                         const slotToConfirm = directive.slotToConfirm;
@@ -119,6 +119,9 @@ export class DialogManager {
                 return this.dialogExited();
             }
         } else if (this.context.interactionModel().dialogIntent(intent.name)) {
+            // Set the dialog intent here - it may not be set by the skill in its response
+            this._dialogIntent = this.context.interactionModel().dialogIntent(intent.name);
+
             // If we have not started a dialog yet, if this intent ties off to a dialog, save the slot state
             this.updateSlotStates(intent.slots());
         }
@@ -135,6 +138,10 @@ export class DialogManager {
 
     public dialogState() {
         return this._dialogState;
+    }
+
+    public reset() {
+        this.dialogExited();
     }
 
     public slots() {

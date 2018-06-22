@@ -156,7 +156,8 @@ export abstract class SkillInteractor {
         if (dialogOutput.delegated()) {
             return Promise.resolve(dialogOutput.delegatedDialogResponse);
         } else if (dialogOutput.transformed()) {
-            intent = dialogOutput.transformedIntent;
+            // We only update the intent name - we leave the slots alone
+            intent.name = dialogOutput.transformedIntent.name;
         }
 
         // When the user utters an intent, we suspend for it
@@ -181,13 +182,16 @@ export abstract class SkillInteractor {
         return this.context().interactionModel();
     }
 
-    private handleLaunchRequest(utter: string): string|boolean {
+    private handleLaunchRequest(utter: string): string | boolean {
         const launchRequestRegex = /(ask|open|launch|talk to|tell).*/i;
         if (launchRequestRegex.test(utter)) {
             const launchAndUtterRegex = /^(?:ask|open|launch|talk to|tell) .* to (.*)/i;
             const result = launchAndUtterRegex.exec(utter);
-            if (result && result.length) return result[1];
-            else return true;
+            if (result && result.length) {
+                return result[1];
+            } else {
+                return true;
+            }
         }
 
         return undefined;
