@@ -93,6 +93,11 @@ export class DialogManager {
             // Loop through slot values looking for a match
             for (const slot of this._dialogIntent.slots) {
                 const slotType = this.context.interactionModel().slotTypes.slotType(slot.type);
+                if (!slotType) {
+                    throw new Error("No match in interaction model for slot type: "
+                        + slot.type + " on slot: " + slot.name);
+                }
+
                 const match = slotType.match(utterance);
                 if (match.matches) {
                     matched = true;
