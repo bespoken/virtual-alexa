@@ -51,8 +51,8 @@ export class VirtualAlexa {
      * Does not wait for a reply, as there should be none
      * @returns {Promise<any>}
      */
-    public endSession(): void {
-        this._interactor.sessionEnded(SessionEndedReason.USER_INITIATED, undefined);
+    public endSession(): Promise<IResponse> {
+        return this._interactor.sessionEnded(SessionEndedReason.USER_INITIATED, undefined);
     }
 
     /**
