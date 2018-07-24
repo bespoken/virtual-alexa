@@ -35,7 +35,7 @@ export abstract class SkillInteractor {
      * Hits the callback with the JSON payload from the response
      * @param utteranceString
      */
-    public spoken(utteranceString: string): Promise<IResponse> {
+    public async spoken(utteranceString: string): Promise<IResponse> {
         // Special handling for exit
         // Per this page:
         // https://developer.amazon.com/docs/custom-skills/request-types-reference.html#sessionendedrequest

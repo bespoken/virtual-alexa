@@ -523,15 +523,26 @@ describe("VirtualAlexa Tests Using JSON", function() {
             }).utter("Slot my slot");
         });
 
-        it("Utters slotted phrase with no space", (done) => {
+        it("Utters slotted phrase with no space", async () => {
+            let exceptionCatched = false;
             // Make sure our regular expression expects a space for between sample phrase and slot
             try {
-                virtualAlexa.utter("Slotmy slot");
+                await virtualAlexa.utter("Slotmy slot");
             } catch (e) {
+                exceptionCatched = true;
                 assert.equal(e.message, "Unable to match utterance: Slotmy slot to an intent. " +
                     "Try a different utterance, or explicitly set the intent");
-                done();
-            }
+                
+            }   
+            assert.equal(exceptionCatched, true);
+        });
+
+        it("Utters slotted phrase with no space, promise catch", (done) => {
+            virtualAlexa.utter("Slotmy slot").catch(error => {
+                assert.equal(error.message, "Unable to match utterance: Slotmy slot to an intent. " +
+                "Try a different utterance, or explicitly set the intent");
+                done()
+            });
         });
 
         it("Utters builtin intent", async () => {
@@ -546,14 +557,16 @@ describe("VirtualAlexa Tests Using JSON", function() {
             }).utter("cancel it now");
         });
 
-        it("Utters builtin intent not in schema", (done) => {
+        it("Utters builtin intent not in schema", async () => {
+            let exceptionCatched = false;
             try {
-                virtualAlexa.utter("page up");
+                await virtualAlexa.utter("page up");
             } catch (e) {
+                exceptionCatched = true;
                 assert.equal(e.message, "Unable to match utterance: page up to an intent. " +
                     "Try a different utterance, or explicitly set the intent");
-                done();
             }
+            assert.equal(exceptionCatched, true);
         });
 
         it("Utters phrases and maintains session", async () => {
@@ -658,6 +671,13 @@ describe("VirtualAlexa Tests Using JSON", function() {
             } catch (e) {
                 assert.equal(e.message, "Trying to add slot to intent that does not have any slots defined");
             }
+        });
+
+        it("Intends with slot value but no slots on intent, promise catch", (done) => {
+            virtualAlexa.intend("Play", {SlotName: "Value"}).catch(e => {
+                assert.equal(e.message, "Trying to add slot to intent that does not have any slots defined");
+                done();
+            });
         });
 
         it("Intends with slot value but slot does not exist", async () => {
