@@ -34,7 +34,7 @@ const virtualAlexa = VirtualAlexa.Builder()
     .interactionModelFile("models/en-US.json")
     .create();
 
-virtualAlexa.dynamo().mock();
+virtualAlexa.dynamoDB().mock();
 ```
 
 The Dynamo DB mock will be called automatically for get and put requests to Dynamo, without hitting the service itself.
