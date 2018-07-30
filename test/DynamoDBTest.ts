@@ -115,4 +115,47 @@ describe("Test dynamo DB mocks", function() {
             });
         });
     });
+
+    it("create a table in mock dynamo, not changing environment variables", (done) => {
+        process.env.AWS_REGION = "us-west-1";
+        const mockDynamo = new db.DynamoDB();
+        mockDynamo.mock();
+
+        const dynamodb = new AWS.DynamoDB();
+        var createParams = {
+            AttributeDefinitions: [
+                {
+                    AttributeName: "Artist", 
+                    AttributeType: "S"
+                }, 
+                {
+                    AttributeName: "SongTitle", 
+                    AttributeType: "S"
+                }
+            ], 
+            KeySchema: [
+                {
+                    AttributeName: "Artist", 
+                    KeyType: "HASH"
+                }, 
+                {
+                    AttributeName: "SongTitle", 
+                    KeyType: "RANGE"
+                }
+            ], 
+            ProvisionedThroughput: {
+                ReadCapacityUnits: 5, 
+                WriteCapacityUnits: 5
+            }, 
+            TableName: "Music"
+        };
+
+        assert.equal(process.env.AWS_REGION, "us-west-1");
+        dynamodb.createTable(createParams, (error: any, data: any) => {
+            assert.isNull(error);
+            assert.isDefined(data);
+            assert.equal(data.TableDescription.TableStatus, "CREATING");
+            done();
+        });
+    });
 });
