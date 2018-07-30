@@ -1,12 +1,13 @@
 const nock = require("nock");
 const AWS = require("aws-sdk");
-import {SkillContext} from "../core/SkillContext";
 
 export class DynamoDB {
     /** @internal */
     private static putScope: any; // We keep the nock scope as a singleton - only one can be active at a time
     /** @internal */
     private static getScope: any; // We keep the nock scope as a singleton - only one can be active at a time
+    /** @internal */
+    private static createScope: any; // We keep the nock scope as a singleton - only one can be active at a time
 
     private records: any[] = [];
     private region = "us-east-1";
@@ -19,6 +20,7 @@ export class DynamoDB {
 
         this.mockPut();
         this.mockGet();
+        this.mockCreate();
     }
 
     public reset() {
@@ -29,6 +31,10 @@ export class DynamoDB {
 
         if (DynamoDB.putScope) {
             DynamoDB.putScope.persist(false);
+        }
+
+        if (DynamoDB.createScope) {
+            DynamoDB.createScope.persist(false);
         }
     }
 
@@ -114,6 +120,29 @@ export class DynamoDB {
                     record = {};
                 }
                 return record;
+            });
+    }
+
+    private mockCreate() {
+        // Built this based on this info:
+        //  https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_CreateTable.html
+        // Basically, create table calls return with the table info plus a status of CREATING
+        DynamoDB.createScope = nock(this.baseURL())
+            .matchHeader("x-amz-target", (value: string) => {
+                return value.endsWith("CreateTable");
+            })
+            .persist()
+            .post("/", (body: any) => {
+                return true;
+            })
+            .query(true)
+            .reply(200, (uri: string, requestBody: any) => {
+                const bodyJSON = JSON.parse(requestBody);
+                const response = {
+                    TableDescription: bodyJSON,
+                };
+                response.TableDescription.TableStatus =  "CREATING";
+                return response;
             });
     }
 
