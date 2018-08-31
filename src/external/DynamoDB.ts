@@ -1,5 +1,5 @@
-const nock = require("nock");
-const AWS = require("aws-sdk");
+import * as AWS from "aws-sdk";
+import * as nock from "nock";
 
 export class DynamoDB {
     /** @internal */
