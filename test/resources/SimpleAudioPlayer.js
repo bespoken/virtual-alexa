@@ -13,7 +13,7 @@ var podcastFeed = [
 var started = false;
 var stopped = false;
 // Entry-point for the Lambda
-exports.handler = function (event, context) {
+exports.handler = function(event, context) {
     var player = new SimplePlayer(event, context);
     player.handle();
 };
@@ -215,7 +215,7 @@ SimplePlayer.prototype.loadLastPlayed = function (userId) {
     return lastPlayed;
 };
 
-var indexFromEvent = function (event) {
+var indexFromEvent = function(event) {
     var index = 0;
     if (event) {
         // Turn it into an index - we will add or subtract if the user said next or previous
