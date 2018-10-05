@@ -13,7 +13,7 @@ var podcastFeed = [
 var started = false;
 var stopped = false;
 // Entry-point for the Lambda
-exports.handler = function(event, context) {
+exports.handler = function (event, context) {
     var player = new SimplePlayer(event, context);
     player.handle();
 };
@@ -44,10 +44,10 @@ SimplePlayer.prototype.handle = function () {
 
         if (intent.name === "Play") {
             this.play(podcastFeed[podcastIndex], 0, "REPLACE_ALL", podcastIndex);
-
-        } if (intent.name === "Ignore") {
+        } else if (intent.name === "PlayUndefined") {
+            this.play(null, 0, "REPLACE_ALL", 0);
+        } else if (intent.name === "Ignore") {
             this.say("Ignoring", "You can say Play");
-
         } else if (intent.name === "AMAZON.NextIntent") {
             if (!started) {
                 throw new Error("This should not happen - started flag not set");
@@ -215,7 +215,7 @@ SimplePlayer.prototype.loadLastPlayed = function (userId) {
     return lastPlayed;
 };
 
-var indexFromEvent = function(event) {
+var indexFromEvent = function (event) {
     var index = 0;
     if (event) {
         // Turn it into an index - we will add or subtract if the user said next or previous
