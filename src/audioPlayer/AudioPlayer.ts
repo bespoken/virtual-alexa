@@ -203,7 +203,12 @@ export class AudioPlayer {
 
         this._playing = this.dequeue();
         // If the URL for AudioItem is http, we throw an error
-        if (this._playing.stream.url.startsWith("http:")) {
+        if (!this._playing.stream.url) {
+            return this._interactor.sessionEnded(SessionEndedReason.ERROR, {
+                message: "The URL specified in the Play directive must be defined and a valid HTTPS url",
+                type: "INVALID_RESPONSE",
+            });  
+        } else if (this._playing.stream.url.startsWith("http:")) {
             return this._interactor.sessionEnded(SessionEndedReason.ERROR, {
                 message: "The URL specified in the Play directive must be HTTPS",
                 type: "INVALID_RESPONSE",

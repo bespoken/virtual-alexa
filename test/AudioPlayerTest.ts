@@ -13,6 +13,10 @@ const interactionModel = {
             samples: ["play", "play next", "play now"],
         },
         {
+            name: "PlayUndefined",
+            samples: ["play undefined"],
+        },
+        {
             name: "AMAZON.NextIntent",
         },
         {
@@ -51,6 +55,30 @@ describe("AudioPlayer launches and plays a track", function() {
             console.log(e);
         }
 
+    });
+
+    it("Should not play an undefined track", async () => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test/resources/SimpleAudioPlayer.handler")
+            .interactionModel(interactionModel)
+            .create();
+
+        try {
+            // We capture the requests being sent to virtual alexa
+            // Because the AudioPlayer does some stuff internally automatically, want to ensure it is working properly
+            const requests: any[] = [];
+            virtualAlexa.filter((json) => {
+                requests.push(json.request);
+            });
+
+            let result = await virtualAlexa.launch() as SkillResponse;
+            assert.include(result.response.outputSpeech.ssml, "Welcome to the Simple Audio Player");
+
+            result = await virtualAlexa.utter("play undefined") as SkillResponse;
+        } catch (e) {
+            assert.equal(e.message, "The URL specified in the Play directive must be defined and a valid HTTPS url");
+            assert.equal(e.type, "INVALID_RESPONSE");
+        }
     });
 
     it("Plays a track, next then previous", async () => {

@@ -44,10 +44,10 @@ SimplePlayer.prototype.handle = function () {
 
         if (intent.name === "Play") {
             this.play(podcastFeed[podcastIndex], 0, "REPLACE_ALL", podcastIndex);
-
-        } if (intent.name === "Ignore") {
+        } else if (intent.name === "PlayUndefined") {
+            this.play(null, 0, "REPLACE_ALL", 0);
+        } else if (intent.name === "Ignore") {
             this.say("Ignoring", "You can say Play");
-
         } else if (intent.name === "AMAZON.NextIntent") {
             if (!started) {
                 throw new Error("This should not happen - started flag not set");
