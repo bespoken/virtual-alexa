@@ -1,12 +1,14 @@
 import * as _ from "lodash";
 import {IResponse} from "./IResponse";
 
+
 /**
  * Wrapper object for the Alexa Response.
  *
  * Provides a number of convenience methods for accessing it.
  */
 export class SkillResponse implements IResponse {
+    public responseType : IResponse["responseType"] = "SkillResponse";
     public response: any;
     public sessionAttributes?: any;
     public version: string;
@@ -140,5 +142,20 @@ export class SkillResponse implements IResponse {
             return _.get(displayTemplate, path);
         }
         return undefined;
+    }
+}
+
+export const isSkillResponse = function(testObj : any) : testObj is SkillResponse{
+    // make sure that it is not falsy
+    if(!testObj){
+        return false;
+    }
+    // make sure that is an object
+    if(typeof(testObj) === "object"){
+        // now let's treat it as a Record/Dictionary because typescript wants to know that it has properties instead of being an empty object
+        const testAsRecord: Record<string|number, any> = testObj;
+        return (testAsRecord.responseType && testAsRecord.responseType === "SkillResponse")
+    } else {
+        return false;
     }
 }

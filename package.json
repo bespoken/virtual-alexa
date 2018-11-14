@@ -40,6 +40,7 @@
     "pretest": "npm run tsc",
     "preversion": "npm test",
     "test": "nyc mocha lib/**/*Test.js",
+    "test:debug": "npm run test -- --inspect-brk",
     "tsc": "tsc",
     "typings": "typings install"
   },

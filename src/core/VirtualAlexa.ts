@@ -11,6 +11,7 @@ import {IResponse} from "./IResponse";
 import {SkillContext} from "./SkillContext";
 import {SessionEndedReason} from "./SkillRequest";
 import {SkillResponse} from "./SkillResponse";
+import { DelegatedDialogResponse } from "../dialog/DelegatedDialogResponse";
 
 export class VirtualAlexa {
     public static Builder(): VirtualAlexaBuilder {
@@ -71,7 +72,7 @@ export class VirtualAlexa {
      * @param {{[p: string]: string}} slots
      * @returns {Promise<SkillResponse>}
      */
-    public intend(intentName: string, slots?: {[id: string]: string}): Promise<IResponse> {
+    public intend(intentName: string, slots?: {[id: string]: string}): Promise<SkillResponse|DelegatedDialogResponse> {
         return this._interactor.intended(intentName, slots);
     }
 
@@ -80,7 +81,7 @@ export class VirtualAlexa {
      * @param {string} token
      * @returns {Promise<SkillResponse>}
      */
-    public selectElement(token: any): Promise<IResponse> {
+    public selectElement(token: any): Promise<SkillResponse|DelegatedDialogResponse> {
         return this._interactor.elementSelected(token);
     }
 
@@ -102,7 +103,7 @@ export class VirtualAlexa {
      * @param {string} utterance
      * @returns {Promise<SkillResponse>}
      */
-    public utter(utterance: string): Promise<IResponse> {
+    public utter(utterance: string): Promise<SkillResponse|DelegatedDialogResponse> {
         return this._interactor.spoken(utterance);
     }
 }

@@ -1,5 +1,6 @@
 import {assert} from "chai";
-import {SkillResponse} from "../src/core/SkillResponse";
+import * as util from "util";
+import {SkillResponse, isSkillResponse} from "../src/core/SkillResponse";
 import {VirtualAlexa} from "../src/core/VirtualAlexa";
 
 describe("VirtualAlexa Tests Using Files", function() {
@@ -489,20 +490,24 @@ describe("VirtualAlexa Tests Using JSON", function() {
                 assert.isDefined(request.context.System.user.userId);
                 assert.isUndefined(request.context.System.user.permissions);
                 assert.equal(request.request.intent.name, "Play");
-            }).utter("play now") as SkillResponse;
+            }).utter("play now");
 
             // Test the response object
-            assert.equal(response.prompt(), "SSML");
-            assert.equal(response.reprompt(), "TEXT");
-            assert.equal(response.card().content, "content");
-            assert.equal(response.cardImage().smallImageUrl, "smallImageUrl");
-            assert.equal(response.cardContent(), "content");
-            assert.equal(response.cardTitle(), "title");
-            assert.equal(response.cardLargeImage(), "largeImageUrl");
-            assert.equal(response.cardSmallImage(), "smallImageUrl");
-            assert.equal(response.attr("counter"), "0");
-            assert.equal(response.attrs("counter", "key1").counter, "0");
-            assert.isUndefined(response.attrs("counter", "key1").key1);
+            if (isSkillResponse(response)) {
+                assert.equal(response.prompt(), "SSML");
+                assert.equal(response.reprompt(), "TEXT");
+                assert.equal(response.card().content, "content");
+                assert.equal(response.cardImage().smallImageUrl, "smallImageUrl");
+                assert.equal(response.cardContent(), "content");
+                assert.equal(response.cardTitle(), "title");
+                assert.equal(response.cardLargeImage(), "largeImageUrl");
+                assert.equal(response.cardSmallImage(), "smallImageUrl");
+                assert.equal(response.attr("counter"), "0");
+                assert.equal(response.attrs("counter", "key1").counter, "0");
+                assert.isUndefined(response.attrs("counter", "key1").key1);
+            } else {
+                assert.fail(null, null, "Expected a SkillResponse but did not get one");
+            }
         });
 
         it("Utters simple phrase with different case", async () => {
@@ -532,8 +537,8 @@ describe("VirtualAlexa Tests Using JSON", function() {
                 exceptionCatched = true;
                 assert.equal(e.message, "Unable to match utterance: Slotmy slot to an intent. " +
                     "Try a different utterance, or explicitly set the intent");
-                
-            }   
+
+            }
             assert.equal(exceptionCatched, true);
         });
 
@@ -572,10 +577,19 @@ describe("VirtualAlexa Tests Using JSON", function() {
         it("Utters phrases and maintains session", async () => {
             // Calls our dummy skill twice
             // Inside the skill, it increments a counter by 1 each time
-            let response = await virtualAlexa.utter("play now") as SkillResponse;
-            assert.equal(response.sessionAttributes.counter, 0);
-            response  = await virtualAlexa.utter("play now") as SkillResponse;
-            assert.equal(response.sessionAttributes.counter, 1);
+            const firstPlayNowResult = await virtualAlexa.utter("play now");
+            if (isSkillResponse(firstPlayNowResult)) {
+                assert.equal(firstPlayNowResult.sessionAttributes.counter, 0);
+            } else {
+                assert.fail(null, null, "Expected a SkillResponse but did not get one");
+            }
+
+            const secondPlayNowResult = await virtualAlexa.utter("play now");
+            if (isSkillResponse(secondPlayNowResult)) {
+                assert.equal(secondPlayNowResult.sessionAttributes.counter, 1);
+            } else {
+                assert.fail(null, null, "Expected a SkillResponse but did not get one");
+            }
         });
 
         it("Utters phrases with launch words", async () => {
@@ -652,9 +666,13 @@ describe("VirtualAlexa Tests Using JSON", function() {
         it("Intends with filter", async () => {
             const reply = await virtualAlexa.filter((request) => {
                 request.session.sessionId = "Filtered";
-            }).intend("Play") as SkillResponse;
+            }).intend("Play");
 
-            assert.equal(reply.sessionAttributes.sessionId, "Filtered");
+            if (isSkillResponse(reply)) {
+                assert.equal(reply.sessionAttributes.sessionId, "Filtered");
+            } else {
+                assert.fail(null, null, "Expected a SkillResponse but did not get one");
+            }
         });
 
         it("Intends with slot", async () => {
@@ -756,7 +774,7 @@ describe("VirtualAlexa Tests Using JSON", function() {
 
             await virtualAlexa.filter((request) => {
                 assert.equal(request.request.type, "LaunchRequest");
-            }).utter("talk to skill");         
+            }).utter("talk to skill");
         });
 
     });
@@ -838,13 +856,17 @@ describe("Echo Show Tests", () => {
         virtualAlexa.context().device().audioPlayerSupported(false);
         virtualAlexa.context().device().displaySupported(true);
 
-        const response = await virtualAlexa.utter("play now") as SkillResponse;
-        assert.isDefined(response.display());
-        assert.equal(response.primaryText(), "PrimaryText");
-        assert.equal(response.primaryText("ListToken1"), "ListItem1PrimaryText");
-        assert.isUndefined(response.secondaryText("ListToken1"));
-        assert.equal(response.secondaryText("ListToken2"), "ListItem2SecondaryText");
-        assert.equal(response.tertiaryText("ListToken2"), "ListItem2TertiaryText");
+        const response = await virtualAlexa.utter("play now");
+        if (isSkillResponse(response)) {
+            assert.isDefined(response.display());
+            assert.equal(response.primaryText(), "PrimaryText");
+            assert.equal(response.primaryText("ListToken1"), "ListItem1PrimaryText");
+            assert.isUndefined(response.secondaryText("ListToken1"));
+            assert.equal(response.secondaryText("ListToken2"), "ListItem2SecondaryText");
+            assert.equal(response.tertiaryText("ListToken2"), "ListItem2TertiaryText");
+        } else {
+            assert.fail(null, null, `Expected a SkillResponse but instead got: ${util.inspect(response)}`);
+        }
     });
 
     it("Selects an element", async () => {

@@ -35,7 +35,7 @@ export abstract class SkillInteractor {
      * Hits the callback with the JSON payload from the response
      * @param utteranceString
      */
-    public async spoken(utteranceString: string): Promise<IResponse> {
+    public async spoken(utteranceString: string): Promise<SkillResponse|DelegatedDialogResponse> {
         // Special handling for exit
         // Per this page:
         // https://developer.amazon.com/docs/custom-skills/request-types-reference.html#sessionendedrequest
@@ -71,7 +71,7 @@ export abstract class SkillInteractor {
      * Passes in an Display.ElementSelected request with the specified token
      * @param token
      */
-    public async elementSelected(token: any): Promise<IResponse> {
+    public async elementSelected(token: any): Promise<SkillResponse|DelegatedDialogResponse> {
         const serviceRequest = new SkillRequest(this.skillContext);
         serviceRequest.elementSelectedRequest(token);
         return this.callSkill(serviceRequest);
@@ -84,7 +84,7 @@ export abstract class SkillInteractor {
     }
 
     public async sessionEnded(sessionEndedReason: SessionEndedReason,
-                        errorData?: any): Promise<IResponse> {
+                        errorData?: any): Promise<SkillResponse|DelegatedDialogResponse> {
         if (sessionEndedReason === SessionEndedReason.ERROR) {
             console.error("SessionEndedRequest:\n" + JSON.stringify(errorData, null, 2));
         }
@@ -102,7 +102,7 @@ export abstract class SkillInteractor {
      * @param intentName
      * @param slots
      */
-    public async intended(intentName: string, slots?: {[id: string]: string}): Promise<IResponse> {
+    public async intended(intentName: string, slots?: {[id: string]: string}): Promise<SkillResponse|DelegatedDialogResponse> {
         return this.handleIntent(new UserIntent(this.context(), intentName, slots));
     }
 
@@ -110,7 +110,7 @@ export abstract class SkillInteractor {
         this.requestFilter = requestFilter;
     }
 
-    public async callSkill(serviceRequest: SkillRequest): Promise<IResponse> {
+    public async callSkill(serviceRequest: SkillRequest): Promise<SkillResponse|DelegatedDialogResponse> {
         // Call this at the last possible minute, because of state issues
         //  What can happen is this gets queued, and then another request ends the session
         //  So we want to wait until just before we send this to create the session
@@ -150,7 +150,7 @@ export abstract class SkillInteractor {
 
     protected abstract invoke(requestJSON: any): Promise<any>;
 
-    private async handleIntent(intent: UserIntent): Promise<IResponse> {
+    private async handleIntent(intent: UserIntent): Promise<SkillResponse|DelegatedDialogResponse> {
         // First give the dialog manager a shot at it
         const dialogOutput = this.context().dialogManager().handleIntent(intent);
         if (dialogOutput.delegated()) {

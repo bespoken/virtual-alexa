@@ -1,5 +1,5 @@
 import {assert} from "chai";
-import {SkillResponse} from "../src/core/SkillResponse";
+import {isSkillResponse, SkillResponse} from "../src/core/SkillResponse";
 import {VirtualAlexa} from "../src/core/VirtualAlexa";
 
 const interactionModel = {
@@ -48,9 +48,13 @@ describe("AudioPlayer launches and plays a track", function() {
             });
 
             await virtualAlexa.launch();
-            const reply = await virtualAlexa.utter("play") as SkillResponse;
-            assert.include(reply.response.directives[0].audioItem.stream.url, "episode-013");
-            assert.isTrue(virtualAlexa.audioPlayer().isPlaying());
+            const reply = await virtualAlexa.utter("play");
+            if (isSkillResponse(reply)) {
+                assert.include(reply.response.directives[0].audioItem.stream.url, "episode-013");
+                assert.isTrue(virtualAlexa.audioPlayer().isPlaying());
+            } else {
+                assert.fail(null, null, "Expected a SkillResponse but did not get one")
+            }
         } catch (e) {
             console.log(e);
         }
@@ -71,10 +75,10 @@ describe("AudioPlayer launches and plays a track", function() {
                 requests.push(json.request);
             });
 
-            let result = await virtualAlexa.launch() as SkillResponse;
-            assert.include(result.response.outputSpeech.ssml, "Welcome to the Simple Audio Player");
+            const launchResult = await virtualAlexa.launch();
+            assert.include(launchResult.response.outputSpeech.ssml, "Welcome to the Simple Audio Player");
 
-            result = await virtualAlexa.utter("play undefined") as SkillResponse;
+            const utterResult = await virtualAlexa.utter("play undefined");
         } catch (e) {
             assert.equal(e.message, "The URL specified in the Play directive must be defined and a valid HTTPS url");
             assert.equal(e.type, "INVALID_RESPONSE");
@@ -95,24 +99,36 @@ describe("AudioPlayer launches and plays a track", function() {
                 requests.push(json.request);
             });
 
-            let result = await virtualAlexa.launch() as SkillResponse;
-            assert.include(result.response.outputSpeech.ssml, "Welcome to the Simple Audio Player");
+            const launchResult = await virtualAlexa.launch();
+            assert.include(launchResult.response.outputSpeech.ssml, "Welcome to the Simple Audio Player");
 
-            result = await virtualAlexa.utter("play") as SkillResponse;
-            // Make sure playback started has been sent before the response is received
-            assert.equal(requests.length, 3);
-            assert.include(result.response.directives[0].audioItem.stream.url, "episode-013");
+            const utterPlayResult = await virtualAlexa.utter("play");
+            if (isSkillResponse(utterPlayResult)) {
+                // Make sure playback started has been sent before the response is received
+                assert.equal(requests.length, 3);
+                assert.include(utterPlayResult.response.directives[0].audioItem.stream.url, "episode-013");
+            } else {
+                assert.fail(null, null, "Expected a SkillResponse but did not get one");
+            }
 
-            result = await virtualAlexa.utter("next") as SkillResponse;
-            assert.include(result.response.directives[0].audioItem.stream.url, "episode-012");
-            // Make sure another playback started has been sent before the response is received
-            assert.equal(requests[5].type, "AudioPlayer.PlaybackStarted");
+            const utterNextResult = await virtualAlexa.utter("next");
+            if (isSkillResponse(utterNextResult)) {
+                assert.include(utterNextResult.response.directives[0].audioItem.stream.url, "episode-012");
+                // Make sure another playback started has been sent before the response is received
+                assert.equal(requests[5].type, "AudioPlayer.PlaybackStarted");
+            } else {
+                assert.fail(null, null, "Expected a SkillResponse but did not get one");
+            }
 
-            result = await virtualAlexa.utter("previous") as SkillResponse;
-            assert.include(result.response.directives[0].audioItem.stream.url, "episode-013");
+            const utterPreviousResult = await virtualAlexa.utter("previous");
+            if (isSkillResponse(utterPreviousResult)) {
+                assert.include(utterPreviousResult.response.directives[0].audioItem.stream.url, "episode-013");
+            } else {
+                assert.fail(null, null, "Expected a SkillResponse but did not get one");
+            }
 
             // Make sure that audio stops and starts on an "ignored" intent
-            result = await virtualAlexa.utter("ignore") as SkillResponse;
+            const utterIgnoreResult = await virtualAlexa.utter("ignore");
 
             assert.equal(requests[0].type, "LaunchRequest");
             assert.equal(requests[1].type, "IntentRequest");
