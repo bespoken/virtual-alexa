@@ -7,9 +7,9 @@ import {SkillInteractor} from "../impl/SkillInteractor";
 import {IntentSchema} from "../model/IntentSchema";
 import {InteractionModel} from "../model/InteractionModel";
 import {SampleUtterancesBuilder} from "../model/SampleUtterancesBuilder";
-import {IResponse} from "./IResponse";
 import {SkillContext} from "./SkillContext";
 import {SessionEndedReason} from "./SkillRequest";
+import {SkillRequest} from "./SkillRequest";
 import {SkillResponse} from "./SkillResponse";
 
 export class VirtualAlexa {
@@ -36,6 +36,11 @@ export class VirtualAlexa {
     // Provides access to the AudioPlayer object, for sending audio requests
     public audioPlayer(): AudioPlayer {
         return this._interactor.context().audioPlayer();
+    }
+
+    // Invoke virtual alexa with constructed skill request
+    public call(skillRequest: SkillRequest): Promise<SkillResponse> {
+        return this._interactor.callSkill(skillRequest);
     }
 
     public context(): SkillContext {
@@ -71,7 +76,7 @@ export class VirtualAlexa {
      * @param {{[p: string]: string}} slots
      * @returns {Promise<SkillResponse>}
      */
-    public intend(intentName: string, slots?: {[id: string]: string}): Promise<IResponse> {
+    public intend(intentName: string, slots?: {[id: string]: string}): Promise<SkillResponse> {
         return this._interactor.intended(intentName, slots);
     }
 
@@ -80,7 +85,7 @@ export class VirtualAlexa {
      * @param {string} token
      * @returns {Promise<SkillResponse>}
      */
-    public selectElement(token: any): Promise<IResponse> {
+    public selectElement(token: any): Promise<SkillResponse> {
         return this._interactor.elementSelected(token);
     }
 
@@ -102,7 +107,7 @@ export class VirtualAlexa {
      * @param {string} utterance
      * @returns {Promise<SkillResponse>}
      */
-    public utter(utterance: string): Promise<IResponse> {
+    public utter(utterance: string): Promise<SkillResponse> {
         return this._interactor.spoken(utterance);
     }
 }

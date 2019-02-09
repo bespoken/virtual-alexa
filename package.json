@@ -13,13 +13,11 @@
     "lib/src/audioPlayer/AudioItem.d.ts",
     "lib/src/audioPlayer/AudioPlayer.d.ts",
     "lib/src/core/Device.d.ts",
-    "lib/src/core/IResponse.d.ts",
     "lib/src/core/SkillContext.d.ts",
     "lib/src/core/SkillResponse.d.ts",
     "lib/src/core/SkillSession.d.ts",
     "lib/src/core/User.d.ts",
     "lib/src/core/VirtualAlexa.d.ts",
-    "lib/src/dialog/DelegatedDialogResponse.d.ts",
     "lib/src/external/AddressAPI.d.ts",
     "lib/src/external/DynamoDB.d.ts",
     "lib/src/Index.d.ts"
@@ -39,7 +37,7 @@
     "posttest": "nyc report --reporter=json --reporter=html && codecov -f coverage/*.json",
     "pretest": "npm run tsc",
     "preversion": "npm test",
-    "test": "nyc mocha lib/**/*Test.js",
+    "test": "nyc mocha lib/**/DialogManagerTest.js",
     "tsc": "tsc",
     "typings": "typings install"
   },

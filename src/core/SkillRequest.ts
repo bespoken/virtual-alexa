@@ -1,8 +1,9 @@
 import * as uuid from "uuid";
 import {AudioPlayerActivity} from "../audioPlayer/AudioPlayer";
 import {SlotValue} from "../impl/SlotValue";
-import {UserIntent} from "../impl/UserIntent";
 import {SkillContext} from "./SkillContext";
+import { ConfirmationStatus, DialogState } from "../dialog/DialogManager";
+import { request } from "https";
 
 export class RequestType {
     public static DISPLAY_ELEMENT_SELECTED_REQUEST = "Display.ElementSelected";
@@ -37,17 +38,46 @@ export class SkillRequest {
         return "amzn1.echo-external.request." + uuid.v4();
     }
 
-    private requestJSON: any = null;
-    private requestType: string;
-    public constructor(private context: SkillContext) {}
+    private _json: any;
+    public constructor(private context: SkillContext) {
+        this._json = this.baseRequest();
+        // Set dialog stuff in payload, if we are in that mode
+        if (this.context.dialogManager().isDialog()) {
+            this.dialogState(this.context.dialogManager().dialogState(this.context.dialogManager().dialogState()));
+        }
+    }
 
     /**
-     * Generates an intentName request with the specified IntentName
+     * Creates an AudioPlayer request type 
+     * @param requestType One the of the AudioPlayer RequestTypes
+     * @param token 
+     * @param offsetInMilliseconds 
+     */
+    public audioPlayer(requestType: string, token: string, offsetInMilliseconds: number): SkillRequest {
+        this.requestType(requestType);
+        this._json.request.token = token;
+        this._json.request.offsetInMilliseconds = offsetInMilliseconds;
+        return this;
+    }
+
+    public dialogState(dialogState: DialogState): SkillRequest {
+        this._json.request.dialogState = this.context.dialogManager().dialogState();
+        return this;
+    }
+
+    public elementSelected(token: any): SkillRequest {
+        this.requestType(RequestType.DISPLAY_ELEMENT_SELECTED_REQUEST);
+        this._json.request.token = token;
+        return this;
+    }
+    
+    /**
+     * Sets the intent for the request
      * @param intentName
      * @returns {SkillRequest}
      */
-    public intentRequest(intent: UserIntent): SkillRequest {
-        const intentName = intent.name;
+    public intent(intentName: string, confirmationStatus: ConfirmationStatus = ConfirmationStatus.NONE): SkillRequest {
+        this.requestType(RequestType.INTENT_REQUEST);
         const isBuiltin = intentName.startsWith("AMAZON");
         if (!isBuiltin) {
             if (!this.context.interactionModel().hasIntent(intentName)) {
@@ -55,75 +85,74 @@ export class SkillRequest {
             }
         }
 
-        this.requestJSON = this.baseRequest(RequestType.INTENT_REQUEST);
-        this.requestJSON.request.intent = {
+        this._json.request.intent = {
+            confirmationStatus: confirmationStatus,
             name: intentName,
+            slots: {},
         };
 
-        const slots = intent.slots();
-        if (Object.keys(slots).length > 0) {
-            this.requestJSON.request.intent.slots = slots;
+        // Set default slot values - all slots must have a value for an intent
+        const intent = this.context.interactionModel().intentSchema.intent(intentName);
+        const intentSlots = intent.slots;
+        
+        if (intentSlots) {
+            for (const intentSlot of intentSlots) {
+                this._json.request.intent.slots[intentSlot.name] = {
+                    name: intentSlot.name,
+                    confirmationStatus: ConfirmationStatus.NONE
+                }
+            }
         }
 
-        // Add in the dialog info
-        if (this.context.dialogManager().isDialog()) {
-            this.requestJSON.request.dialogState = this.context.dialogManager().dialogState();
-            this.requestJSON.request.intent.confirmationStatus = this.context.dialogManager().confirmationStatus();
-            // Since the dialog manager has an incomplete slot view, we merge it in with the complete list
-            this.mergeSlots(this.requestJSON.request.intent.slots, this.context.dialogManager().slots());
+        if (this.context.interactionModel().dialogIntent(intentName)) {
+            //Update the internal state of the dialog manager based on this request
+            this.context.dialogManager().handleRequest(this);
+
+            // Our slots can just be taken from the dialog manager now
+            //  It has the complete current state of the slot values for the dialog intent
+            this.json().request.intent.slots = this.context.dialogManager().slots();
         }
 
         return this;
     }
 
-    public audioPlayerRequest(requestType: string, token: string, offsetInMilliseconds: number): SkillRequest {
-        this.requestJSON = this.baseRequest(requestType);
-        this.requestJSON.request.token = token;
-        this.requestJSON.request.offsetInMilliseconds = offsetInMilliseconds;
+    public intentStatus(confirmationStatus: ConfirmationStatus) {
+        this._json.request.intent.confirmationStatus = confirmationStatus;
+    }
+
+    public json(): any {
+        return this._json;
+    }
+
+    public launch(): SkillRequest {
+        this.requestType(RequestType.LAUNCH_REQUEST);
         return this;
     }
 
-    public elementSelectedRequest(token: any): SkillRequest {
-        this.requestJSON = this.baseRequest(RequestType.DISPLAY_ELEMENT_SELECTED_REQUEST);
-        this.requestJSON.request.token = token;
-        return this;
-    }
-
-    public launchRequest(): SkillRequest {
-        this.requestJSON = this.baseRequest(RequestType.LAUNCH_REQUEST);
-        return this;
-    }
-
-    public sessionEndedRequest(reason: SessionEndedReason, errorData?: any): SkillRequest {
-        this.requestJSON = this.baseRequest(RequestType.SESSION_ENDED_REQUEST);
-        this.requestJSON.request.reason = SessionEndedReason[reason];
-        if (errorData !== undefined && errorData !== null) {
-            this.requestJSON.request.error = errorData;
-        }
-        return this;
-    }
-
+    /** @internal */
     public requiresSession(): boolean {
         // LaunchRequests and IntentRequests both require a session
         // We also force a session on a session ended request, as if someone requests a session end
         //  we will make one first if there is not. It will then be ended.
-        return (this.requestType === RequestType.LAUNCH_REQUEST
-            || this.requestType === RequestType.DISPLAY_ELEMENT_SELECTED_REQUEST
-            || this.requestType === RequestType.INTENT_REQUEST
-            || this.requestType === RequestType.SESSION_ENDED_REQUEST);
+        return (this._json.request.type === RequestType.LAUNCH_REQUEST
+            || this._json.request.type === RequestType.DISPLAY_ELEMENT_SELECTED_REQUEST
+            || this._json.request.type === RequestType.INTENT_REQUEST
+            || this._json.request.type === RequestType.SESSION_ENDED_REQUEST);
     }
 
-    public toJSON() {
-        const applicationID = this.context.applicationID();
+    public requestType(requestType: string) {
+        this._json.request.type = requestType;
 
         // If we have a session, set the info
         if (this.requiresSession() && this.context.activeSession()) {
+            const applicationID = this.context.applicationID();
+
             const session = this.context.session();
             const newSession = session.isNew();
             const sessionID = session.id();
             const attributes = session.attributes();
 
-            this.requestJSON.session = {
+            this._json.session = {
                 application: {
                     applicationId: applicationID,
                 },
@@ -132,43 +161,80 @@ export class SkillRequest {
                 user: this.userObject(this.context),
             };
 
-            if (this.requestType !== RequestType.LAUNCH_REQUEST) {
-                this.requestJSON.session.attributes = attributes;
+            if (this._json.request.type !== RequestType.LAUNCH_REQUEST) {
+                this._json.session.attributes = attributes;
             }
 
             if (this.context.accessToken() !== null) {
-                this.requestJSON.session.user.accessToken = this.context.accessToken();
+                this._json.session.user.accessToken = this.context.accessToken();
             }
         }
+
 
         // For intent, launch and session ended requests, send the audio player state if there is one
         if (this.requiresSession()) {
             if (this.context.device().audioPlayerSupported()) {
                 const activity = AudioPlayerActivity[this.context.audioPlayer().playerActivity()];
-                this.requestJSON.context.AudioPlayer = {
+                this._json.context.AudioPlayer = {
                     playerActivity: activity,
                 };
 
                 // Anything other than IDLE, we send token and offset
                 if (this.context.audioPlayer().playerActivity() !== AudioPlayerActivity.IDLE) {
                     const playing = this.context.audioPlayer().playing();
-                    this.requestJSON.context.AudioPlayer.token = playing.stream.token;
-                    this.requestJSON.context.AudioPlayer.offsetInMilliseconds = playing.stream.offsetInMilliseconds;
+                    this._json.context.AudioPlayer.token = playing.stream.token;
+                    this._json.context.AudioPlayer.offsetInMilliseconds = playing.stream.offsetInMilliseconds;
                 }
             }
         }
-
-        return this.requestJSON;
     }
-
-    private mergeSlots(slotsTarget: {[id: string]: SlotValue}, slotsSource: {[id: string]: SlotValue}) {
-        for (const sourceSlot of Object.keys(slotsSource)) {
-            slotsTarget[sourceSlot] = slotsSource[sourceSlot];
+    
+    public sessionEnded(reason: SessionEndedReason, errorData?: any): SkillRequest {
+        this.requestType(RequestType.SESSION_ENDED_REQUEST);
+        this._json.request.reason = SessionEndedReason[reason];
+        if (errorData !== undefined && errorData !== null) {
+            this._json.request.error = errorData;
         }
+        return this;
     }
 
-    private baseRequest(requestType: string): any {
-        this.requestType = requestType;
+    /**
+     * Sets a slot value on the request
+     * @param slotName 
+     * @param slotValue 
+     * @param confirmationStatus 
+     */
+    public slot(slotName: string, slotValue: string, confirmationStatus?: ConfirmationStatus.NONE): SkillRequest {
+        const slotValueObject = new SlotValue(slotName, slotValue, confirmationStatus);
+        slotValueObject.setEntityResolution(this.context, this._json.request.intent.name);
+        this._json.request.intent.slots[slotName] = slotValueObject;
+        
+        if (this.context.interactionModel().dialogIntent(this._json.request.intent.name)) {
+            //Update the internal state of the dialog manager based on this request
+            this.context.dialogManager().updateSlot(slotName, slotValueObject);
+        }
+
+        return this;
+    }
+
+    public slots(slots: {[id: string]: string}) {
+        for (const slot of Object.keys(slots)) {
+            const slotValue = slots[slot];
+            this.slot(slot, slotValue);
+        }
+        return this;
+    }
+
+    /**
+     * For dialogs, updates the confirmation status of a slot - does not change the value
+     * @param slotName 
+     * @param confirmationStatus 
+     */
+    public slotStatus(slotName: string, confirmationStatus: ConfirmationStatus) {
+        this.context.dialogManager().slots()[slotName].confirmationStatus = confirmationStatus;
+    }
+
+    private baseRequest(): any {
         const applicationID = this.context.applicationID();
         const requestID = SkillRequest.requestID();
         const timestamp = SkillRequest.timestamp();
@@ -190,7 +256,6 @@ export class SkillRequest {
                 locale: this.context.locale(),
                 requestId: requestID,
                 timestamp,
-                type: requestType,
             },
             version: "1.0",
         };

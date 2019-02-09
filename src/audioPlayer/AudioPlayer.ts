@@ -148,7 +148,7 @@ export class AudioPlayer {
     private async audioPlayerRequest(requestType: string): Promise<any> {
         const nowPlaying = this.playing();
         const serviceRequest = new SkillRequest(this._interactor.context());
-        serviceRequest.audioPlayerRequest(requestType, nowPlaying.stream.token, nowPlaying.stream.offsetInMilliseconds);
+        serviceRequest.audioPlayer(requestType, nowPlaying.stream.token, nowPlaying.stream.offsetInMilliseconds);
         return this._interactor.callSkill(serviceRequest);
     }
 
