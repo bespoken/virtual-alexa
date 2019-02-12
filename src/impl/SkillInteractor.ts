@@ -41,12 +41,6 @@ export abstract class SkillInteractor {
             return this.sessionEnded(SessionEndedReason.USER_INITIATED);
         }
 
-        // First give the dialog manager a shot at it
-        const intent = this.context().dialogManager().handleUtterance(utteranceString);
-        if (intent) {
-            return this.callSkill(intent);
-        }
-
         let utter = utteranceString;
         const launchRequesOrUtter = this.handleLaunchRequest(utteranceString);
         if (launchRequesOrUtter === true) {
@@ -118,14 +112,6 @@ export abstract class SkillInteractor {
             &&this.skillContext.device().audioPlayerSupported() 
             && this.skillContext.audioPlayer().isPlaying()) {
             await this.skillContext.audioPlayer().suspend();
-        }
-        
-        // Call this at the last possible minute, because of state issues
-        //  What can happen is this gets queued, and then another request ends the session
-        //  So we want to wait until just before we send this to create the session
-        // This ensures it is in the proper state for the duration
-        if (serviceRequest.requiresSession() && !this.context().activeSession()) {
-            this.context().newSession();
         }
 
         const requestJSON = serviceRequest.json();

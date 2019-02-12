@@ -1,9 +1,8 @@
+import {DialogIntent} from "./DialogIntent";
 import {SkillContext} from "../core/SkillContext";
 import {SkillRequest} from "../core/SkillRequest";
 import {SkillResponse} from "../core/SkillResponse";
 import {SlotValue} from "../impl/SlotValue";
-import {BuiltinUtterances} from "../model/BuiltinUtterances";
-import {DialogIntent} from "./DialogIntent";
 
 export enum DialogState {
     COMPLETED = "COMPLETED",
@@ -20,6 +19,7 @@ export class DialogManager {
     private _slots: {[id: string]: any} = {};
     public constructor(public context: SkillContext) {}
 
+    /** @internal */
     public handleDirective(response: SkillResponse): void {
         // Look for a dialog directive - trigger dialog mode if so
         for (const directive of response.response.directives) {
@@ -60,43 +60,29 @@ export class DialogManager {
         }
     }
 
-    public confirmationStatus() {
+    /**
+     * Set the confirmation status for the dialog
+     * @param confirmationStatus 
+     */
+    public confirmationStatus(confirmationStatus: ConfirmationStatus) {
+        if (confirmationStatus) {
+            this._confirmationStatus = confirmationStatus;
+        }
         return this._confirmationStatus;
     }
 
-    public handleUtterance(utterance: string): SkillRequest {
-        // If we are in confirmation mode, check if this is yes or no
-        if (this._confirmingSlot || this._dialogState === DialogState.COMPLETED) {
-            if (BuiltinUtterances.values()["AMAZON.YesIntent"].indexOf(utterance) !== -1) {
-                return new SkillRequest(this.context).intent("AMAZON.YesIntent");
-            } else if (BuiltinUtterances.values()["AMAZON.NoIntent"].indexOf(utterance) !== -1) {
-                return new SkillRequest(this.context).intent("AMAZON.NoIntent");
-            }
-        } else if (this.isDialog()) {
-            const providedSlots: any = {};
-            let matched = false;
-            // Loop through slot values looking for a match
-            for (const slot of this._dialogIntent.slots) {
-                const slotType = this.context.interactionModel().slotTypes.slotType(slot.type);
-                if (!slotType) {
-                    throw new Error("No match in interaction model for slot type: "
-                        + slot.type + " on slot: " + slot.name);
-                }
-
-                const match = slotType.match(utterance);
-                if (match.matches) {
-                    matched = true;
-                    providedSlots[slot.name] = match.value;
-                }
-            }
-
-            if (matched) {
-                return new SkillRequest(this.context).intent(this._dialogIntent.name).slots(providedSlots);
-            }
+    /**
+     * Set the dialog state
+     * @param state 
+     */
+    public dialogState(state?: DialogState) {
+        if (state) {
+            this._dialogState = state;
         }
-        return undefined;
+        return this._dialogState;
     }
 
+    /** @internal */
     public handleRequest(request: SkillRequest): void {
         const intentName = request.json().request.intent.name;
         if (this.context.interactionModel().dialogIntent(intentName)) {
@@ -108,34 +94,34 @@ export class DialogManager {
                 this._dialogState = DialogState.STARTED;
             }
 
+            // Update the request JSON to have the correct dialog state
+            request.json().request.dialogState = this._dialogState;
+
             // Update the state of the slots in the dialog manager
             this.context.dialogManager().updateSlotStates(request.json().request.intent.slots);
         }
     }
 
+    /** @internal */
     public isDelegated() {
         return this._delegated;
     }
 
+    /** @internal */
     public isDialog() {
         return this._dialogState !== undefined;
-    }
-
-    public dialogState(state?: DialogState) {
-        if (state) {
-            this._dialogState = state;
-        }
-        return this._dialogState;
     }
 
     public reset() {
         this.dialogExited();
     }
 
+    /** @internal */
     public slots() {
         return this._slots;
     }
 
+    /** @internal */
     public updateSlot(slotName: string, newSlot: any) {
         const existingSlot = this._slots[slotName];
               
@@ -149,6 +135,7 @@ export class DialogManager {
         }
     }
 
+    /** @internal */
     public updateSlotStates(slots: {[id: string]: any}): void {
         if (!slots) {
             return;

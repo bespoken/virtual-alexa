@@ -1,5 +1,6 @@
 import {AudioPlayer} from "../audioPlayer/AudioPlayer";
 import {AddressAPI} from "../external/AddressAPI";
+import {DialogManager} from "../dialog/DialogManager";
 import {DynamoDB} from "../external/DynamoDB";
 import {LocalSkillInteractor} from "../impl/LocalSkillInteractor";
 import {RemoteSkillInteractor} from "../impl/RemoteSkillInteractor";
@@ -45,6 +46,10 @@ export class VirtualAlexa {
 
     public context(): SkillContext {
         return this._interactor.context();
+    }
+
+    public dialogManager(): DialogManager {
+        return this._interactor.context().dialogManager();
     }
 
     public dynamoDB() {
@@ -95,6 +100,15 @@ export class VirtualAlexa {
      */
     public launch(): Promise<SkillResponse> {
         return this._interactor.launched();
+    }
+
+    /**
+     * Get skill request instance to build a request from scratch.
+     * 
+     * Useful for highly customized JSON requests
+     */
+    public request(): SkillRequest {
+        return new SkillRequest(this.context());
     }
 
     public resetFilter(): VirtualAlexa {

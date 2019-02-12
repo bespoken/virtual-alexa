@@ -653,7 +653,7 @@ describe("VirtualAlexa Tests Using JSON", function() {
             const reply = await virtualAlexa.filter((request) => {
                 request.session.sessionId = "Filtered";
             }).intend("Play") as SkillResponse;
-
+            virtualAlexa.resetFilter();
             assert.equal(reply.sessionAttributes.sessionId, "Filtered");
         });
 
@@ -669,6 +669,7 @@ describe("VirtualAlexa Tests Using JSON", function() {
             try {
                 await virtualAlexa.intend("Play", {SlotName: "Value"});
             } catch (e) {
+                console.error(e);
                 assert.equal(e.message, "Trying to add slot to intent that does not have any slots defined");
             }
         });

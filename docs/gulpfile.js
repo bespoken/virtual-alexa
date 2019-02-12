@@ -9,10 +9,12 @@ gulp.task("typedoc", function () {
         "src/audioPlayer/AudioPlayer.ts",
         "src/core/Device.ts",
         "src/core/SkillContext.ts",
+        "src/core/SkillRequest.ts",
         "src/core/SkillResponse.ts",
         "src/core/SkillSession.ts",
         "src/core/User.ts",
         "src/core/VirtualAlexa.ts",
+        "src/dialog/DialogManager.ts",
         "src/external/AddressAPI.ts",
         "src/external/DynamoDB.ts",
     ]).pipe(typedoc({

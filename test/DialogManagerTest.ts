@@ -1,13 +1,36 @@
 import {assert} from "chai";
 import {SkillResponse} from "../src/core/SkillResponse";
 import {VirtualAlexa} from "../src/core/VirtualAlexa";
+import { ConfirmationStatus } from "../src/dialog/DialogManager";
 
 process.on("unhandledRejection", (e: any) => {
     console.error(e);
 });
 
 describe("DialogManager tests", function() {
-    it.only("Interacts with delegated dialog", (done) => {
+    it("Interacts with delegated dialog", (done) => {
+        
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test/resources/dialogModel/dialog-index.handler")
+            .interactionModelFile("test/resources/dialogModel/dialog-model.json")
+            .create();
+
+        let request = virtualAlexa.request().intent("PetMatchIntent").slot("size", "big");
+        assert.equal(request.json().request.dialogState, "STARTED");
+        assert.equal(request.json().request.intent.slots.size.value, "big");
+        assert.equal(request.json().request.intent.slots.size.resolutions.resolutionsPerAuthority.length, 1);
+        virtualAlexa.call(request).then((response: SkillResponse) => {
+            let request = virtualAlexa.request().intent("PetMatchIntent").slot("temperament", "watch");
+            assert.equal(request.json().request.intent.slots.size.value, "big");
+            assert.equal(request.json().request.intent.slots.temperament.value, "watch");
+            assert.equal(request.json().request.intent.slots.temperament.resolutions.resolutionsPerAuthority.length, 1);
+            return virtualAlexa.call(request);
+        }).then(() => {
+            done();
+        });
+    });
+
+    it("Interacts with delegated dialog", (done) => {
         const virtualAlexa = VirtualAlexa.Builder()
             .handler("test/resources/dialogModel/dialog-index.handler")
             .interactionModelFile("test/resources/dialogModel/dialog-model.json")
@@ -17,10 +40,10 @@ describe("DialogManager tests", function() {
             assert.equal(response.directive("Dialog.Delegate").type, "Dialog.Delegate");
             return virtualAlexa.intend("PetMatchIntent", { temperament: "watch"});
         }).then((response: SkillResponse) => {
-            assert.equal(response.prompt(), "Do you prefer high energy or low energy dogs?");
+            assert.equal(response.directive("Dialog.Delegate").type, "Dialog.Delegate");
             return virtualAlexa.intend("PetMatchIntent", { energy: "high"});
-        }).then((skillResponse: SkillResponse) => {
-            assert.equal(skillResponse.prompt(), "Done with dialog");
+        }).then((response: SkillResponse) => {
+            assert.equal(response.directive("Dialog.Delegate").type, "Dialog.Delegate");
             done();
         });
     });
@@ -135,51 +158,51 @@ describe("DialogManager tests", function() {
     //     });
     // });
 
-    // it("Interacts with dialog with explicit slot handling", (done) => {
-    //     const virtualAlexa = VirtualAlexa.Builder()
-    //         .handler("test/resources/dialogModel/dialog-manual-index.handler")
-    //         .interactionModelFile("test/resources/dialogModel/dialog-model.json")
-    //         .create();
+    it("Interacts with dialog with explicit slot handling", (done) => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test/resources/dialogModel/dialog-manual-index.handler")
+            .interactionModelFile("test/resources/dialogModel/dialog-model.json")
+            .create();
 
-    //     virtualAlexa.intend("PetMatchIntent", { size: "big"}).then((skillResponse: SkillResponse) => {
-    //         assert.equal(skillResponse.directive("Dialog.ElicitSlot").type, "Dialog.ElicitSlot");
-    //         assert.include(skillResponse.prompt(), "Are you looking for a family dog?");
-    //         return virtualAlexa.intend("PetMatchIntent", { temperament: "watch"});
-    //     }).then((skillResponse: SkillResponse) => {
-    //         assert.equal(skillResponse.prompt(), "Do you prefer high energy dogs?");
-    //         return virtualAlexa.intend("PetMatchIntent", { energy: "high"});
-    //     }).then((skillResponse: SkillResponse) => {
-    //         assert.equal(skillResponse.prompt(), "Done with dialog");
-    //         done();
-    //     });
-    // });
+        virtualAlexa.intend("PetMatchIntent", { size: "big"}).then((skillResponse: SkillResponse) => {
+            assert.equal(skillResponse.directive("Dialog.ElicitSlot").type, "Dialog.ElicitSlot");
+            assert.include(skillResponse.prompt(), "Are you looking for a family dog?");
+            return virtualAlexa.intend("PetMatchIntent", { temperament: "watch"});
+        }).then((skillResponse: SkillResponse) => {
+            assert.equal(skillResponse.prompt(), "Do you prefer high energy dogs?");
+            return virtualAlexa.intend("PetMatchIntent", { energy: "high"});
+        }).then((skillResponse: SkillResponse) => {
+            assert.equal(skillResponse.prompt(), "Done with dialog");
+            done();
+        });
+    });
 
-    // it("Interacts with dialog with explicit slot handling and confirmations", (done) => {
-    //     const virtualAlexa = VirtualAlexa.Builder()
-    //         .handler("test/resources/dialogModel/dialog-manual-index.handler")
-    //         .interactionModelFile("test/resources/dialogModel/dialog-model.json")
-    //         .create();
+    it("Interacts with dialog with explicit slot handling and confirmations", (done) => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test/resources/dialogModel/dialog-manual-index.handler")
+            .interactionModelFile("test/resources/dialogModel/dialog-model.json")
+            .create();
 
-    //     virtualAlexa.intend("PetMatchIntent", { size: "small"}).then((skillResponse: SkillResponse) => {
-    //         assert.equal(skillResponse.directive("Dialog.ConfirmSlot").type, "Dialog.ConfirmSlot");
-    //         assert.include(skillResponse.prompt(), "small?");
-    //         virtualAlexa.filter((request) => {
-    //             assert.equal(request.request.intent.slots.size.confirmationStatus, "CONFIRMED");
-    //             assert.equal(request.request.intent.slots.size.value, "small");
-    //         });
-    //         return virtualAlexa.utter("yes");
-    //     }).then((skillResponse: SkillResponse) => {
-    //         virtualAlexa.resetFilter();
-    //         assert.equal(skillResponse.directive("Dialog.ElicitSlot").type, "Dialog.ElicitSlot");
-    //         assert.equal(skillResponse.prompt(), "Are you looking for a family dog?");
-    //         return virtualAlexa.intend("PetMatchIntent", { temperament: "family"});
-    //     }).then((skillResponse: SkillResponse) => {
-    //         assert.equal(skillResponse.prompt(), "Do you prefer high energy dogs?");
-    //         return virtualAlexa.intend("PetMatchIntent", { temperament: "family"});
-    //     }).then((skillResponse: SkillResponse) => {
-    //         done();
-    //     });
-    // });
+        virtualAlexa.intend("PetMatchIntent", { size: "small"}).then((skillResponse: SkillResponse) => {
+            assert.equal(skillResponse.directive("Dialog.ConfirmSlot").type, "Dialog.ConfirmSlot");
+            assert.include(skillResponse.prompt(), "small?");
+            virtualAlexa.filter((request) => {
+                assert.equal(request.request.intent.slots.size.confirmationStatus, "CONFIRMED");
+                assert.equal(request.request.intent.slots.size.value, "small");
+            });
+            return virtualAlexa.call(virtualAlexa.request().intent("PetMatchIntent").slot("size", "small", ConfirmationStatus.CONFIRMED));
+        }).then((skillResponse: SkillResponse) => {
+            virtualAlexa.resetFilter();
+            assert.equal(skillResponse.directive("Dialog.ElicitSlot").type, "Dialog.ElicitSlot");
+            assert.equal(skillResponse.prompt(), "Are you looking for a family dog?");
+            return virtualAlexa.intend("PetMatchIntent", { temperament: "family"});
+        }).then((skillResponse: SkillResponse) => {
+            assert.equal(skillResponse.prompt(), "Do you prefer high energy dogs?");
+            return virtualAlexa.intend("PetMatchIntent", { temperament: "family"});
+        }).then((skillResponse: SkillResponse) => {
+            done();
+        });
+    });
 
     // it("Interacts with non-delegated dialog with confirming intent confirmation", (done) => {
     //     const virtualAlexa = VirtualAlexa.Builder()

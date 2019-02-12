@@ -41,10 +41,6 @@ export class SkillRequest {
     private _json: any;
     public constructor(private context: SkillContext) {
         this._json = this.baseRequest();
-        // Set dialog stuff in payload, if we are in that mode
-        if (this.context.dialogManager().isDialog()) {
-            this.dialogState(this.context.dialogManager().dialogState(this.context.dialogManager().dialogState()));
-        }
     }
 
     /**
@@ -57,11 +53,6 @@ export class SkillRequest {
         this.requestType(requestType);
         this._json.request.token = token;
         this._json.request.offsetInMilliseconds = offsetInMilliseconds;
-        return this;
-    }
-
-    public dialogState(dialogState: DialogState): SkillRequest {
-        this._json.request.dialogState = this.context.dialogManager().dialogState();
         return this;
     }
 
@@ -144,7 +135,11 @@ export class SkillRequest {
         this._json.request.type = requestType;
 
         // If we have a session, set the info
-        if (this.requiresSession() && this.context.activeSession()) {
+        if (this.requiresSession()) {
+            // Create a new session if there is not one
+            if (!this.context.activeSession()) {
+                this.context.newSession();
+            }
             const applicationID = this.context.applicationID();
 
             const session = this.context.session();
@@ -204,7 +199,18 @@ export class SkillRequest {
      * @param slotValue 
      * @param confirmationStatus 
      */
-    public slot(slotName: string, slotValue: string, confirmationStatus?: ConfirmationStatus.NONE): SkillRequest {
+    public slot(slotName: string, slotValue: string, confirmationStatus: ConfirmationStatus = ConfirmationStatus.NONE): SkillRequest {
+        const intent = this.context.interactionModel().intentSchema.intent(this.json().request.intent.name);
+
+        const intentSlots = intent.slots;
+        if (!intentSlots) {
+            throw new Error("Trying to add slot to intent that does not have any slots defined");
+        }
+
+        if (!intent.slotForName(slotName)) {
+            throw new Error("Trying to add undefined slot to intent: " + slotName);   
+        }
+            
         const slotValueObject = new SlotValue(slotName, slotValue, confirmationStatus);
         slotValueObject.setEntityResolution(this.context, this._json.request.intent.name);
         this._json.request.intent.slots[slotName] = slotValueObject;
@@ -218,9 +224,11 @@ export class SkillRequest {
     }
 
     public slots(slots: {[id: string]: string}) {
-        for (const slot of Object.keys(slots)) {
-            const slotValue = slots[slot];
-            this.slot(slot, slotValue);
+        if (slots) {
+            for (const slot of Object.keys(slots)) {
+                const slotValue = slots[slot];
+                this.slot(slot, slotValue);
+            }    
         }
         return this;
     }
