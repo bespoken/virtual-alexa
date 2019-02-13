@@ -3,7 +3,7 @@ One of the most useful features of VirtualAlexa [is the filter](https://bespoken
 
 You can use the filter to intercept a request payload before it is sent to your skill and make changes to it.
 
-We use this to handle test cases that are not handled more simply and elegantly yet by the fool.
+We use this to handle test cases that are not handled more simply and elegantly yet by the tool.
 
 ## Example
 For example, to work with Entity Resolution on slots, just set code like so:
