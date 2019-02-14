@@ -56,6 +56,12 @@ export class SkillRequest {
         return this;
     }
 
+    public dialogState(state: DialogState): SkillRequest {
+        this.context.dialogManager().state(state);
+        this._json.request.dialogState = state; 
+        return this;
+    }
+
     public elementSelected(token: any): SkillRequest {
         this.requestType(RequestType.DISPLAY_ELEMENT_SELECTED_REQUEST);
         this._json.request.token = token;

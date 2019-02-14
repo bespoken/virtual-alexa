@@ -71,17 +71,6 @@ export class DialogManager {
         return this._confirmationStatus;
     }
 
-    /**
-     * Set the dialog state
-     * @param state 
-     */
-    public dialogState(state?: DialogState) {
-        if (state) {
-            this._dialogState = state;
-        }
-        return this._dialogState;
-    }
-
     /** @internal */
     public handleRequest(request: SkillRequest): void {
         const intentName = request.json().request.intent.name;
@@ -119,6 +108,17 @@ export class DialogManager {
     /** @internal */
     public slots() {
         return this._slots;
+    }
+
+    /**
+     * Set the dialog state
+     * @param state 
+     */
+    public state(state?: DialogState) {
+        if (state) {
+            this._dialogState = state;
+        }
+        return this._dialogState;
     }
 
     /** @internal */
