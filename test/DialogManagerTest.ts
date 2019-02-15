@@ -30,7 +30,7 @@ describe("DialogManager tests", function() {
         });
     });
 
-    it("Interacts with delegated dialog", (done) => {
+    it("Interacts with delegated dialog, version 2", (done) => {
         const virtualAlexa = VirtualAlexa.Builder()
             .handler("test/resources/dialogModel/dialog-index.handler")
             .interactionModelFile("test/resources/dialogModel/dialog-model.json")
@@ -40,6 +40,7 @@ describe("DialogManager tests", function() {
             assert.equal(response.directive("Dialog.Delegate").type, "Dialog.Delegate");
             return virtualAlexa.intend("PetMatchIntent", { temperament: "watch"});
         }).then((response: SkillResponse) => {
+            console.log("Response: " + JSON.stringify(response, null, 2));
             assert.equal(response.directive("Dialog.Delegate").type, "Dialog.Delegate");
             return virtualAlexa.intend("PetMatchIntent", { energy: "high"});
         }).then((response: SkillResponse) => {

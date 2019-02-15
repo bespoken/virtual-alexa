@@ -3,13 +3,11 @@ import * as https from "https";
 import * as URL from "url";
 import {InteractionModel} from "../model/InteractionModel";
 import {SkillInteractor} from "./SkillInteractor";
+import {VirtualAlexa} from "../core/VirtualAlexa";
 
 export class RemoteSkillInteractor extends SkillInteractor {
-    public constructor(private urlString: string,
-                       protected model: InteractionModel,
-                       locale: string,
-                       applicationID?: string) {
-        super(model, locale, applicationID);
+    public constructor(private urlString: string) {
+        super();
     }
 
     protected invoke(requestJSON: any): Promise<any> {

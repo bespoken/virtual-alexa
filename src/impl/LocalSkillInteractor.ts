@@ -1,13 +1,11 @@
 import {InteractionModel} from "../model/InteractionModel";
 import {ModuleInvoker} from "./ModuleInvoker";
 import {SkillInteractor} from "./SkillInteractor";
+import { VirtualAlexa } from "../core/VirtualAlexa";
 
 export class LocalSkillInteractor extends SkillInteractor {
-    public constructor(private handler: string | ((...args: any[]) => void),
-                       protected model: InteractionModel,
-                       locale: string,
-                       applicationID?: string) {
-        super(model, locale, applicationID);
+    public constructor(private handler: string | ((...args: any[]) => void)) {
+        super();
     }
 
     protected invoke(requestJSON: any): Promise<any> {

@@ -4,6 +4,8 @@ import {SlotValue} from "../impl/SlotValue";
 import {SkillContext} from "./SkillContext";
 import { ConfirmationStatus, DialogState } from "../dialog/DialogManager";
 import { request } from "https";
+import { SkillResponse } from "./SkillResponse";
+import { VirtualAlexa } from "./VirtualAlexa";
 
 export class RequestType {
     public static DISPLAY_ELEMENT_SELECTED_REQUEST = "Display.ElementSelected";
@@ -24,8 +26,14 @@ export enum SessionEndedReason {
 
 /**
  * Creates a the JSON for a Service Request programmatically
+ * 
+ * This class assists with setting all the values on the request.
+ * 
+ * Additionally, the raw JSON can be accessed with the .json() property.
  */
 export class SkillRequest {
+
+
     /**
      * The timestamp is a normal JS timestamp without the milliseconds
      */
@@ -38,8 +46,11 @@ export class SkillRequest {
         return "amzn1.echo-external.request." + uuid.v4();
     }
 
+    private context: SkillContext;
     private _json: any;
-    public constructor(private context: SkillContext) {
+    
+    public constructor(private alexa: VirtualAlexa) {
+        this.context = alexa.context();
         this._json = this.baseRequest();
     }
 
@@ -227,6 +238,10 @@ export class SkillRequest {
         }
 
         return this;
+    }
+
+    public send(): Promise<SkillResponse> {
+        return this.alexa.call(this);
     }
 
     public slots(slots: {[id: string]: string}) {

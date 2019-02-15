@@ -12,6 +12,7 @@ import {SkillContext} from "./SkillContext";
 import {SessionEndedReason} from "./SkillRequest";
 import {SkillRequest} from "./SkillRequest";
 import {SkillResponse} from "./SkillResponse";
+import {Utterance} from "virtual-core";
 
 export class VirtualAlexa {
     public static Builder(): VirtualAlexaBuilder {
@@ -20,11 +21,19 @@ export class VirtualAlexa {
 
     /** @internal */
     private _interactor: SkillInteractor;
-    private _addressAPI: AddressAPI;
-    private _dynamoDB: DynamoDB;
-
     /** @internal */
-    public constructor(interactor: SkillInteractor) {
+    private _addressAPI: AddressAPI;
+    /** @internal */
+    private _context: SkillContext = null;
+    /** @internal */
+    private _dynamoDB: DynamoDB;
+    
+    /** @internal */
+    public constructor(interactor: SkillInteractor, model: InteractionModel, locale: string, applicationID?: string) {
+        const audioPlayer = new AudioPlayer(this);
+        this._context = new SkillContext(model, audioPlayer, locale, applicationID);
+        this._context.newSession();
+        
         this._interactor = interactor;
         this._addressAPI = new AddressAPI(this.context());
         this._dynamoDB = new DynamoDB();
@@ -36,20 +45,21 @@ export class VirtualAlexa {
 
     // Provides access to the AudioPlayer object, for sending audio requests
     public audioPlayer(): AudioPlayer {
-        return this._interactor.context().audioPlayer();
+        return this.context().audioPlayer();
     }
 
     // Invoke virtual alexa with constructed skill request
+    // @internal
     public call(skillRequest: SkillRequest): Promise<SkillResponse> {
         return this._interactor.callSkill(skillRequest);
     }
 
     public context(): SkillContext {
-        return this._interactor.context();
+        return this._context;
     }
 
     public dialogManager(): DialogManager {
-        return this._interactor.context().dialogManager();
+        return this.context().dialogManager();
     }
 
     public dynamoDB() {
@@ -61,8 +71,12 @@ export class VirtualAlexa {
      * Does not wait for a reply, as there should be none
      * @returns {Promise<any>}
      */
-    public async endSession(): Promise<void> {
-        await this._interactor.sessionEnded(SessionEndedReason.USER_INITIATED, undefined);
+    public endSession(sessionEndedReason: SessionEndedReason = SessionEndedReason.USER_INITIATED,
+            errorData?: any): Promise<SkillResponse> {
+        const serviceRequest = new SkillRequest(this);
+        // Convert to enum value and send request
+        serviceRequest.sessionEnded(sessionEndedReason, errorData);
+        return this.call(serviceRequest);
     }
 
     /**
@@ -79,27 +93,32 @@ export class VirtualAlexa {
      * Sends the specified intent, with the optional map of slot values
      * @param {string} intentName
      * @param {{[p: string]: string}} slots
-     * @returns {Promise<SkillResponse>}
+     * @returns {SkillRequest}
      */
     public intend(intentName: string, slots?: {[id: string]: string}): Promise<SkillResponse> {
-        return this._interactor.intended(intentName, slots);
+        return this.call(new SkillRequest(this).intent(intentName).slots(slots));
+    }
+
+    /** @internal */
+    public interactor() {
+        return this._interactor;
     }
 
     /**
      * Sends a Display.ElementSelected request with the specified token
      * @param {string} token
-     * @returns {Promise<SkillResponse>}
+     * @returns {SkillRequest}
      */
     public selectElement(token: any): Promise<SkillResponse> {
-        return this._interactor.elementSelected(token);
+        return this.call(new SkillRequest(this).elementSelected(token));
     }
 
     /**
      * Sends a launch request to the skill
-     * @returns {Promise<SkillResponse>}
+     * @returns {SkillRequest}
      */
     public launch(): Promise<SkillResponse> {
-        return this._interactor.launched();
+        return this.call(new SkillRequest(this).launch());
     }
 
     /**
@@ -108,7 +127,7 @@ export class VirtualAlexa {
      * Useful for highly customized JSON requests
      */
     public request(): SkillRequest {
-        return new SkillRequest(this.context());
+        return new SkillRequest(this);
     }
 
     public resetFilter(): VirtualAlexa {
@@ -119,10 +138,48 @@ export class VirtualAlexa {
     /**
      * Sends the specified utterance as an Intent request to the skill
      * @param {string} utterance
-     * @returns {Promise<SkillResponse>}
+     * @returns {SkillRequest}
      */
-    public utter(utterance: string): Promise<SkillResponse> {
-        return this._interactor.spoken(utterance);
+    public utter(utteranceString: string): Promise<SkillResponse> {
+        if (utteranceString === "exit") {
+            return this.endSession(SessionEndedReason.USER_INITIATED);
+        }
+
+        let resolvedUtterance = utteranceString;
+        const launchRequestOrUtter = this.parseLaunchRequest(utteranceString);
+        if (launchRequestOrUtter === true) {
+            return this.launch();
+        } else if (launchRequestOrUtter) {
+            resolvedUtterance = launchRequestOrUtter;
+        }
+
+        const utterance = new Utterance(this.context().interactionModel(), resolvedUtterance);
+        // If we don't match anything, we use the default utterance - simple algorithm for this
+        if (!utterance.matched()) {
+            throw new Error("Unable to match utterance: " + resolvedUtterance
+                + " to an intent. Try a different utterance, or explicitly set the intent");
+        }
+
+        const request = new SkillRequest(this)
+            .intent(utterance.intent())
+            .slots(utterance.toJSON());
+        return this.call(request);
+    }
+
+    
+    private parseLaunchRequest(utter: string): string | boolean {
+        const launchRequestRegex = /(ask|open|launch|talk to|tell).*/i;
+        if (launchRequestRegex.test(utter)) {
+            const launchAndUtterRegex = /^(?:ask|open|launch|talk to|tell) .* to (.*)/i;
+            const result = launchAndUtterRegex.exec(utter);
+            if (result && result.length) {
+                return result[1];
+            } else {
+                return true;
+            }
+        }
+
+        return undefined;
     }
 }
 
@@ -309,13 +366,15 @@ export class VirtualAlexaBuilder {
         let interactor;
 
         if (this._handler) {
-            interactor = new LocalSkillInteractor(this._handler, model, locale, this._applicationID);
+            interactor = new LocalSkillInteractor(this._handler);
         } else if (this._skillURL) {
-            interactor = new RemoteSkillInteractor(this._skillURL, model, locale, this._applicationID);
+            interactor = new RemoteSkillInteractor(this._skillURL);
         } else {
             throw new Error("Either a handler or skillURL must be provided.");
         }
 
-        return new VirtualAlexa(interactor);
+        const alexa = new VirtualAlexa(interactor, model, locale, this._applicationID);
+        (interactor as any)._alexa = alexa;
+        return alexa;
     }
 }
