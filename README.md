@@ -19,11 +19,8 @@
     <a href="https://www.npmjs.com/package/virtual-alexa">
         <img alt="NPM Version" class="badge" src="https://img.shields.io/npm/v/virtual-alexa.svg">
     </a>
-    <a href="http://docs.bespoken.io/">
-        <img alt="Read The Docs" class="badge" src="https://img.shields.io/badge/docs-latest-brightgreen.svg?style=flat">
-    </a>
     <a href="https://gitter.im/bespoken/bst?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
-        <img alt="Read The Docs" class="badge" src="https://badges.gitter.im/bespoken/bst.svg">
+        <img alt="Gitter" class="badge" src="https://badges.gitter.im/bespoken/bst.svg">
     </a>
 </p>
 
@@ -36,6 +33,11 @@ The core Virtual Alexa API provides several routines - the three most essential 
     * launch: Generates JSON for a launch request
     * utter: Generates JSON as if the user said the given phrase  
     * intend: Generates JSON as if the given intent was uttered  
+
+**What's New In 2.0**
+* [Request Builder](https://bespoken.github.io/virtual-alexa/api/classes/skillrequest.html)
+* [Improved Dialog Manager](/bespoken/virtual-alexa/blob/master/docs/Dialog.md)
+* More Internals - We've exposed more of the internal elements of Virtual Alexa, such as the AudioPlayer and
 
 ## Why Do I Need This?
 This library allows for easy testing of skills.

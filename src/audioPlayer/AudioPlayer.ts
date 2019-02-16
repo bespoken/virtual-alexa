@@ -146,7 +146,7 @@ export class AudioPlayer {
         const nowPlaying = this.playing();
         const serviceRequest = new SkillRequest(this._alexa);
         serviceRequest.audioPlayer(requestType, nowPlaying.stream.token, nowPlaying.stream.offsetInMilliseconds);
-        return serviceRequest;
+        return serviceRequest.send();
     }
 
     private async enqueue(audioItem: AudioItem, playBehavior: string): Promise<void> {

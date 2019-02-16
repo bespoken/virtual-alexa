@@ -5,6 +5,7 @@ import {SkillResponse} from "../core/SkillResponse";
 import {RequestFilter} from "../core/VirtualAlexa";
 import {InteractionModel} from "../model/InteractionModel";
 import { VirtualAlexa } from "../core/VirtualAlexa";
+import { request } from "https";
 
 /**
  * SkillInteractor comes in two flavors:
@@ -63,6 +64,7 @@ export abstract class SkillInteractor {
             && this._alexa.context().audioPlayer().suspended()) {
             await this._alexa.context().audioPlayer().resume();
         }
+
         return new SkillResponse(result);
     }
 

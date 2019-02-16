@@ -4,6 +4,12 @@ import {SkillRequest} from "../core/SkillRequest";
 import {SkillResponse} from "../core/SkillResponse";
 import {SlotValue} from "../impl/SlotValue";
 
+export enum ConfirmationStatus {
+    CONFIRMED = "CONFIRMED",
+    DENIED = "DENIED",
+    NONE = "NONE",
+}
+
 export enum DialogState {
     COMPLETED = "COMPLETED",
     IN_PROGRESS = "IN_PROGRESS",
@@ -155,10 +161,4 @@ export class DialogManager {
         this._dialogIntent = undefined;
         this._slots = {};
     }
-}
-
-export enum ConfirmationStatus {
-    CONFIRMED = "CONFIRMED",
-    DENIED = "DENIED",
-    NONE = "NONE",
 }
