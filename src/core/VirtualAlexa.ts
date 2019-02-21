@@ -105,6 +105,15 @@ export class VirtualAlexa {
     }
 
     /**
+     * Get skill request instance to build a request from scratch.
+     * 
+     * Useful for highly customized JSON requests
+     */
+    public request(): SkillRequest {
+        return new SkillRequest(this);
+    }
+    
+    /**
      * Sends a Display.ElementSelected request with the specified token
      * @param {string} token
      * @returns {SkillRequest}
@@ -119,15 +128,6 @@ export class VirtualAlexa {
      */
     public launch(): Promise<SkillResponse> {
         return this.call(new SkillRequest(this).launch());
-    }
-
-    /**
-     * Get skill request instance to build a request from scratch.
-     * 
-     * Useful for highly customized JSON requests
-     */
-    public request(): SkillRequest {
-        return new SkillRequest(this);
     }
 
     public resetFilter(): VirtualAlexa {
