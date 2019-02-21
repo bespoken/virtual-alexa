@@ -155,7 +155,7 @@ describe("VirtualAlexa Tests Using URL", function() {
             .create();
         const response = await virtualAlexa.utter("play now") as any;
         assert.isDefined(response.data);
-        assert.equal(response.url, "http://httpbin.org/post");
+        assert.equal(response.url, "https://httpbin.org/post");
     });
 });
 
