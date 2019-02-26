@@ -13,7 +13,7 @@ If that is desired, we recommend you take a look at our [end-to-end testing supp
 Instead, the goal of virtual alexa is to make it easy to emulate different skill request payloads to in turn ensure code is working perfectly.
 
 Take a look at our sample project with programmatic dialog tests here:  
-https://github.com/bespoken-samples/skill-sample-nodejs-petmatch
+https://github.com/bespoken-samples/skill-sample-nodejs-petmatch/blob/master/lambda/custom/index-test.js
 
 ## How It Works
 Virtual Alexa internally keeps track of the Dialog state, so that properties are properly set on the request JSON.
@@ -23,7 +23,7 @@ An example intent with dialog specific properties:
 let response = await virtualAlexa
     .intend("PetMatchIntent")
     .slot("size", "big", "CONFIRMED")
-    .dialogState("CONFIRMED")
+    .dialogState("COMPLETED")
     .send();
 ```
 
