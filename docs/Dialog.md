@@ -1,11 +1,31 @@
 # Dialog Interface
 Virtual Alexa supports the dialog interface, both for delegated and explicit slot handling.
 
-## How It Works
-Virtual Alexa internally manages the Dialog interactions.
+Our support entails allowing for various dialog payloads to be easily constructed. This means:
+* Setting slot values on intents correctly - this includes all slots for the intent, as well as confirmation status
+* Managing the dialog state - initializing it in STARTED, moving to IN_PROGRESS
+* Automatically populating entity resolution values on slots
 
-If the skill delegates the Dialog handling to Alexa, 
-Virtual Alexa will interact with the "user" as if they were talking Alexa (even if the skill is not involved).
+**For unit-testing, it is important to keep in mind the goal is to ensure that code is working correctly.**
+Our dialog manage will NOT emulate the mechanics of asking questions, including yes or no confirmations on slot values.
+If that is desired, we recommend you take a look at our [end-to-end testing support](https://bespoken.io/end-to-end/getting-started). It works great for that purpose.
+
+Instead, the goal of virtual alexa is to make it easy to emulate different skill request payloads to in turn ensure code is working perfectly.
+
+Take a look at our sample project with programmatic dialog tests here:  
+https://github.com/bespoken-samples/skill-sample-nodejs-petmatch
+
+## How It Works
+Virtual Alexa internally keeps track of the Dialog state, so that properties are properly set on the request JSON.
+
+An example intent with dialog specific properties:
+```javascript
+let response = await virtualAlexa
+    .intend("PetMatchIntent")
+    .slot("size", "big", "CONFIRMED")
+    .dialogState("CONFIRMED")
+    .send();
+```
 
 ## Delegated Dialogs
 ```javascript
@@ -14,26 +34,23 @@ Virtual Alexa will interact with the "user" as if they were talking Alexa (even 
     .interactionModelFile("models/en-US.json")
     .create();
 
-virtualAlexa.intend("PetMatchIntent", { size: "big"}).then((response) => {
-    assert.equal(response.skillResponse.directive("Dialog.Delegate").type, "Dialog.Delegate");
-    assert.equal(response.prompt, "Are you looking for more of a family dog or a guard dog?");
-    return virtualAlexa.intend("PetMatchIntent", { temperament: "watch"});
-}).then((dialogResponse) => {
-    assert.equal(dialogResponse.prompt, "Do you prefer high energy or low energy dogs?");
-    return virtualAlexa.intend("PetMatchIntent", { energy: "high"});
-}).then((skillResponse) => {
-    assert.equal(skillResponse.prompt(), "Done with dialog");
-    done();
-});
+let response = await virtualAlexa
+    .intend("PetMatchIntent")
+    .slot("size", "big", "CONFIRMED")
+    .send();
+assert.equal(response.skillResponse.directive("Dialog.Delegate").type, "Dialog.Delegate");
+assert.equal(response.prompt, "Are you looking for more of a family dog or a guard dog?");
+
+response = await virtualAlexa.intend("PetMatchIntent", { temperament: "watch"}).send();
+assert.equal(dialogResponse.prompt, "Do you prefer high energy or low energy dogs?");
+
+response = await virtualAlexa
+    .intend("PetMatchIntent", { energy: "high"})
+    .dialogState("COMPLETED")
+    .send();
+assert.equal(skillResponse.prompt(), "Done with dialog");
+done();
 ```
-
-When a user interaction is handled automatically by the dialog manager, 
-it returns a [DelegatedDialogResponse](https://bespoken.github.io/virtual-alexa/api/classes/delegateddialogresponse.html) 
-instead of a [SkillResponse](https://bespoken.github.io/virtual-alexa/api/classes/skillresponse.html).
-
-The skill response that initiated the dialog can still be found on the 
-[skillResponse property](https://bespoken.github.io/virtual-alexa/api/classes/delegateddialogresponse.html#skillresponse) 
-of the dialog response.
 
 ## Explicit Dialog Management
 Explicit Dialog management works similar to "regular" skill interactions.

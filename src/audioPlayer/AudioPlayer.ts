@@ -1,6 +1,7 @@
 import {RequestType, SessionEndedReason, SkillRequest} from "../core/SkillRequest";
 import {SkillInteractor} from "../impl/SkillInteractor";
 import {AudioItem} from "./AudioItem";
+import { VirtualAlexa } from "../core/VirtualAlexa";
 
 export enum AudioPlayerActivity {
     BUFFER_UNDERRUN,
@@ -34,9 +35,6 @@ export class AudioPlayer {
     private static PLAY_BEHAVIOR_REPLACE_ENQUEUED = "REPLACE_ENQUEUED";
 
     /** @internal */
-    private _interactor: SkillInteractor;
-
-    /** @internal */
     private _playing: AudioItem = null;
 
     /** @internal */
@@ -49,9 +47,8 @@ export class AudioPlayer {
     private _suspended: boolean = false;
 
     /** @internal */
-    public constructor(_interactor: SkillInteractor) {
+    public constructor(private _alexa: VirtualAlexa) {
         this._activity = AudioPlayerActivity.IDLE;
-        this._interactor = _interactor;
     }
 
     /**
@@ -147,9 +144,9 @@ export class AudioPlayer {
 
     private async audioPlayerRequest(requestType: string): Promise<any> {
         const nowPlaying = this.playing();
-        const serviceRequest = new SkillRequest(this._interactor.context());
-        serviceRequest.audioPlayerRequest(requestType, nowPlaying.stream.token, nowPlaying.stream.offsetInMilliseconds);
-        return this._interactor.callSkill(serviceRequest);
+        const serviceRequest = new SkillRequest(this._alexa);
+        serviceRequest.audioPlayer(requestType, nowPlaying.stream.token, nowPlaying.stream.offsetInMilliseconds);
+        return serviceRequest.send();
     }
 
     private async enqueue(audioItem: AudioItem, playBehavior: string): Promise<void> {
@@ -204,12 +201,12 @@ export class AudioPlayer {
         this._playing = this.dequeue();
         // If the URL for AudioItem is http, we throw an error
         if (!this._playing.stream.url) {
-            return this._interactor.sessionEnded(SessionEndedReason.ERROR, {
+            return this._alexa.endSession(SessionEndedReason.ERROR, {
                 message: "The URL specified in the Play directive must be defined and a valid HTTPS url",
                 type: "INVALID_RESPONSE",
             });  
         } else if (this._playing.stream.url.startsWith("http:")) {
-            return this._interactor.sessionEnded(SessionEndedReason.ERROR, {
+            return this._alexa.endSession(SessionEndedReason.ERROR, {
                 message: "The URL specified in the Play directive must be HTTPS",
                 type: "INVALID_RESPONSE",
             });

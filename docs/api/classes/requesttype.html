@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>DelegatedDialogResponse | Bespoken Virtual Alexa</title>
+	<title>RequestType | Bespoken Virtual Alexa</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="delegateddialogresponse.html">DelegatedDialogResponse</a>
+					<a href="requesttype.html">RequestType</a>
 				</li>
 			</ul>
-			<h1>Class DelegatedDialogResponse</h1>
+			<h1>Class RequestType</h1>
 		</div>
 	</div>
 </header>
@@ -68,14 +68,8 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">DelegatedDialogResponse</span>
+						<span class="target">RequestType</span>
 					</li>
-				</ul>
-			</section>
-			<section class="tsd-panel">
-				<h3>Implements</h3>
-				<ul class="tsd-hierarchy">
-					<li><a href="../interfaces/iresponse.html" class="tsd-signature-type">IResponse</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -83,69 +77,100 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Constructors</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="delegateddialogresponse.html#constructor" class="tsd-kind-icon">constructor</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="delegateddialogresponse.html#prompt" class="tsd-kind-icon">prompt</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="delegateddialogresponse.html#skillresponse" class="tsd-kind-icon">skill<wbr>Response</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="requesttype.html#audio_player_playback_finished" class="tsd-kind-icon">AUDIO_<wbr>PLAYER_<wbr>PLAYBACK_<wbr>FINISHED</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="requesttype.html#audio_player_playback_nearly_finished" class="tsd-kind-icon">AUDIO_<wbr>PLAYER_<wbr>PLAYBACK_<wbr>NEARLY_<wbr>FINISHED</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="requesttype.html#audio_player_playback_started" class="tsd-kind-icon">AUDIO_<wbr>PLAYER_<wbr>PLAYBACK_<wbr>STARTED</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="requesttype.html#audio_player_playback_stopped" class="tsd-kind-icon">AUDIO_<wbr>PLAYER_<wbr>PLAYBACK_<wbr>STOPPED</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="requesttype.html#display_element_selected_request" class="tsd-kind-icon">DISPLAY_<wbr>ELEMENT_<wbr>SELECTED_<wbr>REQUEST</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="requesttype.html#intent_request" class="tsd-kind-icon">INTENT_<wbr>REQUEST</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="requesttype.html#launch_request" class="tsd-kind-icon">LAUNCH_<wbr>REQUEST</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="requesttype.html#session_ended_request" class="tsd-kind-icon">SESSION_<wbr>ENDED_<wbr>REQUEST</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
-					<a name="constructor" class="tsd-anchor"></a>
-					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Delegated<wbr>Dialog<wbr>Response<span class="tsd-signature-symbol">(</span>prompt<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, skillResponse<span class="tsd-signature-symbol">?: </span><a href="skillresponse.html" class="tsd-signature-type">SkillResponse</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="delegateddialogresponse.html" class="tsd-signature-type">DelegatedDialogResponse</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/6453e7a/src/dialog/DelegatedDialogResponse.ts#L4">dialog/DelegatedDialogResponse.ts:4</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> prompt: <span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> skillResponse: <a href="skillresponse.html" class="tsd-signature-type">SkillResponse</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="delegateddialogresponse.html" class="tsd-signature-type">DelegatedDialogResponse</a></h4>
-						</li>
-					</ul>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="prompt" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> prompt</h3>
-					<div class="tsd-signature tsd-kind-icon">prompt<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="audio_player_playback_finished" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> AUDIO_<wbr>PLAYER_<wbr>PLAYBACK_<wbr>FINISHED</h3>
+					<div class="tsd-signature tsd-kind-icon">AUDIO_<wbr>PLAYER_<wbr>PLAYBACK_<wbr>FINISHED<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;AudioPlayer.PlaybackFinished&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/6453e7a/src/dialog/DelegatedDialogResponse.ts#L5">dialog/DelegatedDialogResponse.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/core/SkillRequest.ts#L15">core/SkillRequest.ts:15</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="skillresponse" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> skill<wbr>Response</h3>
-					<div class="tsd-signature tsd-kind-icon">skill<wbr>Response<span class="tsd-signature-symbol">:</span> <a href="skillresponse.html" class="tsd-signature-type">SkillResponse</a></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="audio_player_playback_nearly_finished" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> AUDIO_<wbr>PLAYER_<wbr>PLAYBACK_<wbr>NEARLY_<wbr>FINISHED</h3>
+					<div class="tsd-signature tsd-kind-icon">AUDIO_<wbr>PLAYER_<wbr>PLAYBACK_<wbr>NEARLY_<wbr>FINISHED<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;AudioPlayer.PlaybackNearlyFinished&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/6453e7a/src/dialog/DelegatedDialogResponse.ts#L5">dialog/DelegatedDialogResponse.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/core/SkillRequest.ts#L16">core/SkillRequest.ts:16</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="audio_player_playback_started" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> AUDIO_<wbr>PLAYER_<wbr>PLAYBACK_<wbr>STARTED</h3>
+					<div class="tsd-signature tsd-kind-icon">AUDIO_<wbr>PLAYER_<wbr>PLAYBACK_<wbr>STARTED<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;AudioPlayer.PlaybackStarted&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/core/SkillRequest.ts#L17">core/SkillRequest.ts:17</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="audio_player_playback_stopped" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> AUDIO_<wbr>PLAYER_<wbr>PLAYBACK_<wbr>STOPPED</h3>
+					<div class="tsd-signature tsd-kind-icon">AUDIO_<wbr>PLAYER_<wbr>PLAYBACK_<wbr>STOPPED<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;AudioPlayer.PlaybackStopped&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/core/SkillRequest.ts#L18">core/SkillRequest.ts:18</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="display_element_selected_request" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> DISPLAY_<wbr>ELEMENT_<wbr>SELECTED_<wbr>REQUEST</h3>
+					<div class="tsd-signature tsd-kind-icon">DISPLAY_<wbr>ELEMENT_<wbr>SELECTED_<wbr>REQUEST<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;Display.ElementSelected&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/core/SkillRequest.ts#L11">core/SkillRequest.ts:11</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="intent_request" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> INTENT_<wbr>REQUEST</h3>
+					<div class="tsd-signature tsd-kind-icon">INTENT_<wbr>REQUEST<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;IntentRequest&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/core/SkillRequest.ts#L12">core/SkillRequest.ts:12</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="launch_request" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> LAUNCH_<wbr>REQUEST</h3>
+					<div class="tsd-signature tsd-kind-icon">LAUNCH_<wbr>REQUEST<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;LaunchRequest&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/core/SkillRequest.ts#L13">core/SkillRequest.ts:13</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="session_ended_request" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> SESSION_<wbr>ENDED_<wbr>REQUEST</h3>
+					<div class="tsd-signature tsd-kind-icon">SESSION_<wbr>ENDED_<wbr>REQUEST<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;SessionEndedRequest&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/core/SkillRequest.ts#L14">core/SkillRequest.ts:14</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -164,6 +189,15 @@
 					<li class=" tsd-kind-enum">
 						<a href="../enums/audioplayeractivity.html" class="tsd-kind-icon">Audio<wbr>Player<wbr>Activity</a>
 					</li>
+					<li class=" tsd-kind-enum">
+						<a href="../enums/confirmationstatus.html" class="tsd-kind-icon">Confirmation<wbr>Status</a>
+					</li>
+					<li class=" tsd-kind-enum">
+						<a href="../enums/dialogstate.html" class="tsd-kind-icon">Dialog<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-enum">
+						<a href="../enums/sessionendedreason.html" class="tsd-kind-icon">Session<wbr>Ended<wbr>Reason</a>
+					</li>
 					<li class=" tsd-kind-class">
 						<a href="addressapi.html" class="tsd-kind-icon">AddressAPI</a>
 					</li>
@@ -176,32 +210,53 @@
 					<li class=" tsd-kind-class">
 						<a href="audioplayer.html" class="tsd-kind-icon">Audio<wbr>Player</a>
 					</li>
+					<li class=" tsd-kind-class">
+						<a href="device.html" class="tsd-kind-icon">Device</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="dialogmanager.html" class="tsd-kind-icon">Dialog<wbr>Manager</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="dynamodb.html" class="tsd-kind-icon">DynamoDB</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
-						<a href="delegateddialogresponse.html" class="tsd-kind-icon">Delegated<wbr>Dialog<wbr>Response</a>
+						<a href="requesttype.html" class="tsd-kind-icon">Request<wbr>Type</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="delegateddialogresponse.html#constructor" class="tsd-kind-icon">constructor</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="requesttype.html#audio_player_playback_finished" class="tsd-kind-icon">AUDIO_<wbr>PLAYER_<wbr>PLAYBACK_<wbr>FINISHED</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="delegateddialogresponse.html#prompt" class="tsd-kind-icon">prompt</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="requesttype.html#audio_player_playback_nearly_finished" class="tsd-kind-icon">AUDIO_<wbr>PLAYER_<wbr>PLAYBACK_<wbr>NEARLY_<wbr>FINISHED</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="delegateddialogresponse.html#skillresponse" class="tsd-kind-icon">skill<wbr>Response</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="requesttype.html#audio_player_playback_started" class="tsd-kind-icon">AUDIO_<wbr>PLAYER_<wbr>PLAYBACK_<wbr>STARTED</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="requesttype.html#audio_player_playback_stopped" class="tsd-kind-icon">AUDIO_<wbr>PLAYER_<wbr>PLAYBACK_<wbr>STOPPED</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="requesttype.html#display_element_selected_request" class="tsd-kind-icon">DISPLAY_<wbr>ELEMENT_<wbr>SELECTED_<wbr>REQUEST</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="requesttype.html#intent_request" class="tsd-kind-icon">INTENT_<wbr>REQUEST</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="requesttype.html#launch_request" class="tsd-kind-icon">LAUNCH_<wbr>REQUEST</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="requesttype.html#session_ended_request" class="tsd-kind-icon">SESSION_<wbr>ENDED_<wbr>REQUEST</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-class">
-						<a href="device.html" class="tsd-kind-icon">Device</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="dynamodb.html" class="tsd-kind-icon">DynamoDB</a>
-					</li>
-					<li class=" tsd-kind-class">
 						<a href="skillcontext.html" class="tsd-kind-icon">Skill<wbr>Context</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="skillrequest.html" class="tsd-kind-icon">Skill<wbr>Request</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="skillresponse.html" class="tsd-kind-icon">Skill<wbr>Response</a>
@@ -223,9 +278,6 @@
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/icountryandpostalcode.html" class="tsd-kind-icon">ICountry<wbr>And<wbr>Postal<wbr>Code</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/iresponse.html" class="tsd-kind-icon">IResponse</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/istreetaddress.html" class="tsd-kind-icon">IStreet<wbr>Address</a>

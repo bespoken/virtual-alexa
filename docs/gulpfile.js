@@ -1,20 +1,18 @@
 const gulp = require('gulp');
 const typedoc = require('gulp-typedoc');
 
-gulp.task("default", ["typedoc"]);
-
-gulp.task("typedoc", function () {
+gulp.task("default", function () {
     gulp.src([
         "src/audioPlayer/AudioItem.ts",
         "src/audioPlayer/AudioPlayer.ts",
         "src/core/Device.ts",
-        "src/core/IResponse.ts",
         "src/core/SkillContext.ts",
+        "src/core/SkillRequest.ts",
         "src/core/SkillResponse.ts",
         "src/core/SkillSession.ts",
         "src/core/User.ts",
         "src/core/VirtualAlexa.ts",
-        "src/dialog/DelegatedDialogResponse.ts",
+        "src/dialog/DialogManager.ts",
         "src/external/AddressAPI.ts",
         "src/external/DynamoDB.ts",
     ]).pipe(typedoc({
@@ -22,6 +20,7 @@ gulp.task("typedoc", function () {
             excludePrivate: true,
             excludeNotExported: false,
             excludeExternals: true,
+            includeDeclarations: false,
             module: "commonjs",
             gaID: "UA-99287066-2",
             gaSite: "docs.bespoken.io",

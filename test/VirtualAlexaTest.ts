@@ -155,7 +155,7 @@ describe("VirtualAlexa Tests Using URL", function() {
             .create();
         const response = await virtualAlexa.utter("play now") as any;
         assert.isDefined(response.data);
-        assert.equal(response.url, "http://httpbin.org/post");
+        assert.equal(response.url, "https://httpbin.org/post");
     });
 });
 
@@ -538,11 +538,13 @@ describe("VirtualAlexa Tests Using JSON", function() {
         });
 
         it("Utters slotted phrase with no space, promise catch", (done) => {
-            virtualAlexa.utter("Slotmy slot").catch(error => {
-                assert.equal(error.message, "Unable to match utterance: Slotmy slot to an intent. " +
+            try {
+                virtualAlexa.utter("Slotmy slot");
+            } catch (e) {
+                assert.equal(e.message, "Unable to match utterance: Slotmy slot to an intent. " +
                 "Try a different utterance, or explicitly set the intent");
-                done()
-            });
+                done();
+            }
         });
 
         it("Utters builtin intent", async () => {
@@ -653,7 +655,7 @@ describe("VirtualAlexa Tests Using JSON", function() {
             const reply = await virtualAlexa.filter((request) => {
                 request.session.sessionId = "Filtered";
             }).intend("Play") as SkillResponse;
-
+            virtualAlexa.resetFilter();
             assert.equal(reply.sessionAttributes.sessionId, "Filtered");
         });
 
@@ -669,15 +671,18 @@ describe("VirtualAlexa Tests Using JSON", function() {
             try {
                 await virtualAlexa.intend("Play", {SlotName: "Value"});
             } catch (e) {
+                console.error(e);
                 assert.equal(e.message, "Trying to add slot to intent that does not have any slots defined");
             }
         });
 
         it("Intends with slot value but no slots on intent, promise catch", (done) => {
-            virtualAlexa.intend("Play", {SlotName: "Value"}).catch(e => {
+            try {
+                virtualAlexa.intend("Play", {SlotName: "Value"});
+            } catch(e) {
                 assert.equal(e.message, "Trying to add slot to intent that does not have any slots defined");
                 done();
-            });
+            };
         });
 
         it("Intends with slot value but slot does not exist", async () => {
