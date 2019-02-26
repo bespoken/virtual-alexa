@@ -1,9 +1,7 @@
 const gulp = require('gulp');
 const typedoc = require('gulp-typedoc');
 
-gulp.task("default", ["typedoc"]);
-
-gulp.task("typedoc", function () {
+gulp.task("default", function () {
     gulp.src([
         "src/audioPlayer/AudioItem.ts",
         "src/audioPlayer/AudioPlayer.ts",
@@ -22,6 +20,7 @@ gulp.task("typedoc", function () {
             excludePrivate: true,
             excludeNotExported: false,
             excludeExternals: true,
+            includeDeclarations: false,
             module: "commonjs",
             gaID: "UA-99287066-2",
             gaSite: "docs.bespoken.io",

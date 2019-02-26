@@ -67,12 +67,20 @@ export class SkillRequest {
         return this;
     }
 
+    /**
+     * Sets the dialog state for the request, as well as the internal dialog manager
+     * @param state The dialog state
+     */
     public dialogState(state: DialogState): SkillRequest {
         this.context.dialogManager().state(state);
         this._json.request.dialogState = state; 
         return this;
     }
 
+    /**
+     * Creates a Display.ElementSelected request
+     * @param token The token for the selected element
+     */
     public elementSelected(token: any): SkillRequest {
         this.requestType(RequestType.DISPLAY_ELEMENT_SELECTED_REQUEST);
         this._json.request.token = token;
@@ -124,14 +132,25 @@ export class SkillRequest {
         return this;
     }
 
-    public intentStatus(confirmationStatus: ConfirmationStatus) {
+    /**
+     * Sets the confirmation status of the intent
+     * @param confirmationStatus The confirmation status of the intent
+     */
+    public intentStatus(confirmationStatus: ConfirmationStatus): SkillRequest {
         this._json.request.intent.confirmationStatus = confirmationStatus;
+        return this;
     }
 
+    /**
+     * The raw JSON of the request. This can be directly manipulated to modify what is sent to the skill.
+     */
     public json(): any {
         return this._json;
     }
 
+    /**
+     * Creates a LaunchRequest request
+     */
     public launch(): SkillRequest {
         this.requestType(RequestType.LAUNCH_REQUEST);
         return this;
@@ -148,7 +167,7 @@ export class SkillRequest {
             || this._json.request.type === RequestType.SESSION_ENDED_REQUEST);
     }
 
-    public requestType(requestType: string) {
+    public requestType(requestType: string): SkillRequest {
         this._json.request.type = requestType;
 
         // If we have a session, set the info
@@ -199,8 +218,14 @@ export class SkillRequest {
                 }
             }
         }
+        return this;
     }
     
+    /**
+     * Creates a SessionEndedRequest request
+     * @param reason The reason the session ended
+     * @param errorData Error data, if any
+     */
     public sessionEnded(reason: SessionEndedReason, errorData?: any): SkillRequest {
         this.requestType(RequestType.SESSION_ENDED_REQUEST);
         this._json.request.reason = SessionEndedReason[reason];
@@ -240,11 +265,17 @@ export class SkillRequest {
         return this;
     }
 
+    /**
+     * Sends the request to the Alexa skill
+     */
     public send(): Promise<SkillResponse> {
         return this.alexa.call(this);
     }
 
-    public slots(slots: {[id: string]: string}) {
+    /**
+     * Sets slot values as a dictionary of strings on the request
+     */
+    public slots(slots: {[id: string]: string}): SkillRequest {
         if (slots) {
             for (const slot of Object.keys(slots)) {
                 const slotValue = slots[slot];
@@ -259,8 +290,9 @@ export class SkillRequest {
      * @param slotName 
      * @param confirmationStatus 
      */
-    public slotStatus(slotName: string, confirmationStatus: ConfirmationStatus) {
+    public slotStatus(slotName: string, confirmationStatus: ConfirmationStatus): SkillRequest {
         this.context.dialogManager().slots()[slotName].confirmationStatus = confirmationStatus;
+        return this;
     }
 
     private baseRequest(): any {

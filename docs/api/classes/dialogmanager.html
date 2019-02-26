@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>AudioPlayer | Bespoken Virtual Alexa</title>
+	<title>DialogManager | Bespoken Virtual Alexa</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,28 +54,21 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="audioplayer.html">AudioPlayer</a>
+					<a href="dialogmanager.html">DialogManager</a>
 				</li>
 			</ul>
-			<h1>Class AudioPlayer</h1>
+			<h1>Class DialogManager</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>Emulates the behavior of the audio player</p>
-					</div>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">AudioPlayer</span>
+						<span class="target">DialogManager</span>
 					</li>
 				</ul>
 			</section>
@@ -86,24 +79,28 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="audioplayer.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="dialogmanager.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="dialogmanager.html#context" class="tsd-kind-icon">context</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioplayer.html#directivesreceived" class="tsd-kind-icon">directives<wbr>Received</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioplayer.html#isplaying" class="tsd-kind-icon">is<wbr>Playing</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioplayer.html#playbackfinished" class="tsd-kind-icon">playback<wbr>Finished</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioplayer.html#playbacknearlyfinished" class="tsd-kind-icon">playback<wbr>Nearly<wbr>Finished</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioplayer.html#playbackoffset" class="tsd-kind-icon">playback<wbr>Offset</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioplayer.html#playbackstarted" class="tsd-kind-icon">playback<wbr>Started</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioplayer.html#playbackstopped" class="tsd-kind-icon">playback<wbr>Stopped</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioplayer.html#playeractivity" class="tsd-kind-icon">player<wbr>Activity</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioplayer.html#playing" class="tsd-kind-icon">playing</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioplayer.html#resume" class="tsd-kind-icon">resume</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioplayer.html#suspend" class="tsd-kind-icon">suspend</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="audioplayer.html#suspended" class="tsd-kind-icon">suspended</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="dialogmanager.html#confirmationstatus" class="tsd-kind-icon">confirmation<wbr>Status</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="dialogmanager.html#handledirective" class="tsd-kind-icon">handle<wbr>Directive</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="dialogmanager.html#handlerequest" class="tsd-kind-icon">handle<wbr>Request</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="dialogmanager.html#isdelegated" class="tsd-kind-icon">is<wbr>Delegated</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="dialogmanager.html#isdialog" class="tsd-kind-icon">is<wbr>Dialog</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="dialogmanager.html#reset" class="tsd-kind-icon">reset</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="dialogmanager.html#slots" class="tsd-kind-icon">slots</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="dialogmanager.html#state" class="tsd-kind-icon">state</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="dialogmanager.html#updateslot" class="tsd-kind-icon">update<wbr>Slot</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="dialogmanager.html#updateslotstates" class="tsd-kind-icon">update<wbr>Slot<wbr>States</a></li>
 							</ul>
 						</section>
 					</div>
@@ -115,45 +112,82 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Audio<wbr>Player<span class="tsd-signature-symbol">(</span>_alexa<span class="tsd-signature-symbol">: </span><a href="virtualalexa.html" class="tsd-signature-type">VirtualAlexa</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="audioplayer.html" class="tsd-signature-type">AudioPlayer</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Dialog<wbr>Manager<span class="tsd-signature-symbol">(</span>context<span class="tsd-signature-symbol">: </span><a href="skillcontext.html" class="tsd-signature-type">SkillContext</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="dialogmanager.html" class="tsd-signature-type">DialogManager</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/audioPlayer/AudioPlayer.ts#L47">audioPlayer/AudioPlayer.ts:47</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/dialog/DialogManager.ts#L25">dialog/DialogManager.ts:25</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>internal</dt>
-									<dd></dd>
-								</dl>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>_alexa: <a href="virtualalexa.html" class="tsd-signature-type">VirtualAlexa</a></h5>
+									<h5>context: <a href="skillcontext.html" class="tsd-signature-type">SkillContext</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="audioplayer.html" class="tsd-signature-type">AudioPlayer</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="dialogmanager.html" class="tsd-signature-type">DialogManager</a></h4>
 						</li>
 					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="context" class="tsd-anchor"></a>
+					<h3>context</h3>
+					<div class="tsd-signature tsd-kind-icon">context<span class="tsd-signature-symbol">:</span> <a href="skillcontext.html" class="tsd-signature-type">SkillContext</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/dialog/DialogManager.ts#L26">dialog/DialogManager.ts:26</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="directivesreceived" class="tsd-anchor"></a>
-					<h3>directives<wbr>Received</h3>
+					<a name="confirmationstatus" class="tsd-anchor"></a>
+					<h3>confirmation<wbr>Status</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">directives<wbr>Received<span class="tsd-signature-symbol">(</span>directives<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">confirmation<wbr>Status<span class="tsd-signature-symbol">(</span>confirmationStatus<span class="tsd-signature-symbol">: </span><a href="../enums/confirmationstatus.html" class="tsd-signature-type">ConfirmationStatus</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../enums/confirmationstatus.html" class="tsd-signature-type">ConfirmationStatus</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/audioPlayer/AudioPlayer.ts#L139">audioPlayer/AudioPlayer.ts:139</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/dialog/DialogManager.ts#L73">dialog/DialogManager.ts:73</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Set the confirmation status for the dialog</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>confirmationStatus: <a href="../enums/confirmationstatus.html" class="tsd-signature-type">ConfirmationStatus</a></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../enums/confirmationstatus.html" class="tsd-signature-type">ConfirmationStatus</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="handledirective" class="tsd-anchor"></a>
+					<h3>handle<wbr>Directive</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">handle<wbr>Directive<span class="tsd-signature-symbol">(</span>response<span class="tsd-signature-symbol">: </span><a href="skillresponse.html" class="tsd-signature-type">SkillResponse</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/dialog/DialogManager.ts#L29">dialog/DialogManager.ts:29</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -165,93 +199,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>directives: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="isplaying" class="tsd-anchor"></a>
-					<h3>is<wbr>Playing</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>Playing<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/audioPlayer/AudioPlayer.ts#L58">audioPlayer/AudioPlayer.ts:58</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Convenience method to check if the AudioPlayer is playing</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="playbackfinished" class="tsd-anchor"></a>
-					<h3>playback<wbr>Finished</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">playback<wbr>Finished<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/audioPlayer/AudioPlayer.ts#L76">audioPlayer/AudioPlayer.ts:76</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="playbacknearlyfinished" class="tsd-anchor"></a>
-					<h3>playback<wbr>Nearly<wbr>Finished</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">playback<wbr>Nearly<wbr>Finished<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/audioPlayer/AudioPlayer.ts#L72">audioPlayer/AudioPlayer.ts:72</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="playbackoffset" class="tsd-anchor"></a>
-					<h3>playback<wbr>Offset</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">playback<wbr>Offset<span class="tsd-signature-symbol">(</span>offset<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/audioPlayer/AudioPlayer.ts#L66">audioPlayer/AudioPlayer.ts:66</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Emulates a certain amount of a track being played back</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>offset: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-									</div>
+									<h5>response: <a href="skillresponse.html" class="tsd-signature-type">SkillResponse</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -259,146 +207,218 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="playbackstarted" class="tsd-anchor"></a>
-					<h3>playback<wbr>Started</h3>
+					<a name="handlerequest" class="tsd-anchor"></a>
+					<h3>handle<wbr>Request</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">playback<wbr>Started<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">handle<wbr>Request<span class="tsd-signature-symbol">(</span>request<span class="tsd-signature-symbol">: </span><a href="skillrequest.html" class="tsd-signature-type">SkillRequest</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/audioPlayer/AudioPlayer.ts#L86">audioPlayer/AudioPlayer.ts:86</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="playbackstopped" class="tsd-anchor"></a>
-					<h3>playback<wbr>Stopped</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">playback<wbr>Stopped<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/audioPlayer/AudioPlayer.ts#L91">audioPlayer/AudioPlayer.ts:91</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="playeractivity" class="tsd-anchor"></a>
-					<h3>player<wbr>Activity</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">player<wbr>Activity<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../enums/audioplayeractivity.html" class="tsd-signature-type">AudioPlayerActivity</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/audioPlayer/AudioPlayer.ts#L100">audioPlayer/AudioPlayer.ts:100</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/dialog/DialogManager.ts#L81">dialog/DialogManager.ts:81</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>The current state of the AudioPlayer</p>
-								</div>
+								<dl class="tsd-comment-tags">
+									<dt>internal</dt>
+									<dd></dd>
+								</dl>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../enums/audioplayeractivity.html" class="tsd-signature-type">AudioPlayerActivity</a></h4>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>request: <a href="skillrequest.html" class="tsd-signature-type">SkillRequest</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="playing" class="tsd-anchor"></a>
-					<h3>playing</h3>
+					<a name="isdelegated" class="tsd-anchor"></a>
+					<h3>is<wbr>Delegated</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">playing<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="audioitem.html" class="tsd-signature-type">AudioItem</a></li>
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Delegated<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/audioPlayer/AudioPlayer.ts#L108">audioPlayer/AudioPlayer.ts:108</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/dialog/DialogManager.ts#L101">dialog/DialogManager.ts:101</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>The currently playing track</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <a href="audioitem.html" class="tsd-signature-type">AudioItem</a></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="resume" class="tsd-anchor"></a>
-					<h3>resume</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">resume<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/audioPlayer/AudioPlayer.ts#L115">audioPlayer/AudioPlayer.ts:115</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Emulates the device begin playback again after finishing handling an utterance</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="suspend" class="tsd-anchor"></a>
-					<h3>suspend</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">suspend<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/audioPlayer/AudioPlayer.ts#L125">audioPlayer/AudioPlayer.ts:125</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Emulates the device stopping playback while handling an utterance</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="suspended" class="tsd-anchor"></a>
-					<h3>suspended</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">suspended<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/audioPlayer/AudioPlayer.ts#L134">audioPlayer/AudioPlayer.ts:134</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Is the AudioPlayer stopped due to handling an utterance</p>
-								</div>
+								<dl class="tsd-comment-tags">
+									<dt>internal</dt>
+									<dd></dd>
+								</dl>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="isdialog" class="tsd-anchor"></a>
+					<h3>is<wbr>Dialog</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Dialog<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/dialog/DialogManager.ts#L106">dialog/DialogManager.ts:106</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<dl class="tsd-comment-tags">
+									<dt>internal</dt>
+									<dd></dd>
+								</dl>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="reset" class="tsd-anchor"></a>
+					<h3>reset</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">reset<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/dialog/DialogManager.ts#L110">dialog/DialogManager.ts:110</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="slots" class="tsd-anchor"></a>
+					<h3>slots</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">slots<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/dialog/DialogManager.ts#L115">dialog/DialogManager.ts:115</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<dl class="tsd-comment-tags">
+									<dt>internal</dt>
+									<dd></dd>
+								</dl>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
+							<ul class="tsd-parameters">
+								<li class="tsd-parameter-index-signature">
+									<h5><span class="tsd-signature-symbol">[</span>id: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="state" class="tsd-anchor"></a>
+					<h3>state</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">state<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">?: </span><a href="../enums/dialogstate.html" class="tsd-signature-type">DialogState</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../enums/dialogstate.html" class="tsd-signature-type">DialogState</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/dialog/DialogManager.ts#L123">dialog/DialogManager.ts:123</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Set the dialog state</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> state: <a href="../enums/dialogstate.html" class="tsd-signature-type">DialogState</a></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../enums/dialogstate.html" class="tsd-signature-type">DialogState</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="updateslot" class="tsd-anchor"></a>
+					<h3>update<wbr>Slot</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Slot<span class="tsd-signature-symbol">(</span>slotName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, newSlot<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/dialog/DialogManager.ts#L131">dialog/DialogManager.ts:131</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<dl class="tsd-comment-tags">
+									<dt>internal</dt>
+									<dd></dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>slotName: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>newSlot: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="updateslotstates" class="tsd-anchor"></a>
+					<h3>update<wbr>Slot<wbr>States</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Slot<wbr>States<span class="tsd-signature-symbol">(</span>slots<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/dialog/DialogManager.ts#L145">dialog/DialogManager.ts:145</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<dl class="tsd-comment-tags">
+									<dt>internal</dt>
+									<dd></dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>slots: <span class="tsd-signature-type">object</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-index-signature">
+											<h5><span class="tsd-signature-symbol">[</span>id: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">any</span></h5>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -435,60 +455,57 @@
 					<li class=" tsd-kind-class">
 						<a href="audioitemstream.html" class="tsd-kind-icon">Audio<wbr>Item<wbr>Stream</a>
 					</li>
+					<li class=" tsd-kind-class">
+						<a href="audioplayer.html" class="tsd-kind-icon">Audio<wbr>Player</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="device.html" class="tsd-kind-icon">Device</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class">
-						<a href="audioplayer.html" class="tsd-kind-icon">Audio<wbr>Player</a>
+						<a href="dialogmanager.html" class="tsd-kind-icon">Dialog<wbr>Manager</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="audioplayer.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="dialogmanager.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="dialogmanager.html#context" class="tsd-kind-icon">context</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="audioplayer.html#directivesreceived" class="tsd-kind-icon">directives<wbr>Received</a>
+								<a href="dialogmanager.html#confirmationstatus" class="tsd-kind-icon">confirmation<wbr>Status</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="audioplayer.html#isplaying" class="tsd-kind-icon">is<wbr>Playing</a>
+								<a href="dialogmanager.html#handledirective" class="tsd-kind-icon">handle<wbr>Directive</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="audioplayer.html#playbackfinished" class="tsd-kind-icon">playback<wbr>Finished</a>
+								<a href="dialogmanager.html#handlerequest" class="tsd-kind-icon">handle<wbr>Request</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="audioplayer.html#playbacknearlyfinished" class="tsd-kind-icon">playback<wbr>Nearly<wbr>Finished</a>
+								<a href="dialogmanager.html#isdelegated" class="tsd-kind-icon">is<wbr>Delegated</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="audioplayer.html#playbackoffset" class="tsd-kind-icon">playback<wbr>Offset</a>
+								<a href="dialogmanager.html#isdialog" class="tsd-kind-icon">is<wbr>Dialog</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="audioplayer.html#playbackstarted" class="tsd-kind-icon">playback<wbr>Started</a>
+								<a href="dialogmanager.html#reset" class="tsd-kind-icon">reset</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="audioplayer.html#playbackstopped" class="tsd-kind-icon">playback<wbr>Stopped</a>
+								<a href="dialogmanager.html#slots" class="tsd-kind-icon">slots</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="audioplayer.html#playeractivity" class="tsd-kind-icon">player<wbr>Activity</a>
+								<a href="dialogmanager.html#state" class="tsd-kind-icon">state</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="audioplayer.html#playing" class="tsd-kind-icon">playing</a>
+								<a href="dialogmanager.html#updateslot" class="tsd-kind-icon">update<wbr>Slot</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="audioplayer.html#resume" class="tsd-kind-icon">resume</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="audioplayer.html#suspend" class="tsd-kind-icon">suspend</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="audioplayer.html#suspended" class="tsd-kind-icon">suspended</a>
+								<a href="dialogmanager.html#updateslotstates" class="tsd-kind-icon">update<wbr>Slot<wbr>States</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-class">
-						<a href="device.html" class="tsd-kind-icon">Device</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="dialogmanager.html" class="tsd-kind-icon">Dialog<wbr>Manager</a>
-					</li>
 					<li class=" tsd-kind-class">
 						<a href="dynamodb.html" class="tsd-kind-icon">DynamoDB</a>
 					</li>

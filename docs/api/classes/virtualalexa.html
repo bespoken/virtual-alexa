@@ -87,12 +87,16 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="virtualalexa.html#addressapi" class="tsd-kind-icon">addressAPI</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="virtualalexa.html#audioplayer" class="tsd-kind-icon">audio<wbr>Player</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="virtualalexa.html#call" class="tsd-kind-icon">call</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="virtualalexa.html#context" class="tsd-kind-icon">context</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="virtualalexa.html#dialogmanager" class="tsd-kind-icon">dialog<wbr>Manager</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="virtualalexa.html#dynamodb" class="tsd-kind-icon">dynamoDB</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="virtualalexa.html#endsession" class="tsd-kind-icon">end<wbr>Session</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="virtualalexa.html#filter" class="tsd-kind-icon">filter</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="virtualalexa.html#intend" class="tsd-kind-icon">intend</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="virtualalexa.html#interactor" class="tsd-kind-icon">interactor</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="virtualalexa.html#launch" class="tsd-kind-icon">launch</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="virtualalexa.html#request" class="tsd-kind-icon">request</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="virtualalexa.html#resetfilter" class="tsd-kind-icon">reset<wbr>Filter</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="virtualalexa.html#selectelement" class="tsd-kind-icon">select<wbr>Element</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="virtualalexa.html#utter" class="tsd-kind-icon">utter</a></li>
@@ -108,13 +112,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Virtual<wbr>Alexa<span class="tsd-signature-symbol">(</span>interactor<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">SkillInteractor</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="virtualalexa.html" class="tsd-signature-type">VirtualAlexa</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Virtual<wbr>Alexa<span class="tsd-signature-symbol">(</span>interactor<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">SkillInteractor</span>, model<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">InteractionModel</span>, locale<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, applicationID<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="virtualalexa.html" class="tsd-signature-type">VirtualAlexa</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/6453e7a/src/core/VirtualAlexa.ts#L23">core/VirtualAlexa.ts:23</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/core/VirtualAlexa.ts#L29">core/VirtualAlexa.ts:29</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -127,6 +131,15 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>interactor: <span class="tsd-signature-type">SkillInteractor</span></h5>
+								</li>
+								<li>
+									<h5>model: <span class="tsd-signature-type">InteractionModel</span></h5>
+								</li>
+								<li>
+									<h5>locale: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> applicationID: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="virtualalexa.html" class="tsd-signature-type">VirtualAlexa</a></h4>
@@ -146,7 +159,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/6453e7a/src/core/VirtualAlexa.ts#L32">core/VirtualAlexa.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/core/VirtualAlexa.ts#L42">core/VirtualAlexa.ts:42</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="addressapi.html" class="tsd-signature-type">AddressAPI</a></h4>
@@ -163,10 +176,33 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/6453e7a/src/core/VirtualAlexa.ts#L37">core/VirtualAlexa.ts:37</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/core/VirtualAlexa.ts#L47">core/VirtualAlexa.ts:47</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="audioplayer.html" class="tsd-signature-type">AudioPlayer</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="call" class="tsd-anchor"></a>
+					<h3>call</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">call<span class="tsd-signature-symbol">(</span>skillRequest<span class="tsd-signature-symbol">: </span><a href="skillrequest.html" class="tsd-signature-type">SkillRequest</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="skillresponse.html" class="tsd-signature-type">SkillResponse</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/core/VirtualAlexa.ts#L53">core/VirtualAlexa.ts:53</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>skillRequest: <a href="skillrequest.html" class="tsd-signature-type">SkillRequest</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="skillresponse.html" class="tsd-signature-type">SkillResponse</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -180,10 +216,27 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/6453e7a/src/core/VirtualAlexa.ts#L41">core/VirtualAlexa.ts:41</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/core/VirtualAlexa.ts#L57">core/VirtualAlexa.ts:57</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="skillcontext.html" class="tsd-signature-type">SkillContext</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="dialogmanager" class="tsd-anchor"></a>
+					<h3>dialog<wbr>Manager</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">dialog<wbr>Manager<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="dialogmanager.html" class="tsd-signature-type">DialogManager</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/core/VirtualAlexa.ts#L61">core/VirtualAlexa.ts:61</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="dialogmanager.html" class="tsd-signature-type">DialogManager</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -197,7 +250,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/6453e7a/src/core/VirtualAlexa.ts#L45">core/VirtualAlexa.ts:45</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/core/VirtualAlexa.ts#L65">core/VirtualAlexa.ts:65</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="dynamodb.html" class="tsd-signature-type">DynamoDB</a></h4>
@@ -208,13 +261,13 @@
 					<a name="endsession" class="tsd-anchor"></a>
 					<h3>end<wbr>Session</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">end<wbr>Session<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">end<wbr>Session<span class="tsd-signature-symbol">(</span>sessionEndedReason<span class="tsd-signature-symbol">?: </span><a href="../enums/sessionendedreason.html" class="tsd-signature-type">SessionEndedReason</a>, errorData<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="skillresponse.html" class="tsd-signature-type">SkillResponse</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/6453e7a/src/core/VirtualAlexa.ts#L54">core/VirtualAlexa.ts:54</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/core/VirtualAlexa.ts#L74">core/VirtualAlexa.ts:74</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -223,7 +276,16 @@
 									Does not wait for a reply, as there should be none</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> sessionEndedReason: <a href="../enums/sessionendedreason.html" class="tsd-signature-type">SessionEndedReason</a><span class="tsd-signature-symbol"> =&nbsp;SessionEndedReason.USER_INITIATED</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> errorData: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="skillresponse.html" class="tsd-signature-type">SkillResponse</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -237,7 +299,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/6453e7a/src/core/VirtualAlexa.ts#L63">core/VirtualAlexa.ts:63</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/core/VirtualAlexa.ts#L87">core/VirtualAlexa.ts:87</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -259,13 +321,13 @@
 					<a name="intend" class="tsd-anchor"></a>
 					<h3>intend</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">intend<span class="tsd-signature-symbol">(</span>intentName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, slots<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/iresponse.html" class="tsd-signature-type">IResponse</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">intend<span class="tsd-signature-symbol">(</span>intentName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, slots<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="skillresponse.html" class="tsd-signature-type">SkillResponse</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/6453e7a/src/core/VirtualAlexa.ts#L74">core/VirtualAlexa.ts:74</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/core/VirtualAlexa.ts#L98">core/VirtualAlexa.ts:98</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -287,7 +349,30 @@
 									</ul>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/iresponse.html" class="tsd-signature-type">IResponse</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="skillresponse.html" class="tsd-signature-type">SkillResponse</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="interactor" class="tsd-anchor"></a>
+					<h3>interactor</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">interactor<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">SkillInteractor</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/core/VirtualAlexa.ts#L103">core/VirtualAlexa.ts:103</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<dl class="tsd-comment-tags">
+									<dt>internal</dt>
+									<dd></dd>
+								</dl>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">SkillInteractor</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -301,7 +386,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/6453e7a/src/core/VirtualAlexa.ts#L91">core/VirtualAlexa.ts:91</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/core/VirtualAlexa.ts#L129">core/VirtualAlexa.ts:129</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -310,6 +395,29 @@
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="skillresponse.html" class="tsd-signature-type">SkillResponse</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="request" class="tsd-anchor"></a>
+					<h3>request</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">request<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="skillrequest.html" class="tsd-signature-type">SkillRequest</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/core/VirtualAlexa.ts#L112">core/VirtualAlexa.ts:112</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get skill request instance to build a request from scratch.</p>
+								</div>
+								<p>Useful for highly customized JSON requests</p>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="skillrequest.html" class="tsd-signature-type">SkillRequest</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -323,7 +431,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/6453e7a/src/core/VirtualAlexa.ts#L95">core/VirtualAlexa.ts:95</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/core/VirtualAlexa.ts#L133">core/VirtualAlexa.ts:133</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="virtualalexa.html" class="tsd-signature-type">VirtualAlexa</a></h4>
@@ -334,13 +442,13 @@
 					<a name="selectelement" class="tsd-anchor"></a>
 					<h3>select<wbr>Element</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">select<wbr>Element<span class="tsd-signature-symbol">(</span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/iresponse.html" class="tsd-signature-type">IResponse</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">select<wbr>Element<span class="tsd-signature-symbol">(</span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="skillresponse.html" class="tsd-signature-type">SkillResponse</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/6453e7a/src/core/VirtualAlexa.ts#L83">core/VirtualAlexa.ts:83</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/core/VirtualAlexa.ts#L121">core/VirtualAlexa.ts:121</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -354,7 +462,7 @@
 									<h5>token: <span class="tsd-signature-type">any</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/iresponse.html" class="tsd-signature-type">IResponse</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="skillresponse.html" class="tsd-signature-type">SkillResponse</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -362,13 +470,13 @@
 					<a name="utter" class="tsd-anchor"></a>
 					<h3>utter</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">utter<span class="tsd-signature-symbol">(</span>utterance<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/iresponse.html" class="tsd-signature-type">IResponse</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">utter<span class="tsd-signature-symbol">(</span>utteranceString<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="skillresponse.html" class="tsd-signature-type">SkillResponse</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/6453e7a/src/core/VirtualAlexa.ts#L105">core/VirtualAlexa.ts:105</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/core/VirtualAlexa.ts#L143">core/VirtualAlexa.ts:143</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -379,10 +487,10 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>utterance: <span class="tsd-signature-type">string</span></h5>
+									<h5>utteranceString: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/iresponse.html" class="tsd-signature-type">IResponse</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="skillresponse.html" class="tsd-signature-type">SkillResponse</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -396,7 +504,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/6453e7a/src/core/VirtualAlexa.ts#L16">core/VirtualAlexa.ts:16</a></li>
+									<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/core/VirtualAlexa.ts#L18">core/VirtualAlexa.ts:18</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="virtualalexabuilder.html" class="tsd-signature-type">VirtualAlexaBuilder</a></h4>
@@ -418,6 +526,15 @@
 					<li class=" tsd-kind-enum">
 						<a href="../enums/audioplayeractivity.html" class="tsd-kind-icon">Audio<wbr>Player<wbr>Activity</a>
 					</li>
+					<li class=" tsd-kind-enum">
+						<a href="../enums/confirmationstatus.html" class="tsd-kind-icon">Confirmation<wbr>Status</a>
+					</li>
+					<li class=" tsd-kind-enum">
+						<a href="../enums/dialogstate.html" class="tsd-kind-icon">Dialog<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-enum">
+						<a href="../enums/sessionendedreason.html" class="tsd-kind-icon">Session<wbr>Ended<wbr>Reason</a>
+					</li>
 					<li class=" tsd-kind-class">
 						<a href="addressapi.html" class="tsd-kind-icon">AddressAPI</a>
 					</li>
@@ -431,16 +548,22 @@
 						<a href="audioplayer.html" class="tsd-kind-icon">Audio<wbr>Player</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="delegateddialogresponse.html" class="tsd-kind-icon">Delegated<wbr>Dialog<wbr>Response</a>
+						<a href="device.html" class="tsd-kind-icon">Device</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="device.html" class="tsd-kind-icon">Device</a>
+						<a href="dialogmanager.html" class="tsd-kind-icon">Dialog<wbr>Manager</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="dynamodb.html" class="tsd-kind-icon">DynamoDB</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="requesttype.html" class="tsd-kind-icon">Request<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="skillcontext.html" class="tsd-kind-icon">Skill<wbr>Context</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="skillrequest.html" class="tsd-kind-icon">Skill<wbr>Request</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="skillresponse.html" class="tsd-kind-icon">Skill<wbr>Response</a>
@@ -466,7 +589,13 @@
 								<a href="virtualalexa.html#audioplayer" class="tsd-kind-icon">audio<wbr>Player</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="virtualalexa.html#call" class="tsd-kind-icon">call</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="virtualalexa.html#context" class="tsd-kind-icon">context</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="virtualalexa.html#dialogmanager" class="tsd-kind-icon">dialog<wbr>Manager</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="virtualalexa.html#dynamodb" class="tsd-kind-icon">dynamoDB</a>
@@ -481,7 +610,13 @@
 								<a href="virtualalexa.html#intend" class="tsd-kind-icon">intend</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="virtualalexa.html#interactor" class="tsd-kind-icon">interactor</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="virtualalexa.html#launch" class="tsd-kind-icon">launch</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="virtualalexa.html#request" class="tsd-kind-icon">request</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="virtualalexa.html#resetfilter" class="tsd-kind-icon">reset<wbr>Filter</a>
@@ -507,9 +642,6 @@
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/icountryandpostalcode.html" class="tsd-kind-icon">ICountry<wbr>And<wbr>Postal<wbr>Code</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/iresponse.html" class="tsd-kind-icon">IResponse</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/istreetaddress.html" class="tsd-kind-icon">IStreet<wbr>Address</a>

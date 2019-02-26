@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ICountryAndPostalCode | Bespoken Virtual Alexa</title>
+	<title>ConfirmationStatus | Bespoken Virtual Alexa</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,62 +54,60 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="icountryandpostalcode.html">ICountryAndPostalCode</a>
+					<a href="confirmationstatus.html">ConfirmationStatus</a>
 				</li>
 			</ul>
-			<h1>Interface ICountryAndPostalCode</h1>
+			<h1>Enumeration ConfirmationStatus</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-hierarchy">
-				<h3>Hierarchy</h3>
-				<ul class="tsd-hierarchy">
-					<li>
-						<a href="iaddress.html" class="tsd-signature-type">IAddress</a>
-						<ul class="tsd-hierarchy">
-							<li>
-								<span class="target">ICountryAndPostalCode</span>
-							</li>
-						</ul>
-					</li>
-				</ul>
-			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Properties</h3>
+							<h3>Enumeration members</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="icountryandpostalcode.html#countrycode" class="tsd-kind-icon">country<wbr>Code</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="icountryandpostalcode.html#postalcode" class="tsd-kind-icon">postal<wbr>Code</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="confirmationstatus.html#confirmed" class="tsd-kind-icon">CONFIRMED</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="confirmationstatus.html#denied" class="tsd-kind-icon">DENIED</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="confirmationstatus.html#none" class="tsd-kind-icon">NONE</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="countrycode" class="tsd-anchor"></a>
-					<h3>country<wbr>Code</h3>
-					<div class="tsd-signature tsd-kind-icon">country<wbr>Code<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+				<h2>Enumeration members</h2>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="confirmed" class="tsd-anchor"></a>
+					<h3>CONFIRMED</h3>
+					<div class="tsd-signature tsd-kind-icon">CONFIRMED<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;&quot;CONFIRMED&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/external/AddressAPI.ts#L85">external/AddressAPI.ts:85</a></li>
+							<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/dialog/DialogManager.ts#L8">dialog/DialogManager.ts:8</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="postalcode" class="tsd-anchor"></a>
-					<h3>postal<wbr>Code</h3>
-					<div class="tsd-signature tsd-kind-icon">postal<wbr>Code<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="denied" class="tsd-anchor"></a>
+					<h3>DENIED</h3>
+					<div class="tsd-signature tsd-kind-icon">DENIED<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;&quot;DENIED&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/external/AddressAPI.ts#L86">external/AddressAPI.ts:86</a></li>
+							<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/dialog/DialogManager.ts#L9">dialog/DialogManager.ts:9</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="none" class="tsd-anchor"></a>
+					<h3>NONE</h3>
+					<div class="tsd-signature tsd-kind-icon">NONE<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;&quot;NONE&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/bespoken/virtual-alexa/blob/000a8b5/src/dialog/DialogManager.ts#L10">dialog/DialogManager.ts:10</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -126,16 +124,31 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-enum">
-						<a href="../enums/audioplayeractivity.html" class="tsd-kind-icon">Audio<wbr>Player<wbr>Activity</a>
+						<a href="audioplayeractivity.html" class="tsd-kind-icon">Audio<wbr>Player<wbr>Activity</a>
+					</li>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-enum">
+						<a href="confirmationstatus.html" class="tsd-kind-icon">Confirmation<wbr>Status</a>
+						<ul>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="confirmationstatus.html#confirmed" class="tsd-kind-icon">CONFIRMED</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="confirmationstatus.html#denied" class="tsd-kind-icon">DENIED</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="confirmationstatus.html#none" class="tsd-kind-icon">NONE</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+					<li class=" tsd-kind-enum">
+						<a href="dialogstate.html" class="tsd-kind-icon">Dialog<wbr>State</a>
 					</li>
 					<li class=" tsd-kind-enum">
-						<a href="../enums/confirmationstatus.html" class="tsd-kind-icon">Confirmation<wbr>Status</a>
-					</li>
-					<li class=" tsd-kind-enum">
-						<a href="../enums/dialogstate.html" class="tsd-kind-icon">Dialog<wbr>State</a>
-					</li>
-					<li class=" tsd-kind-enum">
-						<a href="../enums/sessionendedreason.html" class="tsd-kind-icon">Session<wbr>Ended<wbr>Reason</a>
+						<a href="sessionendedreason.html" class="tsd-kind-icon">Session<wbr>Ended<wbr>Reason</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="../classes/addressapi.html" class="tsd-kind-icon">AddressAPI</a>
@@ -183,25 +196,13 @@
 						<a href="../classes/virtualalexabuilder.html" class="tsd-kind-icon">Virtual<wbr>Alexa<wbr>Builder</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="iaddress.html" class="tsd-kind-icon">IAddress</a>
+						<a href="../interfaces/iaddress.html" class="tsd-kind-icon">IAddress</a>
 					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-interface">
-						<a href="icountryandpostalcode.html" class="tsd-kind-icon">ICountry<wbr>And<wbr>Postal<wbr>Code</a>
-						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="icountryandpostalcode.html#countrycode" class="tsd-kind-icon">country<wbr>Code</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="icountryandpostalcode.html#postalcode" class="tsd-kind-icon">postal<wbr>Code</a>
-							</li>
-						</ul>
-					</li>
-				</ul>
-				<ul class="after-current">
 					<li class=" tsd-kind-interface">
-						<a href="istreetaddress.html" class="tsd-kind-icon">IStreet<wbr>Address</a>
+						<a href="../interfaces/icountryandpostalcode.html" class="tsd-kind-icon">ICountry<wbr>And<wbr>Postal<wbr>Code</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/istreetaddress.html" class="tsd-kind-icon">IStreet<wbr>Address</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="../globals.html#requestfilter" class="tsd-kind-icon">Request<wbr>Filter</a>

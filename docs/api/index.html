@@ -81,20 +81,33 @@
 					<a href="https://www.npmjs.com/package/virtual-alexa">
 						<img alt="NPM Version" class="badge" src="https://img.shields.io/npm/v/virtual-alexa.svg">
 					</a>
-					<a href="http://docs.bespoken.io/">
-						<img alt="Read The Docs" class="badge" src="https://img.shields.io/badge/docs-latest-brightgreen.svg?style=flat">
+					<a href="https://bespoken.github.io/virtual-alexa/api/">
+						<img alt="Docs" class="badge" src="https://img.shields.io/badge/docs-latest-success.svg">
 					</a>
 					<a href="https://gitter.im/bespoken/bst?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
-						<img alt="Read The Docs" class="badge" src="https://badges.gitter.im/bespoken/bst.svg">
+						<img alt="Gitter" class="badge" src="https://badges.gitter.im/bespoken/bst.svg">
 					</a>
 				</p>
 				<h1 id="virtual-alexa">Virtual Alexa</h1>
 				<p>Virtual Alexa allows for interacting with skills programmatically.</p>
 				<p>The core Virtual Alexa API provides several routines - the three most essential ones:</p>
 				<pre><code>* launch: Generates JSON <span class="hljs-keyword">for</span> a launch request
-* utter: Generates JSON as <span class="hljs-keyword">if</span> the<span class="hljs-built_in"> user </span>said the given phrase  
 * intend: Generates JSON as <span class="hljs-keyword">if</span> the given intent was uttered  
-</code></pre><h2 id="why-do-i-need-this-">Why Do I Need This?</h2>
+* utter: Generates JSON as <span class="hljs-keyword">if</span> the<span class="hljs-built_in"> user </span>said the given phrase  
+</code></pre><p>And also check out our YAML Test Scripts. They allow for:</p>
+				<ul>
+					<li>End-to-end Testing (using our virtual devices)</li>
+					<li>SMAPI Simulation-Based Testing (using the Skill Management API)</li>
+					<li>Unit-Testing (using this library)</li>
+				</ul>
+				<p>All via our simple, readable YAML syntax. <a href="https://read.bespoken.io">Read more here</a>.</p>
+				<p><strong>What&#39;s New In The Latest Version (0.7.x)</strong></p>
+				<ul>
+					<li><a href="https://bespoken.github.io/virtual-alexa/api/classes/skillrequest.html">Request Builder</a></li>
+					<li><a href="/bespoken/virtual-alexa/blob/master/docs/Dialog.md">Improved Dialog Manager</a></li>
+					<li>More Internals - We&#39;ve exposed more of the internal elements of Virtual Alexa, such as the AudioPlayer and DialogManager.</li>
+				</ul>
+				<h2 id="why-do-i-need-this-">Why Do I Need This?</h2>
 				<p>This library allows for easy testing of skills.</p>
 				<p>You can use it for:</p>
 				<p>1) Unit-testing - ensuring individual routines work correctly<br>2) Regression testing - ensuring the code as a whole works properly</p>
@@ -102,91 +115,112 @@
 				<pre><code>npm <span class="hljs-keyword">install</span> <span class="hljs-keyword">virtual</span>-alexa <span class="hljs-comment">--save-dev</span>
 </code></pre><h2 id="how-do-i-use-it-">How Do I Use It?</h2>
 				<p>Easy! Just add a line of code like so:</p>
-				<pre><code><span class="hljs-keyword">const</span> va = <span class="hljs-built_in">require</span>(<span class="hljs-string">"virtual-alexa"</span>);
+				<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> va = <span class="hljs-built_in">require</span>(<span class="hljs-string">"virtual-alexa"</span>);
 <span class="hljs-keyword">const</span> alexa = va.VirtualAlexa.Builder()
     .handler(<span class="hljs-string">"index.handler"</span>) <span class="hljs-comment">// Lambda function file and name</span>
     .interactionModelFile(<span class="hljs-string">"./models/en-US.json"</span>) <span class="hljs-comment">// Path to interaction model file</span>
     .create();
 
-alexa.utter(<span class="hljs-string">"play"</span>).then(<span class="hljs-function">(<span class="hljs-params">payload</span>) =&gt;</span> {
+alexa.intent(<span class="hljs-string">"PlayIntent"</span>).then(<span class="hljs-function">(<span class="hljs-params">payload</span>) =&gt;</span> {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"OutputSpeech: "</span> + payload.response.outputSpeech.ssml);
     <span class="hljs-comment">// Prints out returned SSML, e.g., "&lt;speak&gt; Welcome to my Skill &lt;/speak&gt;"</span>
 });
-</code></pre><p>Our &quot;canonical&quot; full example is the <a href="https://github.com/bespoken/super-simple-unit-testing/blob/master/test/index-test.js">Super Simple Unit Testing project</a>.</p>
-				<h3 id="virtual-alexa-with-promises">Virtual Alexa With Promises</h3>
-				<p>Here&#39;s a more in-depth example, in the form of a Jest unit test:</p>
-				<pre><code>test(<span class="hljs-string">"Plays once"</span>, (<span class="hljs-name">done</span>) =&gt; {
-    alexa.utter(<span class="hljs-string">"get started"</span>).then((<span class="hljs-name">payload</span>) =&gt; {
-        expect(<span class="hljs-name">payload</span>.response.outputSpeech.ssml).toContain(<span class="hljs-string">"What is the search term for it"</span>)<span class="hljs-comment">;</span>
-        return alexa.utter(<span class="hljs-string">"incorrect guess"</span>)<span class="hljs-comment">;</span>
-
-    }).then((<span class="hljs-name">payload</span>) =&gt; {
-        expect(<span class="hljs-name">payload</span>.response.outputSpeech.ssml).toContain(<span class="hljs-string">"Nice try"</span>)<span class="hljs-comment">;</span>
-        return alexa.utter(<span class="hljs-string">"incorrect guess"</span>)<span class="hljs-comment">;</span>
-
-    }).then((<span class="hljs-name">payload</span>) =&gt; {
-        expect(<span class="hljs-name">payload</span>.response.outputSpeech.ssml).toContain(<span class="hljs-string">"That is not correct"</span>)<span class="hljs-comment">;</span>
-        return alexa.utter(<span class="hljs-string">"incorrect guess"</span>)<span class="hljs-comment">;</span>
-
-    }).then((<span class="hljs-name">payload</span>) =&gt; {
-        expect(<span class="hljs-name">payload</span>.response.outputSpeech.ssml).toContain(<span class="hljs-string">"Goodbye"</span>)<span class="hljs-comment">;</span>
-        done()<span class="hljs-comment">;</span>
-
-    })<span class="hljs-comment">;</span>
-})<span class="hljs-comment">;</span>
-</code></pre><p>You can see the full example this is taken from here:<br><a href="https://github.com/bespoken/giftionary/blob/master/test/index.test.js">https://github.com/bespoken/giftionary/blob/master/test/index.test.js</a></p>
+</code></pre>
+				<p>Our &quot;canonical&quot; full example is the <a href="https://github.com/bespoken/super-simple-unit-testing/blob/master/test/index-test.js">Super Simple Unit Testing project</a>.</p>
 				<h3 id="virtual-alexa-with-async-await">Virtual Alexa With Async/Await</h3>
-				<p>And here is one that uses async/await (which makes it even more readable):</p>
-				<pre><code>it(<span class="hljs-string">"Accepts responses without dollars"</span>, async function () {
-    const alexa = bvd.VirtualAlexa.Builder()
-        .handler(<span class="hljs-string">"index.handler"</span>) // Lambda function file and name
-        .intentSchemaFile(<span class="hljs-string">"./speechAssets/IntentSchema.json"</span>) // Uses old-style intent schema
+				<p>Here are some basic tests that uses async/await:</p>
+				<pre><code class="lang-javascript">it(<span class="hljs-string">"Accepts responses without dollars"</span>, <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">const</span> alexa = bvd.VirtualAlexa.Builder()
+        .handler(<span class="hljs-string">"index.handler"</span>) <span class="hljs-comment">// Lambda function file and name</span>
+        .intentSchemaFile(<span class="hljs-string">"./speechAssets/IntentSchema.json"</span>) <span class="hljs-comment">// Uses old-style intent schema</span>
         .sampleUtterancesFile(<span class="hljs-string">"./speechAssets/SampleUtterances.txt"</span>)
-        .create()<span class="hljs-comment">;</span>
+        .create();
 
-    const launchResponse = await alexa.launch()<span class="hljs-comment">;</span>
-    assert.include(<span class="hljs-name">launchResponse</span>.response.outputSpeech.ssml, <span class="hljs-string">"Welcome to guess the price"</span>)<span class="hljs-comment">;</span>
+    <span class="hljs-keyword">const</span> launchResponse = <span class="hljs-keyword">await</span> alexa.launch();
+    assert.include(launchResponse.response.outputSpeech.ssml, <span class="hljs-string">"Welcome to guess the price"</span>);
 
-    const playerOneResponse = await alexa.utter(<span class="hljs-string">"2"</span>)<span class="hljs-comment">;</span>
-    assert.include(<span class="hljs-name">playerOneResponse</span>.response.outputSpeech.ssml, <span class="hljs-string">"what is your name"</span>)<span class="hljs-comment">;</span>
-    assert.include(<span class="hljs-name">playerOneResponse</span>.response.outputSpeech.ssml, <span class="hljs-string">"contestant one"</span>)<span class="hljs-comment">;</span>
+    <span class="hljs-keyword">const</span> playerOneResponse = <span class="hljs-keyword">await</span> alexa.intend(<span class="hljs-string">"NumberIntent"</span>, { <span class="hljs-attr">number</span>: <span class="hljs-string">"2"</span> });
+    assert.include(playerOneResponse.response.outputSpeech.ssml, <span class="hljs-string">"what is your name"</span>);
+    assert.include(playerOneResponse.response.outputSpeech.ssml, <span class="hljs-string">"contestant one"</span>);
 
-    const playerTwoResponse = await alexa.utter(<span class="hljs-string">"john"</span>)<span class="hljs-comment">;</span>
-    assert.include(<span class="hljs-name">playerTwoResponse</span>.response.outputSpeech.ssml, <span class="hljs-string">"what is your name"</span>)<span class="hljs-comment">;</span>
-    assert.include(<span class="hljs-name">playerTwoResponse</span>.response.outputSpeech.ssml, <span class="hljs-string">"Contestant 2"</span>)<span class="hljs-comment">;</span>
+    <span class="hljs-keyword">const</span> playerTwoResponse = <span class="hljs-keyword">await</span> alexa.intend(<span class="hljs-string">"NameIntent"</span>, { <span class="hljs-attr">name</span>: <span class="hljs-string">"john"</span> });
+    assert.include(playerTwoResponse.response.outputSpeech.ssml, <span class="hljs-string">"what is your name"</span>);
+    assert.include(playerTwoResponse.response.outputSpeech.ssml, <span class="hljs-string">"Contestant 2"</span>);
 
-    const gameStartResponse =  await alexa.utter(<span class="hljs-string">"juan"</span>)<span class="hljs-comment">;</span>
-    assert.include(<span class="hljs-name">gameStartResponse</span>.response.outputSpeech.ssml, <span class="hljs-string">"let's start the game"</span>)<span class="hljs-comment">;</span>
-    assert.include(<span class="hljs-name">gameStartResponse</span>.response.outputSpeech.ssml, <span class="hljs-string">"Guess the price"</span>)<span class="hljs-comment">;</span>
+    <span class="hljs-keyword">const</span> gameStartResponse =  <span class="hljs-keyword">await</span> alexa.intend(<span class="hljs-string">"NameIntent"</span>, { <span class="hljs-attr">name</span>: <span class="hljs-string">"juan"</span> });
+    assert.include(gameStartResponse.response.outputSpeech.ssml, <span class="hljs-string">"let's start the game"</span>);
+    assert.include(gameStartResponse.response.outputSpeech.ssml, <span class="hljs-string">"Guess the price"</span>);
 
-    const priceGuessResponse = await alexa.utter(<span class="hljs-string">"200"</span>)<span class="hljs-comment">;</span>
-    assert.include(<span class="hljs-name">priceGuessResponse</span>.response.outputSpeech.ssml, <span class="hljs-string">"the actual price was"</span>)<span class="hljs-comment">;</span>
-})<span class="hljs-comment">;</span>
-</code></pre><p>This one is using Mocha (and Babel) - you can see the full example here:<br><a href="https://github.com/bespoken/GuessThePrice/blob/master/test/index-test.js">https://github.com/bespoken/GuessThePrice/blob/master/test/index-test.js</a></p>
+    <span class="hljs-keyword">const</span> priceGuessResponse = <span class="hljs-keyword">await</span> alexa.intend(<span class="hljs-string">"NumberIntent"</span>, { <span class="hljs-attr">number</span>: <span class="hljs-string">"200"</span> });
+    assert.include(priceGuessResponse.response.outputSpeech.ssml, <span class="hljs-string">"the actual price was"</span>);
+});
+</code></pre>
+				<p>This one is using Mocha (and Babel) - you can see the full example here:<br><a href="https://github.com/bespoken/GuessThePrice/blob/ProgrammaticTests/test/index-test.js">https://github.com/bespoken/GuessThePrice/blob/ProgrammaticTests/test/index-test.js</a></p>
+				<h3 id="virtual-alexa-with-promises">Virtual Alexa With Promises</h3>
+				<p>Here&#39;s an example using promises:</p>
+				<pre><code class="lang-javascript">test(<span class="hljs-string">"Plays once"</span>, (done) =&gt; {
+    alexa.intent(<span class="hljs-string">"GetStartedIntent"</span>).then(<span class="hljs-function">(<span class="hljs-params">payload</span>) =&gt;</span> {
+        expect(payload.response.outputSpeech.ssml).toContain(<span class="hljs-string">"What is the search term for it"</span>);
+        <span class="hljs-keyword">return</span> alexa.intend(<span class="hljs-string">"IncorrectGuessIntent"</span>);
+
+    }).then(<span class="hljs-function">(<span class="hljs-params">payload</span>) =&gt;</span> {
+        expect(payload.response.outputSpeech.ssml).toContain(<span class="hljs-string">"Nice try"</span>);
+        <span class="hljs-keyword">return</span> alexa.intend(<span class="hljs-string">"IncorrectGuessIntent"</span>);
+
+    }).then(<span class="hljs-function">(<span class="hljs-params">payload</span>) =&gt;</span> {
+        expect(payload.response.outputSpeech.ssml).toContain(<span class="hljs-string">"That is not correct"</span>);
+        <span class="hljs-keyword">return</span> alexa.intend(<span class="hljs-string">"IncorrectGuessIntent"</span>);
+
+    }).then(<span class="hljs-function">(<span class="hljs-params">payload</span>) =&gt;</span> {
+        expect(payload.response.outputSpeech.ssml).toContain(<span class="hljs-string">"Goodbye"</span>);
+        done();
+
+    });
+});
+</code></pre>
+				<p>You can see the full example this is taken from here:<br><a href="https://github.com/bespoken/giftionary/blob/master/test/index.test.js">https://github.com/bespoken/giftionary/blob/master/test/index.test.js</a></p>
 				<p>And read all the docs here:<br><a href="https://bespoken.github.io/virtual-alexa/api/">https://bespoken.github.io/virtual-alexa/api/</a></p>
 				<h2 id="using-the-request-filter">Using The Request Filter</h2>
 				<p>The <a href="https://bespoken.github.io/virtual-alexa/api/classes/virtualalexa.html#filter">filter</a> is a powerful tool for manipulating the request payloads that are made to your Alexa skill.</p>
-				<pre><code>alexa.filter(<span class="hljs-function">(<span class="hljs-params">requestJSON</span>) =&gt;</span> {
+				<pre><code class="lang-javascript">alexa.filter(<span class="hljs-function">(<span class="hljs-params">requestJSON</span>) =&gt;</span> {
   <span class="hljs-comment">// Do something with the request</span>
   requestJSON.request.locale = <span class="hljs-string">"en-US"</span> <span class="hljs-comment">// Arbitrary example of changing the request payload</span>
 });
-</code></pre><p>More info on using it <a href="docs/Filters.md">here</a>.</p>
+</code></pre>
+				<p>More info on using it <a href="docs/Filters.md">here</a>.</p>
+				<h2 id="using-the-request-builder-new-">Using the request builder (NEW):</h2>
+				<p>Our request builder allows for fine-tuning requests with ease.</p>
+				<p>To use it, make a call to Virtual Alexa like so:</p>
+				<pre><code class="lang-javascript"><span class="hljs-comment">// Construct the request</span>
+
+<span class="hljs-keyword">const</span> request = alexa.request()
+    .intent(<span class="hljs-string">"MyIntentName"</span>)
+    .slot(<span class="hljs-string">"SlotName"</span>, <span class="hljs-string">"SlotValue"</span>)
+    .dialogState(<span class="hljs-string">"COMPLETED"</span>);
+
+<span class="hljs-comment">// Edit the request as needed - you can directly manipulate the JSON</span>
+request.json().request.intent.slots.SlotName.confirmationStatus = <span class="hljs-string">"CONFIRMED"</span>;
+
+<span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> request.send();
+</code></pre>
+				<p><a href="https://bespoken.github.io/virtual-alexa/api/classes/skillrequest.html">Read more here</a>.</p>
 				<h2 id="audioplayer-interface">AudioPlayer Interface</h2>
 				<p>We also support the AudioPlayer! <a href="https://github.com/bespoken/virtual-alexa/blob/master/docs/AudioPlayer.md">Read more here</a>.</p>
 				<h2 id="display-interface">Display Interface</h2>
 				<p>We also support the Display Interface! <a href="https://github.com/bespoken/virtual-alexa/blob/master/docs/Display.md">Read more here</a>.</p>
 				<h2 id="dialog-interface">Dialog Interface</h2>
-				<p><strong>NEW</strong> We also support the Dialog Interface. <a href="https://github.com/bespoken/virtual-alexa/blob/master/docs/Dialog.md">Read more here</a>.</p>
+				<p>We also support the Dialog Interface. <a href="https://github.com/bespoken/virtual-alexa/blob/master/docs/Dialog.md">Read more here</a>.</p>
+				<p>Using our implementation, you can simulate different payloads coming from the Dialog Manager with ease.</p>
 				<h2 id="mocking-external-calls-dynamo-and-address-api-">Mocking External Calls (Dynamo and Address API)</h2>
-				<p><strong>NEW</strong> We also support mocking external calls, such as ones made to the Address API and Dynamo.
+				<p>We also support mocking external calls, such as ones made to the Address API and Dynamo.
 				<a href="https://github.com/bespoken/virtual-alexa/blob/master/docs/Externals.md">Read more here</a>.</p>
 				<p>This allows for testing without relying on the actual calls, which are difficult if not impossible to configure for unit tests.</p>
 				<h2 id="entity-resolution">Entity Resolution</h2>
-				<p><strong>NEW</strong> We support the entity resolution request payloads.
-				<a href="https://github.com/bespoken/virtual-alexa/blob/master/docs/EntityResolution.md">Read more here</a>.</p>
+				<p>We support the entity resolution request payloads.</p>
+				<p>Using Virtual Alexa, we will automatically add entity resolution information to your slots, based on the your interaction model. It&#39;s like magic :-)</p>
+				<p><a href="https://github.com/bespoken/virtual-alexa/blob/master/docs/EntityResolution.md">Read more here</a>.</p>
 				<h2 id="how-do-i-talk-to-you-">How Do I Talk To You?</h2>
-				<p>Easy, you can open <a href="https://github.com/bespoken/virtual-alexa/issues">an issue here</a>, or find us on <a href="https://gitter.im/bespoken/virtual-alexa">our Gitter</a>.</p>
-				<p>We are also on the <a href="http://amazonalexa.slack.com">Alexa Slack channel</a> - @jpkbst, @jperata, @chrisramon and @ankraiza.</p>
+				<p>Easy, find us on <a href="https://gitter.im/bespoken/virtual-alexa">our Gitter</a> or email <a href="mailto:support@bespoken.io">support@bespoken.io</a>.</p>
 				<p>We look forward to hearing from you!</p>
 			</div>
 		</div>
@@ -203,6 +237,15 @@ alexa.utter(<span class="hljs-string">"play"</span>).then(<span class="hljs-func
 					<li class=" tsd-kind-enum">
 						<a href="enums/audioplayeractivity.html" class="tsd-kind-icon">Audio<wbr>Player<wbr>Activity</a>
 					</li>
+					<li class=" tsd-kind-enum">
+						<a href="enums/confirmationstatus.html" class="tsd-kind-icon">Confirmation<wbr>Status</a>
+					</li>
+					<li class=" tsd-kind-enum">
+						<a href="enums/dialogstate.html" class="tsd-kind-icon">Dialog<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-enum">
+						<a href="enums/sessionendedreason.html" class="tsd-kind-icon">Session<wbr>Ended<wbr>Reason</a>
+					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/addressapi.html" class="tsd-kind-icon">AddressAPI</a>
 					</li>
@@ -216,16 +259,22 @@ alexa.utter(<span class="hljs-string">"play"</span>).then(<span class="hljs-func
 						<a href="classes/audioplayer.html" class="tsd-kind-icon">Audio<wbr>Player</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/delegateddialogresponse.html" class="tsd-kind-icon">Delegated<wbr>Dialog<wbr>Response</a>
+						<a href="classes/device.html" class="tsd-kind-icon">Device</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="classes/device.html" class="tsd-kind-icon">Device</a>
+						<a href="classes/dialogmanager.html" class="tsd-kind-icon">Dialog<wbr>Manager</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/dynamodb.html" class="tsd-kind-icon">DynamoDB</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="classes/requesttype.html" class="tsd-kind-icon">Request<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="classes/skillcontext.html" class="tsd-kind-icon">Skill<wbr>Context</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/skillrequest.html" class="tsd-kind-icon">Skill<wbr>Request</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="classes/skillresponse.html" class="tsd-kind-icon">Skill<wbr>Response</a>
@@ -247,9 +296,6 @@ alexa.utter(<span class="hljs-string">"play"</span>).then(<span class="hljs-func
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/icountryandpostalcode.html" class="tsd-kind-icon">ICountry<wbr>And<wbr>Postal<wbr>Code</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/iresponse.html" class="tsd-kind-icon">IResponse</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/istreetaddress.html" class="tsd-kind-icon">IStreet<wbr>Address</a>
