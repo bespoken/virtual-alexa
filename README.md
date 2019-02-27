@@ -161,10 +161,10 @@ To use it, make a call to Virtual Alexa like so:
 const request = alexa.request()
     .intent("MyIntentName")
     .slot("SlotName", "SlotValue")
-    .dialogState("COMPLETED");
-
-// Edit the request as needed - you can directly manipulate the JSON
-request.json().request.intent.slots.SlotName.confirmationStatus = "CONFIRMED";
+    .dialogState("COMPLETED")
+    // Directly set any property on the JSON easily with the new set method
+    .set("context.System.user.permissions.consentToken", "<TOKEN>")
+    .set("context.System.device.deviceId", "<MY_DEVICE_ID>");
 
 const response = await request.send();
 ```
