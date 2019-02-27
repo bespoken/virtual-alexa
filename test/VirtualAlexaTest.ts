@@ -878,7 +878,7 @@ describe("Request Builder tests", () => {
             .intentSchemaFile("./test/resources/IntentSchema.json")
             .create();
 
-        const request = virtualAlexa.request().intent("MyIntent")
+        const request = virtualAlexa.request().intent("Play")
             .set("request.path1", "value")
             .set("request.array[0].prop", "value");
         assert.equal(request.json().request.path1, "value");
