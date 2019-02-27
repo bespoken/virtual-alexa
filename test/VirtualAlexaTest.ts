@@ -869,3 +869,19 @@ describe("Echo Show Tests", () => {
         }).selectElement("ListToken1");
     });
 });
+
+describe("Request Builder tests", () => {
+    it("Sets JSON values", () => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test/resources/index.handler")
+            .sampleUtterancesFile("./test/resources/SampleUtterances.txt")
+            .intentSchemaFile("./test/resources/IntentSchema.json")
+            .create();
+
+        const request = virtualAlexa.request().intent("MyIntent")
+            .set("request.path1", "value")
+            .set("request.array[0].prop", "value");
+        assert.equal(request.json().request.path1, "value");
+        assert.equal(request.json().request.array[0].prop, "value");
+    });
+});

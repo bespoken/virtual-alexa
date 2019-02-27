@@ -1,4 +1,5 @@
 import * as uuid from "uuid";
+import * as _ from "lodash";
 import {AudioPlayerActivity} from "../audioPlayer/AudioPlayer";
 import {SlotValue} from "../impl/SlotValue";
 import {SkillContext} from "./SkillContext";
@@ -232,6 +233,17 @@ export class SkillRequest {
         if (errorData !== undefined && errorData !== null) {
             this._json.request.error = errorData;
         }
+        return this;
+    }
+
+    /**
+     * Convenience method to set properties on the request object - uses [lodash set]{@link https://lodash.com/docs/#set} under the covers.
+     * Returns this for chaining
+     * @param path The dot-notation path for the property to set
+     * @param value The value to set it to
+     */
+    set(path: string, value: any): SkillRequest {
+        _.set(this.json(), path, value);
         return this;
     }
 
