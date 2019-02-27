@@ -196,10 +196,10 @@ alexa.intent(<span class="hljs-string">"PlayIntent"</span>).then(<span class="hl
 <span class="hljs-keyword">const</span> request = alexa.request()
     .intent(<span class="hljs-string">"MyIntentName"</span>)
     .slot(<span class="hljs-string">"SlotName"</span>, <span class="hljs-string">"SlotValue"</span>)
-    .dialogState(<span class="hljs-string">"COMPLETED"</span>);
-
-<span class="hljs-comment">// Edit the request as needed - you can directly manipulate the JSON</span>
-request.json().request.intent.slots.SlotName.confirmationStatus = <span class="hljs-string">"CONFIRMED"</span>;
+    .dialogState(<span class="hljs-string">"COMPLETED"</span>)
+    <span class="hljs-comment">// Directly set any property on the JSON easily with the new set method</span>
+    .set(<span class="hljs-string">"context.System.user.permissions.consentToken"</span>, <span class="hljs-string">"&lt;TOKEN&gt;"</span>)
+    .set(<span class="hljs-string">"context.System.device.deviceId"</span>, <span class="hljs-string">"&lt;MY_DEVICE_ID&gt;"</span>);
 
 <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> request.send();
 </code></pre>
