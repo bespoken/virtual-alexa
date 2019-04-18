@@ -71,7 +71,7 @@ const alexa = va.VirtualAlexa.Builder()
     .interactionModelFile("./models/en-US.json") // Path to interaction model file
     .create();
 
-alexa.intent("PlayIntent").then((payload) => {
+alexa.intend("PlayIntent").then((payload) => {
     console.log("OutputSpeech: " + payload.response.outputSpeech.ssml);
     // Prints out returned SSML, e.g., "<speak> Welcome to my Skill </speak>"
 });
@@ -115,7 +115,7 @@ https://github.com/bespoken/GuessThePrice/blob/ProgrammaticTests/test/index-test
 Here's an example using promises:
 ```javascript
 test("Plays once", (done) => {
-    alexa.intent("GetStartedIntent").then((payload) => {
+    alexa.intend("GetStartedIntent").then((payload) => {
         expect(payload.response.outputSpeech.ssml).toContain("What is the search term for it");
         return alexa.intend("IncorrectGuessIntent");
 
