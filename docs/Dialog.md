@@ -20,8 +20,8 @@ Virtual Alexa internally keeps track of the Dialog state, so that properties are
 
 An example intent with dialog specific properties:
 ```javascript
-let response = await virtualAlexa
-    .intend("PetMatchIntent")
+let response = await virtualAlexa.request()
+    .intent("PetMatchIntent")
     .slot("size", "big", "CONFIRMED")
     .dialogState("COMPLETED")
     .send();
@@ -34,18 +34,18 @@ let response = await virtualAlexa
     .interactionModelFile("models/en-US.json")
     .create();
 
-let response = await virtualAlexa
-    .intend("PetMatchIntent")
+let response = await virtualAlexa.request()
+    .intent("PetMatchIntent")
     .slot("size", "big", "CONFIRMED")
     .send();
 assert.equal(response.skillResponse.directive("Dialog.Delegate").type, "Dialog.Delegate");
 assert.equal(response.prompt, "Are you looking for more of a family dog or a guard dog?");
 
-response = await virtualAlexa.intend("PetMatchIntent", { temperament: "watch"}).send();
+response = await virtualAlexa.intend("PetMatchIntent", { temperament: "watch"});
 assert.equal(dialogResponse.prompt, "Do you prefer high energy or low energy dogs?");
 
-response = await virtualAlexa
-    .intend("PetMatchIntent", { energy: "high"})
+response = await virtualAlexa.request()
+    .intent("PetMatchIntent", { energy: "high"})
     .dialogState("COMPLETED")
     .send();
 assert.equal(skillResponse.prompt(), "Done with dialog");
