@@ -46,7 +46,7 @@ All via our simple, readable YAML syntax. [Read more here](https://read.bespoken
 
 **What's New In The Latest Version (0.7.x)**
 * [Request Builder](https://bespoken.github.io/virtual-alexa/api/classes/skillrequest.html)
-* [Improved Dialog Manager](/bespoken/virtual-alexa/blob/master/docs/Dialog.md)
+* [Improved Dialog Manager](https://github.com/bespoken/virtual-alexa/blob/master/docs/Dialog.md)
 * More Internals - We've exposed more of the internal elements of Virtual Alexa, such as the AudioPlayer and DialogManager.
 
 ## Why Do I Need This?
