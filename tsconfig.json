@@ -10,6 +10,7 @@
     "outDir": "lib",
     "preserveConstEnums": true,
     "removeComments": true,
+    "skipLibCheck": true,
     "stripInternal": true,
     "sourceMap": true,
     "target": "es5",

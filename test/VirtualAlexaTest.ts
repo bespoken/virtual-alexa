@@ -885,3 +885,18 @@ describe("Request Builder tests", () => {
         assert.equal(request.json().request.array[0].prop, "value");
     });
 });
+
+describe("Catalog tests", () => {
+    it("Sets JSON values", async () => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test/resources/index.handler")
+            .interactionModelFile("test/resources/catalogModel/models/en-US.json")
+            .create();
+
+        const response = await virtualAlexa.intend("IngredientIntent", { Ingredient: "cucumber"}) as any;;
+        assert.isDefined(response);
+        assert.isTrue(response.success);
+        assert.equal(response.slot.name, "Ingredient");
+        assert.equal(response.slot.value, "cucumber");
+    });
+});

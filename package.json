@@ -2,7 +2,7 @@
   "name": "virtual-alexa",
   "license": "Apache-2.0",
   "private": false,
-  "version": "0.7.2",
+  "version": "0.7.3",
   "main": "./lib/src/Index.js",
   "typings": "./lib/src/Index.d.ts",
   "engines": {
@@ -54,10 +54,10 @@
   },
   "dependencies": {
     "aws-sdk": "^2.402.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.15",
     "nock": "^9.6.1",
     "uuid": "^3.3.2",
-    "virtual-core": "0.0.12"
+    "virtual-core": "0.1.1"
   },
   "devDependencies": {
     "@types/aws-sdk": "^2.7.0",
@@ -72,10 +72,10 @@
     "gulp": "^4.0.0",
     "gulp-typedoc": "^2.2.2",
     "mocha": "^5.2.0",
-    "nyc": "^13.3.0",
+    "nyc": "^14.1.1",
     "ts-node": "^3.3.0",
     "tslint": "^5.12.1",
-    "typedoc": "^0.9.0",
+    "typedoc": "^0.15.3",
     "typescript": "^2.9.2"
   }
 }
