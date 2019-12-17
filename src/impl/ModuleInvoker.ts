@@ -13,7 +13,7 @@ export class ModuleInvoker {
             // Replace dots with slashes
             fileName += ".js";
         }
-        const fullPath = path.join(process.cwd(), fileName);
+        const fullPath = path.isAbsolute(fileName) ? fileName : path.join(process.cwd(), fileName);
         const handlerModule = require(fullPath);
 
         return ModuleInvoker.invokeFunction(handlerModule[functionName], event);
