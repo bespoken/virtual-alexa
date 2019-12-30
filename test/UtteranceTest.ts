@@ -101,6 +101,14 @@ describe("UtteranceTest", function() {
     const japaneseModel = InteractionModel.fromFile("./test/resources/japanese_skill/models/ja-JP.json");
 
     describe("#matchIntent", () => {
+        it("Sends correct error message on missing interaction ", () => {
+            try {
+                InteractionModel.fromFile("./test/resources/wrong-file.json");
+            } catch (error) {
+                assert.isTrue(error.message.includes("The interaction model for your Alexa Skill could not be"));
+            }
+        });
+
         it("Matches a simple phrase", () => {
             const utterance = new Utterance(model, "play");
             assert.isTrue(utterance.matched());

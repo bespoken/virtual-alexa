@@ -16,9 +16,18 @@ export class InteractionModel implements IModel {
 
     // Parse the all-in-one interaction model as a file
     public static fromFile(interactionModelFile: any): InteractionModel {
-        const data = fs.readFileSync(interactionModelFile);
-        const json = JSON.parse(data.toString());
-        return InteractionModel.fromJSON(json);
+        try {
+            const data = fs.readFileSync(interactionModelFile);
+            const json = JSON.parse(data.toString());
+            return InteractionModel.fromJSON(json);
+        } catch (error) {
+            if (error.message.includes("ENOENT")) {
+                throw new Error("The interaction model for your Alexa Skill could not be found under:\n" +
+                    interactionModelFile +
+                    "\nPlease provide the correct location of the Interaction Model.")
+            }
+            throw error;
+        }
     }
 
     // Parse the all-in-one interaction model as JSON
