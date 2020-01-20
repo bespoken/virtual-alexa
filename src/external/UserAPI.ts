@@ -32,7 +32,7 @@ export class UserAPI {
      * If the property is not present, returns a 403 error
      * @param {IUserProfile} userProfile
      */
-    public returnUserProfile(userProfile: IUserProfile) {
+    public returnsUserProfile(userProfile: IUserProfile) {
         if (!nock.isActive()) {
             nock.activate();
         }

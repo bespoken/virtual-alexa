@@ -22,7 +22,7 @@ describe("Test User API mocks", function() {
             .intentSchemaFile("./test/resources/IntentSchema.json")
             .create();
 
-        virtualAlexa.userAPI().returnUserProfile({
+        virtualAlexa.userAPI().returnsUserProfile({
             name: "John Smith"
         });
 
@@ -49,7 +49,7 @@ describe("Test User API mocks", function() {
             .intentSchemaFile("./test/resources/IntentSchema.json")
             .create();
 
-        virtualAlexa.userAPI().returnUserProfile({
+        virtualAlexa.userAPI().returnsUserProfile({
             name: "John Smith",
             mobileNumber: {
                 countryCode: "+1",
