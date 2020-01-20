@@ -12,7 +12,9 @@ import {SkillContext} from "./SkillContext";
 import {SessionEndedReason} from "./SkillRequest";
 import {SkillRequest} from "./SkillRequest";
 import {SkillResponse} from "./SkillResponse";
+import {UserAPI} from "../external/UserAPI";
 import {Utterance} from "virtual-core";
+
 
 export class VirtualAlexa {
     public static Builder(): VirtualAlexaBuilder {
@@ -23,6 +25,8 @@ export class VirtualAlexa {
     private _interactor: SkillInteractor;
     /** @internal */
     private _addressAPI: AddressAPI;
+    /** @internal */
+    private _userAPI: UserAPI;
     /** @internal */
     private _context: SkillContext = null;
     /** @internal */
@@ -36,11 +40,16 @@ export class VirtualAlexa {
         
         this._interactor = interactor;
         this._addressAPI = new AddressAPI(this.context());
+        this._userAPI = new UserAPI(this.context());
         this._dynamoDB = new DynamoDB();
     }
 
     public addressAPI() {
         return this._addressAPI;
+    }
+
+    public userAPI() {
+        return this._userAPI;
     }
 
     // Provides access to the AudioPlayer object, for sending audio requests
