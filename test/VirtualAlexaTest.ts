@@ -900,3 +900,23 @@ describe("Catalog tests", () => {
         assert.equal(response.slot.value, "cucumber");
     });
 });
+
+describe.only("Connection Response tests", () => {
+    it("Sets JSON values", async () => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test/resources/index.handler")
+            .interactionModelFile("test/resources/catalogModel/models/en-US.json")
+            .create();
+
+        const request = virtualAlexa.request().inSkillPurchaseResponse("Buy",
+            "ProductId",
+            "DECLINED",
+            "MyToken")
+        
+        assert.equal(request.json().request.type, "Connections.Response");
+        assert.equal(request.json().request.payload.productId, "ProductId");
+        assert.equal(request.json().request.payload.purchaseResult, "DECLINED");
+        assert.equal(request.json().request.status.code, 200);
+        assert.equal(request.json().request.status.message, "OK");
+    });
+});
