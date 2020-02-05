@@ -186,8 +186,8 @@ Using our implementation, you can simulate different payloads coming from the Di
 You can emulate responses from an In-Skill Purchase with the following request type:
 ```
 const request = alexa.request().inSkillPurchaseResponse(
-    SkillRequest.CONNECTIONS_RESPONSE_NAME.BUY,
-    SkillRequest.PURCHASE_RESULT.ACCEPTED,
+    "Buy",
+    "ACCEPTED",
     "MyProductId",
     "MyToken"
 );
