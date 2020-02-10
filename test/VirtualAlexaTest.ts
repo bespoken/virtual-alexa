@@ -901,7 +901,7 @@ describe("Catalog tests", () => {
     });
 });
 
-describe.only("Connection Response tests", () => {
+describe("Connection Response tests", () => {
     it("Sets JSON values", async () => {
         const virtualAlexa = VirtualAlexa.Builder()
             .handler("test/resources/index.handler")
@@ -909,8 +909,8 @@ describe.only("Connection Response tests", () => {
             .create();
 
         const request = virtualAlexa.request().inSkillPurchaseResponse("Buy",
-            "ProductId",
             "DECLINED",
+            "ProductId",
             "MyToken")
         
         assert.equal(request.json().request.type, "Connections.Response");

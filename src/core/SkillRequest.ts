@@ -111,8 +111,8 @@ export class SkillRequest {
     }
 
     public inSkillPurchaseResponse(requestName: string, 
-        productId: string, 
         purchaseResult: string, 
+        productId: string, 
         token: string, 
         statusCode = 200,
         statusMessage = "OK") {
