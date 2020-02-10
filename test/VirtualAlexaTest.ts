@@ -155,7 +155,7 @@ describe("VirtualAlexa Tests Using URL", function() {
             .create();
         const response = await virtualAlexa.utter("play now") as any;
         assert.isDefined(response.data);
-        assert.equal(response.url, "https://httpbin.org/post");
+        assert.equal(response.url, "http://httpbin.org/post");
     });
 });
 
@@ -898,5 +898,25 @@ describe("Catalog tests", () => {
         assert.isTrue(response.success);
         assert.equal(response.slot.name, "Ingredient");
         assert.equal(response.slot.value, "cucumber");
+    });
+});
+
+describe("Connection Response tests", () => {
+    it("Sets JSON values", async () => {
+        const virtualAlexa = VirtualAlexa.Builder()
+            .handler("test/resources/index.handler")
+            .interactionModelFile("test/resources/catalogModel/models/en-US.json")
+            .create();
+
+        const request = virtualAlexa.request().inSkillPurchaseResponse("Buy",
+            "DECLINED",
+            "ProductId",
+            "MyToken")
+        
+        assert.equal(request.json().request.type, "Connections.Response");
+        assert.equal(request.json().request.payload.productId, "ProductId");
+        assert.equal(request.json().request.payload.purchaseResult, "DECLINED");
+        assert.equal(request.json().request.status.code, 200);
+        assert.equal(request.json().request.status.message, "OK");
     });
 });

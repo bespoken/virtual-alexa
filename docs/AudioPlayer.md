@@ -30,7 +30,7 @@ This corresponds to the audio pausing when the user speaks, and then resuming on
 The internal state of the AudioPlayer can be inspected by calling:
 * [virtualAlexa.audioPlayer.playing()](https://bespoken.github.io/virtual-alexa/api/classes/audioplayer.html#playing)
 - Returns the current track playing
-* [virtualAlexa.audioPlayer.playerActivity()]((https://bespoken.github.io/virtual-alexa/api/classes/audioplayer.html#playerActivity)
+* [virtualAlexa.audioPlayer.playerActivity()](https://bespoken.github.io/virtual-alexa/api/classes/audioplayer.html#playerActivity)
 - The current state of the AudioPlayer (PLAYING, IDLE, STOPPED, etc.)
 
 ## Example Unit Test

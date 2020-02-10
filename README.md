@@ -151,7 +151,7 @@ alexa.filter((requestJSON) => {
 
 More info on using it [here](docs/Filters.md).
 
-## Using the request builder (NEW):
+## Using the request builder:
 Our request builder allows for fine-tuning requests with ease.
 
 To use it, make a call to Virtual Alexa like so:
@@ -181,6 +181,19 @@ We also support the Display Interface! [Read more here](https://github.com/bespo
 We also support the Dialog Interface. [Read more here](https://github.com/bespoken/virtual-alexa/blob/master/docs/Dialog.md).
 
 Using our implementation, you can simulate different payloads coming from the Dialog Manager with ease.
+
+# In-Skill Purchase Responses
+You can emulate responses from an In-Skill Purchase with the following request type:
+```
+const request = alexa.request().inSkillPurchaseResponse(
+    "Buy",
+    "ACCEPTED",
+    "MyProductId",
+    "MyToken"
+);
+
+const response = await request.send();
+```
 
 ## Mocking External Calls (Dynamo and Address API)
 We also support mocking external calls, such as ones made to the Address API and Dynamo.

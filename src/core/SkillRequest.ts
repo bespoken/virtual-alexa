@@ -8,7 +8,9 @@ import { request } from "https";
 import { SkillResponse } from "./SkillResponse";
 import { VirtualAlexa } from "./VirtualAlexa";
 
+
 export class RequestType {
+    public static CONNECTIONS_RESPONSE = "Connections.Response";
     public static DISPLAY_ELEMENT_SELECTED_REQUEST = "Display.ElementSelected";
     public static INTENT_REQUEST = "IntentRequest";
     public static LAUNCH_REQUEST = "LaunchRequest";
@@ -68,6 +70,26 @@ export class SkillRequest {
         return this;
     }
 
+    /** 
+     * Creates a connection response object - used by Alexa Connections such as In-Skill Purchases
+     * @param requestName
+     * @param payload The payload object
+     * @param token The correlating token
+     * @param statusCode The status code
+     * @param statusMessage The status message
+     */
+    public connectionsResponse(requestName: string, payload: any, token: string, statusCode = 200, statusMessage = "OK") {
+        this.requestType(RequestType.CONNECTIONS_RESPONSE);
+        this._json.request.name = requestName
+        this._json.request.payload = payload
+        this._json.request.token = token
+        this._json.request.status = {
+            code: statusCode,
+            message: statusMessage
+        }
+        return this;
+    }
+
     /**
      * Sets the dialog state for the request, as well as the internal dialog manager
      * @param state The dialog state
@@ -86,6 +108,23 @@ export class SkillRequest {
         this.requestType(RequestType.DISPLAY_ELEMENT_SELECTED_REQUEST);
         this._json.request.token = token;
         return this;
+    }
+
+    public inSkillPurchaseResponse(requestName: string, 
+        purchaseResult: string, 
+        productId: string, 
+        token: string, 
+        statusCode = 200,
+        statusMessage = "OK") {
+        return this.connectionsResponse(requestName, 
+            {
+                productId,
+                purchaseResult,
+            }, 
+            token, 
+            statusCode, 
+            statusMessage
+        )
     }
     
     /**
