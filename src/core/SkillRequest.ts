@@ -281,7 +281,7 @@ export class SkillRequest {
      * @param path The dot-notation path for the property to set
      * @param value The value to set it to
      */
-    set(path: string, value: any): SkillRequest {
+    set(path: string|string[], value: any): SkillRequest {
         _.set(this.json(), path, value);
         return this;
     }
