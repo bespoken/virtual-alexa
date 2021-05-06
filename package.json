@@ -54,7 +54,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.402.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "nock": "^9.6.1",
     "uuid": "^3.3.2",
     "virtual-core": "0.1.1"
