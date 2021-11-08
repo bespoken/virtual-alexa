@@ -8,6 +8,8 @@ export class DynamoDB {
     private static getScope: any; // We keep the nock scope as a singleton - only one can be active at a time
     /** @internal */
     private static createScope: any; // We keep the nock scope as a singleton - only one can be active at a time
+    /** @internal */
+    private static deleteScope: any; // We keep the nock scope as a singleton - only one can be active at a time    
 
     private records: any[] = [];
     private region = "us-east-1";
@@ -21,6 +23,7 @@ export class DynamoDB {
         this.mockPut();
         this.mockGet();
         this.mockCreate();
+        this.mockDelete();
     }
 
     public reset() {
@@ -35,6 +38,10 @@ export class DynamoDB {
 
         if (DynamoDB.createScope) {
             DynamoDB.createScope.persist(false);
+        }
+
+        if (DynamoDB.deleteScope) {
+            DynamoDB.deleteScope.persist(false);
         }
     }
 
@@ -79,6 +86,63 @@ export class DynamoDB {
             }
         }
         return undefined;
+    }
+
+
+    private deleteImpl(table: string, key: any): any | undefined {
+        // Go through records in reverse order, as we may have duplicates for a key
+        // We want to delete all
+        for (let i = this.records.length - 1; i >= 0; i--) {
+            const record = this.records[i];
+            if (record.TableName !== table) {
+                continue;
+            }
+
+            const o = this.simplifyRecord(record.Item);
+            // The key is an object, with potentially multiple fields
+            // They each need to match
+            let match = true;
+            for (const keyPart of Object.keys(key)) {
+                const keyPartValue = key[keyPart];
+                if (o[keyPart] && o[keyPart] === keyPartValue) {
+                    continue;
+                }
+
+                match = false;
+                break;
+            }
+
+            if (match) {
+                this.records.splice(i, 1);
+            }
+        }
+        return {};
+    }
+
+
+    private mockDelete() {
+        // Built this based on this info:
+        //  https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_DeleteItem.html#API_DeleteItem_Examples
+        DynamoDB.deleteScope = nock(this.baseURL())
+            .matchHeader("x-amz-target", (value: string) => {
+                return value.endsWith("DeleteItem");
+            })
+            .persist()
+            .post("/", (body: any) => {
+                return true;
+            })
+            .query(true)
+            .reply(200, (uri: string, requestBody: any) => {
+                const requestObject = JSON.parse(requestBody);
+                const key = requestObject.Key;
+                // Turn this into a regular javascript object - we use this for searching
+                const keySimple = this.simplifyRecord(key);
+                let record = this.deleteImpl(requestObject.TableName, keySimple);
+                if (!record) {
+                    record = {};
+                }
+                return record;
+            });
     }
 
     private mockPut() {
@@ -141,7 +205,7 @@ export class DynamoDB {
                 const response = {
                     TableDescription: bodyJSON,
                 };
-                response.TableDescription.TableStatus =  "CREATING";
+                response.TableDescription.TableStatus = "CREATING";
                 return response;
             });
     }
