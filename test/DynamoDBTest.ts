@@ -1,8 +1,8 @@
-import {assert} from "chai";
+import { assert } from "chai";
 const AWS = require("aws-sdk");
 const db = require("../src/external/DynamoDB");
 
-describe("Test dynamo DB mocks", function() {
+describe("Test dynamo DB mocks", function () {
     it("Adds a record to mock dynamo", (done) => {
         const mockDynamo = new db.DynamoDB();
         mockDynamo.mock();
@@ -125,28 +125,28 @@ describe("Test dynamo DB mocks", function() {
         var createParams = {
             AttributeDefinitions: [
                 {
-                    AttributeName: "Artist", 
+                    AttributeName: "Artist",
                     AttributeType: "S"
-                }, 
+                },
                 {
-                    AttributeName: "SongTitle", 
+                    AttributeName: "SongTitle",
                     AttributeType: "S"
                 }
-            ], 
+            ],
             KeySchema: [
                 {
-                    AttributeName: "Artist", 
+                    AttributeName: "Artist",
                     KeyType: "HASH"
-                }, 
+                },
                 {
-                    AttributeName: "SongTitle", 
+                    AttributeName: "SongTitle",
                     KeyType: "RANGE"
                 }
-            ], 
+            ],
             ProvisionedThroughput: {
-                ReadCapacityUnits: 5, 
+                ReadCapacityUnits: 5,
                 WriteCapacityUnits: 5
-            }, 
+            },
             TableName: "Music"
         };
 
@@ -156,6 +156,60 @@ describe("Test dynamo DB mocks", function() {
             assert.isDefined(data);
             assert.equal(data.TableDescription.TableStatus, "CREATING");
             done();
+        });
+    });
+
+    it("Deletes a record from mock dynamo", (done) => {
+        process.env.AWS_REGION = "us-east-1";
+        const mockDynamo = new db.DynamoDB();
+        mockDynamo.mock();
+
+        const dynamodb = new AWS.DynamoDB();
+        const putParams = {
+            Item: {
+                AnArray: {
+                    SS: ["Value1", "Value2", "Value3"],
+                },
+                Artist: {
+                    S: "No One You Know",
+                },
+                ID: {
+                    S: "IDValue",
+                },
+                SongTitle: {
+                    S: "Call Me Today",
+                },
+            },
+            ReturnConsumedCapacity: "TOTAL",
+            TableName: "FakeTable",
+        };
+
+        const deleteParams = {
+            Key: {
+                ID: {
+                    S: "IDValue",
+                },
+            },
+            TableName: "FakeTable",
+        };
+
+        assert.equal(process.env.AWS_REGION, "us-east-1");
+        dynamodb.putItem(putParams, (error: any, data: any) => {
+            assert.isNull(error);
+            assert.isDefined(data);
+
+            dynamodb.deleteItem(deleteParams, (getError: any, deleteResponse: any) => {
+                assert.isNull(error);
+                assert.deepEqual(deleteResponse, {});
+
+                // As we've deleted the item then a getItem should return an empty object
+                dynamodb.getItem(deleteParams, (getError2: any, getData2: any) => {
+                    assert.deepEqual(getData2, {});
+                    mockDynamo.reset();
+                    assert.equal(mockDynamo.records.length, 0);
+                    done();
+                });
+            });
         });
     });
 });
