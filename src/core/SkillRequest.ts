@@ -19,6 +19,7 @@ export class RequestType {
     public static AUDIO_PLAYER_PLAYBACK_NEARLY_FINISHED = "AudioPlayer.PlaybackNearlyFinished";
     public static AUDIO_PLAYER_PLAYBACK_STARTED = "AudioPlayer.PlaybackStarted";
     public static AUDIO_PLAYER_PLAYBACK_STOPPED = "AudioPlayer.PlaybackStopped";
+    public static APL_USER_EVENT = "Alexa.Presentation.APL.UserEvent";
 }
 
 export enum SessionEndedReason {
@@ -203,6 +204,7 @@ export class SkillRequest {
         //  we will make one first if there is not. It will then be ended.
         return (this._json.request.type === RequestType.LAUNCH_REQUEST
             || this._json.request.type === RequestType.DISPLAY_ELEMENT_SELECTED_REQUEST
+            || this._json.request.type === RequestType.APL_USER_EVENT
             || this._json.request.type === RequestType.INTENT_REQUEST
             || this._json.request.type === RequestType.SESSION_ENDED_REQUEST);
     }
