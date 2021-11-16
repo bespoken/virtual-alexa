@@ -53,7 +53,7 @@
     "typings": "typings install"
   },
   "dependencies": {
-    "aws-sdk": "^2.402.0",
+    "aws-sdk": "^2.814.0",
     "lodash": "^4.17.15",
     "nock": "^9.6.1",
     "uuid": "^3.3.2",
