@@ -8,7 +8,7 @@ Our support entails allowing for various dialog payloads to be easily constructe
 
 **For unit-testing, it is important to keep in mind the goal is to ensure that code is working correctly.**
 Our dialog manager will NOT emulate the mechanics of asking questions, including yes or no confirmations on slot values.
-If that is desired, we recommend you take a look at our [end-to-end testing support](https://bespoken.io/end-to-end/getting-started). It works great for that purpose.
+If that is desired, we recommend you take a look at our [end-to-end testing support](https://read.bespoken.io/end-to-end/getting-started). It works great for that purpose.
 
 Instead, the goal of virtual alexa is to make it easy to emulate different skill request payloads to in turn ensure code is working perfectly.
 
